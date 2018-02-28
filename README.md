@@ -1,1 +1,1 @@
-# pride-mongo-repo
+# pride-mongodb-repo

@@ -14,20 +14,14 @@ import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
+
 
 /**
- * This code is licensed under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * ==Overview==
- * <p>
- * This class
- * <p>
- * Created by ypriverol (ypriverol@gmail.com) on 02/03/2018.
+ * Pride project information collections contains the information for the corresponding project in PRIDE including information about the title, accession, samples, etc. Please
+ * read the specification of a PRIDE dataset here:
+ *
+ * @author: Yasset Perez-Riverol
+ * @version $Id$
  */
 @Document(collection = "project")
 

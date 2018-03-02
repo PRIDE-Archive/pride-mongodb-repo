@@ -383,7 +383,7 @@ public class PrideProject implements ProjectProvider{
         this.publicProject = publicProject;
     }
 
-    public void setIdResultList(Collection<IdentificationAssayProvider> idResultList) {
-        this.idResultList = idResultList;
+    public void setIdResultList(Collection<IdentificationAssayProvider> identificationAssays) {
+        this.identificationAssays = identificationAssays;
     }
 }

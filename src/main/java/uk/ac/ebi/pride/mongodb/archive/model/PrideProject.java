@@ -3,14 +3,10 @@ package uk.ac.ebi.pride.mongodb.archive.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import uk.ac.ebi.pride.archive.dataprovider.assay.AssayProvider;
-import uk.ac.ebi.pride.archive.dataprovider.assay.identification.IDResultProvider;
+import uk.ac.ebi.pride.archive.dataprovider.assay.identification.IdentificationAssayProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.ParamGroupProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.ParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
-import uk.ac.ebi.pride.archive.dataprovider.project.ProjectTagProvider;
-import uk.ac.ebi.pride.archive.dataprovider.project.SubmissionType;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
 import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
@@ -119,7 +115,7 @@ public class PrideProject implements ProjectProvider{
     private boolean publicProject;
 
     /** Is the number of result files **/
-    private Collection<IDResultProvider> idResultList;
+    private Collection<IdentificationAssayProvider> identificationAssays;
 
 
     /**
@@ -278,13 +274,13 @@ public class PrideProject implements ProjectProvider{
     }
 
     @Override
-    public int numberIDResults() {
-        return idResultList.size();
+    public int numberOfIdentificationAssays() {
+        return identificationAssays.size();
     }
 
     @Override
-    public Collection<? extends IDResultProvider> getIDResults() {
-        return idResultList;
+    public Collection<? extends IdentificationAssayProvider> getIdentificationAssays() {
+        return identificationAssays;
     }
 
     public void setId(String id) {
@@ -387,7 +383,7 @@ public class PrideProject implements ProjectProvider{
         this.publicProject = publicProject;
     }
 
-    public void setIdResultList(Collection<IDResultProvider> idResultList) {
+    public void setIdResultList(Collection<IdentificationAssayProvider> idResultList) {
         this.idResultList = idResultList;
     }
 }

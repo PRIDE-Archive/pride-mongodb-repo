@@ -49,6 +49,9 @@ public class User implements UserProvider{
     /** The country of the user the default values would be in {@link uk.ac.ebi.pride.archive.dataprovider.utils.Country} */
     private String country;
 
+    /** Token used to conenct the user to PRIDE Resources **/
+    String accessToken;
+
 
     @Override
     public String getPassword() {
@@ -144,5 +147,13 @@ public class User implements UserProvider{
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }

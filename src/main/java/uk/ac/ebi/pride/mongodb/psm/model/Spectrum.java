@@ -253,14 +253,6 @@ public class Spectrum implements SpectrumProvider{
         this.splash = splash;
     }
 
-    /**
-     * @return related attributes for the spectrum in CvParams Format
-     */
-    @Override
-    public Collection<ParamProvider> getParams() {
-        return attributes;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -273,5 +265,10 @@ public class Spectrum implements SpectrumProvider{
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public Collection<? extends String> getAdditionalAttributes() {
+        return null;
     }
 }

@@ -3,6 +3,7 @@ package uk.ac.ebi.pride.mongodb.authentication.model;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.security.auth.Subject;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -16,10 +17,6 @@ public class UserAuthentication implements Authentication {
         this.user = user;
     }
 
-    @Override
-    public String getName() {
-        return user.getFirstName();
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -55,5 +52,15 @@ public class UserAuthentication implements Authentication {
     @Override
     public void setAuthenticated(boolean authenticated) {
         this.authenticated = authenticated;
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public boolean implies(Subject subject) {
+        return false;
     }
 }

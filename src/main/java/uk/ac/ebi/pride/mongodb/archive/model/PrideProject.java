@@ -1,6 +1,6 @@
 package uk.ac.ebi.pride.mongodb.archive.model;
 
-import lombok.Data;
+import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
  */
 @Document(collection = PrideProjectField.PRIDE_PROJECTS_COLLECTION_NAME)
 @Data
+@Builder
 public class PrideProject implements ProjectProvider, PrideProjectField{
 
     @Id
@@ -56,6 +57,7 @@ public class PrideProject implements ProjectProvider, PrideProjectField{
 
     /** This returns a list of head of labs PIs ralted with the experiment **/
     @Indexed(name = PROJECT_PI_NAMES)
+    @Getter(AccessLevel.NONE)
     private Collection<ContactProvider> headLab;
 
     /** List of keywords added by the user **/
@@ -68,6 +70,7 @@ public class PrideProject implements ProjectProvider, PrideProjectField{
 
     /* This are CVparams to describe the type of the experiment */
     @Indexed(name = QUANTIFICATION_METHODS)
+    @Getter(AccessLevel.NONE)
     private Collection<CvParamProvider> quantificationMethods;
 
     /** Submission Type for the experiment, defaults value can be read here {@link uk.ac.ebi.pride.archive.dataprovider.utils.SubmissionTypeConstants} */
@@ -102,6 +105,7 @@ public class PrideProject implements ProjectProvider, PrideProjectField{
 
     /** General description about the instruments used in the experiment. */
     @Indexed(name = INSTRUMENTS)
+    @Getter(AccessLevel.NONE)
     private Collection<CvParamProvider> instruments;
 
     /** General software information in CVParams terms **/
@@ -110,6 +114,7 @@ public class PrideProject implements ProjectProvider, PrideProjectField{
 
     /** References related with the dataset in manuscript and papers **/
     @Indexed(name = PROJECT_REFERENCES)
+    @Getter(AccessLevel.NONE)
     private Collection<ReferenceProvider> references;
 
     /** Additional Attributes **/
@@ -217,5 +222,25 @@ public class PrideProject implements ProjectProvider, PrideProjectField{
     @Override
     public Comparable getId() {
         return id;
+    }
+
+    @Override
+    public Collection<? extends String> getHeadLab() {
+        return headLab.stream().map(ContactProvider::getName).collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<? extends String> getInstruments() {
+        return instruments.stream().map(CvParamProvider::getName).collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<? extends String> getQuantificationMethods() {
+        return quantificationMethods.stream().map(CvParamProvider::getName).collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<? extends String> getReferences() {
+        return references.stream().map(ReferenceProvider::getReferenceLine).collect(Collectors.toList());
     }
 }

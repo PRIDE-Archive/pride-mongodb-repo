@@ -3,8 +3,8 @@ package uk.ac.ebi.pride.mongodb.psm.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import uk.ac.ebi.pride.archive.dataprovider.data.ptms.IdentifiedModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PeptideSequenceProvider;
+import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.ParamProvider;
 
 
@@ -54,8 +54,6 @@ public class PridePsm implements PeptideSequenceProvider {
     /** Modification Names List **/
     private List<String> modificationNames;
 
-    /** Modifications as Represented by PRIDE API **/
-    private List<IdentifiedModificationProvider> modificationAccessions;
 
     /** Peptide Uniqueness **/
     private Boolean unique;
@@ -180,17 +178,21 @@ public class PridePsm implements PeptideSequenceProvider {
         return modificationNames;
     }
 
+    @Override
+    public int getUniqueModificationCount() {
+        return 0;
+    }
+
+    @Override
+    public int getModifiedResiduesCount() {
+        return 0;
+    }
+
     public void setModificationNames(List<String> modificationNames) {
         this.modificationNames = modificationNames;
     }
 
-    public List<IdentifiedModificationProvider> getModificationAccessions() {
-        return modificationAccessions;
-    }
 
-    public void setModificationAccessions(List<IdentifiedModificationProvider> modificationAccessions) {
-        this.modificationAccessions = modificationAccessions;
-    }
 
     public Boolean getUnique() {
         return unique;
@@ -281,7 +283,7 @@ public class PridePsm implements PeptideSequenceProvider {
     }
 
     @Override
-    public Collection<? extends ParamProvider> getParams() {
+    public Collection<? extends String> getAdditionalAttributes() {
         return null;
     }
 

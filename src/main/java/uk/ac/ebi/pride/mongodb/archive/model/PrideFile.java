@@ -68,7 +68,7 @@ public class PrideFile implements PrideArchiveField, FileProvider {
     private boolean compress;
 
     @Override
-    public Comparable getAccession() {
+    public String getAccession() {
         return accession;
     }
 

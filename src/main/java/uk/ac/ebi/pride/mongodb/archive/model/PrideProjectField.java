@@ -79,4 +79,7 @@ public interface PrideProjectField {
 
     String PUBLIC_PROJECT = "public_project";
 
+    /** Experimental Factors **/
+    String EXPERIMENTAL_FACTORS = "experimental_factors";
+
 }

@@ -95,7 +95,10 @@ public class PrideProject implements ProjectProvider, PrideProjectField{
      * Not specific to any Sample.
      */
     @Indexed(name = SAMPLE_ATTRIBUTES_NAMES)
-    private Collection<CvParamProvider> samplesDescription;
+    private Map<CvParamProvider, List<CvParamProvider>> samplesDescription;
+
+    @Indexed(name = EXPERIMENTAL_FACTORS)
+    private Map<CvParamProvider, List<CvParamProvider>> experimentalFactors;
 
     /** General description about the instruments used in the experiment. */
     @Indexed(name = INSTRUMENTS)

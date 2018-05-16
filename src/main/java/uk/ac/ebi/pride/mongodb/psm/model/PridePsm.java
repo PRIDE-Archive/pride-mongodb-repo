@@ -3,8 +3,8 @@ package uk.ac.ebi.pride.mongodb.psm.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import uk.ac.ebi.pride.archive.dataprovider.data.ModificationProvider;
-import uk.ac.ebi.pride.archive.dataprovider.data.PeptideSequenceProvider;
+import uk.ac.ebi.pride.archive.dataprovider.data.ptms.IdentifiedModificationProvider;
+import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PeptideSequenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.ParamProvider;
 
 
@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * The PSMs is a table with all Peptides reported in PRIDE Archive with the corresponding sequence and Modifications.
- * In addition we have added the scores at PSM level for each PSM. This data model is based on the mzTab file format model
+ * In addition we have added the scores at PSM level for each PSM. This testdata model is based on the mzTab file format model
  * - https://github.com/HUPO-PSI/mzTab
  *
  *
@@ -55,7 +55,7 @@ public class PridePsm implements PeptideSequenceProvider {
     private List<String> modificationNames;
 
     /** Modifications as Represented by PRIDE API **/
-    private List<ModificationProvider> modificationAccessions;
+    private List<IdentifiedModificationProvider> modificationAccessions;
 
     /** Peptide Uniqueness **/
     private Boolean unique;
@@ -111,7 +111,7 @@ public class PridePsm implements PeptideSequenceProvider {
     }
 
     @Override
-    public Collection<? extends ModificationProvider> getPTMs() {
+    public Collection<? extends IdentifiedModificationProvider> getPTMs() {
         return null;
     }
 
@@ -184,11 +184,11 @@ public class PridePsm implements PeptideSequenceProvider {
         this.modificationNames = modificationNames;
     }
 
-    public List<ModificationProvider> getModificationAccessions() {
+    public List<IdentifiedModificationProvider> getModificationAccessions() {
         return modificationAccessions;
     }
 
-    public void setModificationAccessions(List<ModificationProvider> modificationAccessions) {
+    public void setModificationAccessions(List<IdentifiedModificationProvider> modificationAccessions) {
         this.modificationAccessions = modificationAccessions;
     }
 
@@ -339,8 +339,8 @@ public class PridePsm implements PeptideSequenceProvider {
 //    searchEngineScoreAsString.add(CvParamHelper.convertToString(searchEngineScore));
 //  }
 //
-//  public Iterable<ModificationProvider> getModifications() {
-//    List<ModificationProvider> modifications = new ArrayList<>();
+//  public Iterable<IdentifiedModificationProvider> getModifications() {
+//    List<IdentifiedModificationProvider> modifications = new ArrayList<>();
 //    if (modificationsAsString != null) {
 //      for (String mod : modificationsAsString) {
 //        if(!mod.isEmpty()) {
@@ -351,12 +351,12 @@ public class PridePsm implements PeptideSequenceProvider {
 //    return modifications;
 //  }
 
-//  public void setModifications(List<ModificationProvider> modifications) {
+//  public void setModifications(List<IdentifiedModificationProvider> modifications) {
 //    if (modifications != null) {
 //      List<String> modificationsAsString = new ArrayList<>();
 //      List<String> modificationNames = new ArrayList<>();
 //      List<String> modificationAccessions = new ArrayList<>();
-//      for (ModificationProvider modification : modifications) {
+//      for (IdentifiedModificationProvider modification : modifications) {
 //        modificationsAsString.add(ModificationHelper.convertToString(modification));
 //        modificationAccessions.add(modification.getAccession());
 //        modificationNames.add(modification.getName());
@@ -367,7 +367,7 @@ public class PridePsm implements PeptideSequenceProvider {
 //    }
 //  }
 //
-//  public void addModification(ModificationProvider modification) {
+//  public void addModification(IdentifiedModificationProvider modification) {
 //    if (modificationsAsString == null) {
 //      modificationsAsString = new ArrayList<>();
 //    }

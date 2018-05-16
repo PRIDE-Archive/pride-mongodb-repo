@@ -8,7 +8,7 @@ import uk.ac.ebi.pride.archive.dataprovider.utils.TitleConstants;
 import java.util.Date;
 
 /**
- * A PRIDE User. That can access to the data to update/download .
+ * A PRIDE User. That can access to the testdata to update/download .
  *
  * @author Yasset PErez-Riverol
  * @version $id$
@@ -51,6 +51,9 @@ public class User implements UserProvider{
 
     /** Token used to conenct the user to PRIDE Resources **/
     String accessToken;
+
+    /** Expires **/
+    private long expires;
 
 
     @Override
@@ -155,5 +158,9 @@ public class User implements UserProvider{
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public long getExpires() {
+        return expires;
     }
 }

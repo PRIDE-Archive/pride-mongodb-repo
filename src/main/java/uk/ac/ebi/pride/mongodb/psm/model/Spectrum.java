@@ -1,12 +1,11 @@
 package uk.ac.ebi.pride.mongodb.psm.model;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import uk.ac.ebi.pride.archive.dataprovider.data.SpectrumProvider;
+import uk.ac.ebi.pride.archive.dataprovider.data.spectra.SpectrumProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.ParamProvider;
 
 import java.util.Collection;

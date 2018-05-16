@@ -1,19 +1,21 @@
 package uk.ac.ebi.pride.mongodb.archive.model;
 
+import lombok.Data;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import uk.ac.ebi.pride.archive.dataprovider.assay.identification.IdentificationAssayProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.ParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
 import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
 
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 
 
 /**
@@ -24,40 +26,52 @@ import java.util.Map;
  * @version $Id$
  */
 @Document(collection = "project")
+@Data
+public class PrideProject implements ProjectProvider, PrideProjectField{
 
-public class PrideProject implements ProjectProvider{
+    @Id
+    @Indexed(name = PrideProjectField.ID)
+    ObjectId id;
 
     /** Project Accession in PRIDE**/
-    @Id
-    String id;
+    @Indexed(unique = true, name = PrideProjectField.ACCESSION)
+    String accession;
 
     /** Title of the Project **/
+    @Indexed(name = PrideProjectField.PROJECT_TILE)
     String title;
 
     /** PRIDE Project short description **/
+    @Indexed(name = PrideProjectField.PROJECT_DESCRIPTION)
     private String description;
 
     /** Sample Processing **/
+    @Indexed(name = PrideProjectField.PROJECT_SAMPLE_PROTOCOL)
     private String sampleProcessing;
 
     /** Data Processing Protocol **/
+    @Indexed(name = PrideProjectField.PROJECT_DATA_PROTOCOL)
     private String dataProcessing;
 
     /** This is using an abstraction of the User, in this case MongoDB only will retrieve the information related with the userContact **/
-    @DBRef
-    private ContactProvider submitter;
+    @Indexed(name = PROJECT_SUBMITTER)
+    private Collection<ContactProvider> submitters;
 
     /** This returns a list of head of labs PIs ralted with the experiment **/
+    @Indexed(name = PROJECT_PI_NAMES)
     private Collection<ContactProvider> headLab;
 
     /** List of keywords added by the user **/
+    @Indexed(name = PROJECT_KEYWORDS)
     private Collection<String> keywords;
 
     /** This are tags provided by the curator of PRIDE **/
+    @Indexed(name = PROJECT_TAGS)
     private Collection<String> projectTags;
 
     /* This are CVparams to describe the type of the experiment */
-    private Collection<? extends CvParamProvider> experimentTypes;
+    @Indexed(name = QUANTIFICATION_METHODS)
+    private Collection<CvParamProvider> quantificationMethods;
 
     /** Submission Type for the experiment, defaults value can be read here {@link uk.ac.ebi.pride.archive.dataprovider.utils.SubmissionTypeConstants} */
     private String submissionType;
@@ -74,316 +88,115 @@ public class PrideProject implements ProjectProvider{
     /**
      *  List of PTMs for the corresponding Project, this PTMs are globallly annotated by the user, it does'nt mean that they have been found in proteins of peptides.
      */
+    @Indexed(name = PROJECT_IDENTIFIED_PTM_STRING)
     private Collection<CvParamProvider> ptmList;
 
     /**
      * Samples description is a generic information about all the samples in the experiment. Import: These details do not have detail information:
      * Not specific to any Sample.
      */
+    @Indexed(name = SAMPLE_ATTRIBUTES_NAMES)
     private Collection<CvParamProvider> samplesDescription;
 
     /**
      * General description about the instruments used in the experiment.
      */
+    @Indexed(name = INSTRUMENTS)
     private Collection<CvParamProvider> instruments;
 
     /** General software information in CVParams terms **/
+    @Indexed(name = SOFTWARES)
     private Collection<CvParamProvider> softwareList;
 
     /** References related with the dataset in manuscript and papers **/
+    @Indexed(name = PROJECT_REFERENCES)
     private Collection<ReferenceProvider> references;
 
-    /** Quantification methods used in the dataset / project **/
-    private Collection<CvParamProvider> quantificationMethods;
-
+    @Indexed(name = ADDITIONAL_ATTRIBUTES)
     private Collection<CvParamProvider> attributes;
 
-    /** DOI Assigned by proteomeXchange **/
-    private String doi;
-
-    /** Other omics datasets
-     *  Todo: This needs to be refined because a
-     * **/
-    private Collection<String> otherOmicsLinks;
-
-    /**
-     * Accessions to other datasets that reanalyzed, The structure of the reanalysis is the following: <Accession, DatabaseName, URL>
-     */
-    private Map<Tuple, String> reanalysisAccessions;
-
-    /** Is a public project or private **/
-    private boolean publicProject;
-
-    /** Is the number of result files **/
-    private Collection<IdentificationAssayProvider> identificationAssays;
-
-
-    /**
-     * Return the PRIDE Accession, Accession of the dataset across all PRIDE PXDXXXXX or PRDXXXX. This id is created by the
-     * PRIDE Pipelines.
-     * @return PRIDE Project Accession
-     */
-    @Override
-    public Comparable getId() {
-        return id;
-    }
-
-    /**
-     * In some cases is better to retrieve the Id of the dataset by the accession. This function retrieve the same value that
-     * getId function.
-     * @return Project Accession
-     */
     @Override
     public String getAccession() {
-        return id;
+        return accession;
     }
 
-    /**
-     * @return  Project Title in PRIDE
-     */
-    @Override
-    public String getTitle() {
-        return title;
-    }
-
-    /**
-     * @return Short Project Description
-     */
     @Override
     public String getProjectDescription() {
-        return description;
+        return null;
     }
 
-    /**
-     * @return Sample Processing
-     */
     @Override
     public String getSampleProcessingProtocol() {
-        return sampleProcessing;
+        return null;
     }
 
-    /**
-     * @return Data Processing
-     */
     @Override
     public String getDataProcessingProtocol() {
-        return dataProcessing;
-    }
-
-    /**
-     * @return Submitter
-     */
-    @Override
-    public ContactProvider getSubmitter() {
-        return submitter;
+        return null;
     }
 
     @Override
-    public Collection<ContactProvider> getHeadLab() {
-        return headLab;
+    public Collection<? extends String> getSubmitters() {
+        return null;
     }
 
     @Override
-    public Collection<? extends String> getKeywords() {
-        return keywords;
+    public Collection<? extends String> getPtms() {
+        return null;
     }
 
     @Override
-    public Collection<String> getProjectTags() {
-        return projectTags;
+    public Collection<? extends String> getSoftwares() {
+        return null;
     }
 
     @Override
-    public Collection<? extends CvParamProvider> getExperimentTypes() {
-        return experimentTypes;
+    public Optional<String> getDoi() {
+        return Optional.empty();
     }
 
     @Override
-    public String getSubmissionType() {
-        return submissionType;
-    }
-
-    @Override
-    public Date getSubmissionDate() {
-        return submissionDate;
-    }
-
-    @Override
-    public Date getPublicationDate() {
-        return publicationDate;
-    }
-
-    @Override
-    public Date getUpdateDate() {
-        return updatedDate;
-    }
-
-    @Override
-    public Collection<CvParamProvider> getPtms() {
-        return ptmList;
-    }
-
-    @Override
-    public Collection<CvParamProvider> getSamplesDescription() {
-        return samplesDescription;
-    }
-
-    @Override
-    public Collection<? extends CvParamProvider> getInstruments() {
-        return instruments;
-    }
-
-    @Override
-    public Collection<? extends CvParamProvider> getSoftwares() {
-        return softwareList;
-    }
-
-    @Override
-    public Collection<? extends CvParamProvider> getQuantificationMethods() {
-        return quantificationMethods;
-    }
-
-    @Override
-    public Collection<ReferenceProvider> getReferences() {
-        return references;
-    }
-
-    @Override
-    public String getDoi() {
-        return doi;
-    }
-
-    @Override
-    public Collection<String> getOtherOmicsLink() {
-        return otherOmicsLinks;
-    }
-
-    @Override
-    public Map<? extends Tuple, ? extends String> getReanalysis() {
-        return reanalysisAccessions;
+    public Collection<? extends String> getOtherOmicsLink() {
+        return null;
     }
 
     @Override
     public boolean isPublicProject() {
-        return publicProject;
+        return false;
     }
 
     @Override
-    public Collection<? extends ParamProvider> getParams() {
-        return attributes;
+    public Date getUpdateDate() {
+        return null;
     }
 
     @Override
-    public int numberOfIdentificationAssays() {
-        return identificationAssays.size();
+    public Collection<? extends String> getExperimentalFactors() {
+        return null;
     }
 
     @Override
-    public Collection<? extends IdentificationAssayProvider> getIdentificationAssays() {
-        return identificationAssays;
+    public Collection<? extends String> getCountries() {
+        return null;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    @Override
+    public Collection<? extends String> getAllAffiliations() {
+        return null;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    @Override
+    public Collection<? extends String> getSampleAttributes() {
+        return null;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    @Override
+    public Collection<? extends String> getAdditionalAttributes() {
+        return null;
     }
 
-    public void setSampleProcessing(String sampleProcessing) {
-        this.sampleProcessing = sampleProcessing;
-    }
-
-    public void setDataProcessing(String dataProcessing) {
-        this.dataProcessing = dataProcessing;
-    }
-
-    public void setSubmitter(ContactProvider submitter) {
-        this.submitter = submitter;
-    }
-
-    public void setHeadLab(Collection<ContactProvider> headLab) {
-        this.headLab = headLab;
-    }
-
-    public void setKeywords(Collection<String> keywords) {
-        this.keywords = keywords;
-    }
-
-    public void setProjectTags(Collection<String> projectTags) {
-        this.projectTags = projectTags;
-    }
-
-    public void setExperimentTypes(Collection<? extends CvParamProvider> experimentTypes) {
-        this.experimentTypes = experimentTypes;
-    }
-
-    public void setSubmissionType(String submissionType) {
-        this.submissionType = submissionType;
-    }
-
-    public void setPublicationDate(Date publicationDate) {
-        this.publicationDate = publicationDate;
-    }
-
-    public void setSubmissionDate(Date submissionDate) {
-        this.submissionDate = submissionDate;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
-    }
-
-    public void setPtmList(Collection<CvParamProvider> ptmList) {
-        this.ptmList = ptmList;
-    }
-
-    public void setSamplesDescription(Collection<CvParamProvider> samplesDescription) {
-        this.samplesDescription = samplesDescription;
-    }
-
-    public void setInstruments(Collection<CvParamProvider> instruments) {
-        this.instruments = instruments;
-    }
-
-    public void setSoftwareList(Collection<CvParamProvider> softwareList) {
-        this.softwareList = softwareList;
-    }
-
-    public void setReferences(Collection<ReferenceProvider> references) {
-        this.references = references;
-    }
-
-    public void setQuantificationMethods(Collection<CvParamProvider> quantificationMethods) {
-        this.quantificationMethods = quantificationMethods;
-    }
-
-    public void setAttributes(Collection<CvParamProvider> attributes) {
-        this.attributes = attributes;
-    }
-
-    public void setDoi(String doi) {
-        this.doi = doi;
-    }
-
-    public void setOtherOmicsLinks(Collection<String> otherOmicsLinks) {
-        this.otherOmicsLinks = otherOmicsLinks;
-    }
-
-    public void setReanalysisAccessions(Map<Tuple, String> reanalysisAccessions) {
-        this.reanalysisAccessions = reanalysisAccessions;
-    }
-
-    public void setPublicProject(boolean publicProject) {
-        this.publicProject = publicProject;
-    }
-
-    public void setIdResultList(Collection<IdentificationAssayProvider> identificationAssays) {
-        this.identificationAssays = identificationAssays;
+    @Override
+    public Comparable getId() {
+        return null;
     }
 }

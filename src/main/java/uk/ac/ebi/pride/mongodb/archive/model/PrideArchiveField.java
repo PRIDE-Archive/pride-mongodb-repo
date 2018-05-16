@@ -3,7 +3,7 @@ package uk.ac.ebi.pride.mongodb.archive.model;
 /**
  * @author ypriverol
  */
-public interface PrideProjectField {
+public interface PrideArchiveField {
 
     String ID = "id";
 
@@ -65,7 +65,6 @@ public interface PrideProjectField {
     /** This field store all the countries associated with the experiment **/
     String COUNTRIES = "countries";
 
-
     /** Sample metadata names **/
     String SAMPLE_ATTRIBUTES_NAMES = "sample_attributes";
 
@@ -75,11 +74,28 @@ public interface PrideProjectField {
     /** Identified PTMs in the Project**/
     String PROJECT_IDENTIFIED_PTM_STRING = "project_identified_ptms";
 
+    /** Collections Name **/
     String PRIDE_PROJECTS_COLLECTION_NAME = "pride_projects";
+    String PRIDE_FILE_COLLECTION_NAME = "pride_files";
 
     String PUBLIC_PROJECT = "public_project";
 
     /** Experimental Factors **/
     String EXPERIMENTAL_FACTORS = "experimental_factors";
 
+    /** External Project accessions that use this following file **/
+    String EXTERNAL_PROJECT_ACCESSIONS = "pride_project_accessions";
+
+    /** External Project Analysis Accessions that use the file **/
+    String EXTERNAL_ANALYSIS_ACCESSIONS = "pride_analysis_accessions";
+
+    //** File Fields **/
+    String FILE_CATEGORY = "file_category";
+    String FILE_SOURCE_FOLDER = "file_source_folder";
+    String FILE_MD5_CHECKSUM = "file_md5_checksum";
+    String FILE_PUBLIC_LOCATIONS = "file_public_locations";
+    String FILE_SIZE_MB = "file_size_mb";
+    String FILE_EXTENSION = "file_extension";
+    String FILE_NAME = "file_name";
+    String FILE_IS_COMPRESS = "file_is_compress";
 }

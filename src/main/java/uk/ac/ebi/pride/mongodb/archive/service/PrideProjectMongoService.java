@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.ac.ebi.pride.mongodb.archive.model.PrideProject;
+import uk.ac.ebi.pride.mongodb.archive.model.PrideArchive;
 import uk.ac.ebi.pride.mongodb.archive.repo.PrideProjectMongoRepository;
 
 /**
@@ -24,10 +24,10 @@ public class PrideProjectMongoService {
     /**
      * This function save a project in the Mongo Database, if the project already exist in the database, the function will skip the function.
      *
-     * @param project {@link PrideProject}
-     * @return PrideProject
+     * @param project {@link PrideArchive}
+     * @return PrideArchive
      */
-    public PrideProject save(PrideProject project){
+    public PrideArchive save(PrideArchive project){
         if(!repository.findByAccession(project.getAccession()).isPresent()){
             project = repository.save(project);
             LOGGER.info("A new project has been saved into MongoDB database with Accession -- " + project.getAccession());

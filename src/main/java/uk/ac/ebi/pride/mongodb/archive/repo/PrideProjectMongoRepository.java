@@ -4,8 +4,8 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
-import uk.ac.ebi.pride.mongodb.archive.model.PrideProject;
-import uk.ac.ebi.pride.mongodb.archive.model.PrideProjectField;
+import uk.ac.ebi.pride.mongodb.archive.model.PrideArchive;
+import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,17 +17,17 @@ import java.util.Optional;
  */
 
 @Repository
-public interface PrideProjectMongoRepository extends MongoRepository<PrideProject, ObjectId>{
+public interface PrideProjectMongoRepository extends MongoRepository<PrideArchive, ObjectId>{
 
     @Override
-    <S extends PrideProject> List<S> saveAll(Iterable<S> iterable);
+    <S extends PrideArchive> List<S> saveAll(Iterable<S> iterable);
 
     @Override
-    <S extends PrideProject> S save(S s);
+    <S extends PrideArchive> S save(S s);
 
     @Override
-    Optional<PrideProject> findById(ObjectId objectId);
+    Optional<PrideArchive> findById(ObjectId objectId);
 
-    @Query("{'"+ PrideProjectField.ACCESSION + "' : ?0}")
-    Optional<PrideProject> findByAccession(String accession);
+    @Query("{'"+ PrideArchiveField.ACCESSION + "' : ?0}")
+    Optional<PrideArchive> findByAccession(String accession);
 }

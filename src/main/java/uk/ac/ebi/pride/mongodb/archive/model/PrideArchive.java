@@ -17,38 +17,38 @@ import java.util.stream.Collectors;
 
 /**
  * Pride project information collections contains the information for the corresponding project in PRIDE including information about the title, accession, samples, etc. Please
- * read the specification of a PRIDE dataset here:
+ * read the specification of a PRIDE project here:
  *
  * @author: Yasset Perez-Riverol
  * @version $Id$
  */
-@Document(collection = PrideProjectField.PRIDE_PROJECTS_COLLECTION_NAME)
+@Document(collection = PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME)
 @Data
 @Builder
-public class PrideProject implements ProjectProvider, PrideProjectField{
+public class PrideArchive implements ProjectProvider, PrideArchiveField {
 
     @Id
-    @Indexed(name = PrideProjectField.ID)
+    @Indexed(name = PrideArchiveField.ID)
     ObjectId id;
 
     /** Project Accession in PRIDE**/
-    @Indexed(unique = true, name = PrideProjectField.ACCESSION)
+    @Indexed(unique = true, name = PrideArchiveField.ACCESSION)
     String accession;
 
     /** Title of the Project **/
-    @Indexed(name = PrideProjectField.PROJECT_TILE)
+    @Indexed(name = PrideArchiveField.PROJECT_TILE)
     String title;
 
     /** PRIDE Project short description **/
-    @Indexed(name = PrideProjectField.PROJECT_DESCRIPTION)
+    @Indexed(name = PrideArchiveField.PROJECT_DESCRIPTION)
     private String description;
 
     /** Sample Processing **/
-    @Indexed(name = PrideProjectField.PROJECT_SAMPLE_PROTOCOL)
+    @Indexed(name = PrideArchiveField.PROJECT_SAMPLE_PROTOCOL)
     private String sampleProcessing;
 
     /** Data Processing Protocol **/
-    @Indexed(name = PrideProjectField.PROJECT_DATA_PROTOCOL)
+    @Indexed(name = PrideArchiveField.PROJECT_DATA_PROTOCOL)
     private String dataProcessing;
 
     /** This is using an abstraction of the User, in this case MongoDB only will retrieve the information related with the userContact **/

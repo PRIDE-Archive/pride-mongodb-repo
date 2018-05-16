@@ -11,10 +11,8 @@ import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
 
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -24,7 +22,7 @@ import java.util.Optional;
  * @author: Yasset Perez-Riverol
  * @version $Id$
  */
-@Document(collection = "project")
+@Document(collection = PrideProjectField.PRIDE_PROJECTS_COLLECTION_NAME)
 @Data
 public class PrideProject implements ProjectProvider, PrideProjectField{
 
@@ -73,20 +71,22 @@ public class PrideProject implements ProjectProvider, PrideProjectField{
     private Collection<CvParamProvider> quantificationMethods;
 
     /** Submission Type for the experiment, defaults value can be read here {@link uk.ac.ebi.pride.archive.dataprovider.utils.SubmissionTypeConstants} */
+    @Indexed( name = PROJECT_SUBMISSION_TYPE)
     private String submissionType;
 
     /** Publication Date **/
+    @Indexed(name = PROJECT_PUBLICATION_DATE)
     private Date publicationDate;
 
     /** Submission Date **/
+    @Indexed(name = PROJECT_SUBMISSION_DATE)
     private Date submissionDate;
 
     /** Updated date **/
+    @Indexed(name = PROJECT_UPDATED_DATE)
     private Date updatedDate;
 
-    /**
-     *  List of PTMs for the corresponding Project, this PTMs are globallly annotated by the user, it does'nt mean that they have been found in proteins of peptides.
-     */
+    /** List of PTMs for the corresponding Project, this PTMs are globallly annotated by the user, it does'nt mean that they have been found in proteins of peptides. */
     @Indexed(name = PROJECT_IDENTIFIED_PTM_STRING)
     private Collection<CvParamProvider> ptmList;
 
@@ -97,9 +97,7 @@ public class PrideProject implements ProjectProvider, PrideProjectField{
     @Indexed(name = SAMPLE_ATTRIBUTES_NAMES)
     private Collection<CvParamProvider> samplesDescription;
 
-    /**
-     * General description about the instruments used in the experiment.
-     */
+    /** General description about the instruments used in the experiment. */
     @Indexed(name = INSTRUMENTS)
     private Collection<CvParamProvider> instruments;
 
@@ -111,8 +109,25 @@ public class PrideProject implements ProjectProvider, PrideProjectField{
     @Indexed(name = PROJECT_REFERENCES)
     private Collection<ReferenceProvider> references;
 
+    /** Additional Attributes **/
     @Indexed(name = ADDITIONAL_ATTRIBUTES)
     private Collection<CvParamProvider> attributes;
+
+    /** Project DOI for complete Submissions */
+    @Indexed(name = PROJECT_DOI)
+    private String doi;
+
+    /** Other Omics Type **/
+    @Indexed(name = PROJECT_OMICS_LINKS)
+    private List<String> omicsLinks;
+
+    /** Countries involve in the Submission **/
+    @Indexed(name = COUNTRIES)
+    private List<String> countries;
+
+    /** Type of Project: True if is Public, False if is Private **/
+    @Indexed(name = PUBLIC_PROJECT)
+    private boolean publicProject;
 
     @Override
     public String getAccession() {
@@ -121,52 +136,52 @@ public class PrideProject implements ProjectProvider, PrideProjectField{
 
     @Override
     public String getProjectDescription() {
-        return null;
+        return this.description;
     }
 
     @Override
     public String getSampleProcessingProtocol() {
-        return null;
+        return this.sampleProcessing;
     }
 
     @Override
     public String getDataProcessingProtocol() {
-        return null;
+        return this.dataProcessing;
     }
 
     @Override
     public Collection<? extends String> getSubmitters() {
-        return null;
+        return this.submitters.stream().map(ContactProvider::getName).collect(Collectors.toList());
     }
 
     @Override
     public Collection<? extends String> getPtms() {
-        return null;
+        return this.ptmList.stream().map(CvParamProvider::getName).collect(Collectors.toList());
     }
 
     @Override
     public Collection<? extends String> getSoftwares() {
-        return null;
+        return this.softwareList.stream().map(CvParamProvider::getName).collect(Collectors.toList());
     }
 
     @Override
     public Optional<String> getDoi() {
-        return Optional.empty();
+        return Optional.of(this.doi);
     }
 
     @Override
     public Collection<? extends String> getOtherOmicsLink() {
-        return null;
+        return this.omicsLinks;
     }
 
     @Override
     public boolean isPublicProject() {
-        return false;
+        return this.publicProject;
     }
 
     @Override
     public Date getUpdateDate() {
-        return null;
+        return publicationDate;
     }
 
     @Override
@@ -176,12 +191,14 @@ public class PrideProject implements ProjectProvider, PrideProjectField{
 
     @Override
     public Collection<? extends String> getCountries() {
-        return null;
+        return this.countries;
     }
 
     @Override
     public Collection<? extends String> getAllAffiliations() {
-        return null;
+        Set<String> affiliations = new HashSet<>(submitters.stream().map(ContactProvider::getAffiliation).collect(Collectors.toList()));
+        affiliations.addAll(headLab.stream().map(ContactProvider::getAffiliation).collect(Collectors.toList()));
+        return affiliations;
     }
 
     @Override
@@ -196,6 +213,6 @@ public class PrideProject implements ProjectProvider, PrideProjectField{
 
     @Override
     public Comparable getId() {
-        return null;
+        return id;
     }
 }

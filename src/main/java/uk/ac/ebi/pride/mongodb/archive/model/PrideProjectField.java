@@ -55,9 +55,6 @@ public interface PrideProjectField {
     /** List of Lab Head Names **/
     String PROJECT_PI_NAMES = "lab_heads";
 
-    /** Lab Head Affiliation  */
-    String AFFILIATIONS = "affiliations";
-
     /** List of instruments Ids*/
     String INSTRUMENTS = "instruments";
 
@@ -68,29 +65,18 @@ public interface PrideProjectField {
     /** This field store all the countries associated with the experiment **/
     String COUNTRIES = "countries";
 
-    /** Experimental Factor Names **/
-    String EXPERIMENTAL_FACTORS_NAMES = "experimental_factors";
 
     /** Sample metadata names **/
     String SAMPLE_ATTRIBUTES_NAMES = "sample_attributes";
 
-    /** Species , cell types, tissues, diseases ***/
-    String ORGANISMS = "organisms";
-    String ORGANISMS_PART = "organisms_part";
-    String DISEASES  = "diseases";
-
     /** References related with the project **/
     String PROJECT_REFERENCES = "project_references";
-
-    /* This field is not store, so when you retrieve the value from solr is always null */
-    String PROTEIN_IDENTIFICATIONS = "protein_identifications";
-
-    /** This field is not store, so when you retrieve the value from solr is always null  **/
-    String PEPTIDE_SEQUENCES  = "peptide_sequences";
 
     /** Identified PTMs in the Project**/
     String PROJECT_IDENTIFIED_PTM_STRING = "project_identified_ptms";
 
     String PRIDE_PROJECTS_COLLECTION_NAME = "pride_projects";
+
+    String PUBLIC_PROJECT = "public_project";
 
 }

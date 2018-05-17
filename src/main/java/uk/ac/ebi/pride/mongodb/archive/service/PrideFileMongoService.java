@@ -52,9 +52,9 @@ public class PrideFileMongoService {
                 prideFile.setAccession(accession);
             }
             prideFile = fileRepository.save(prideFile);
-            LOGGER.info("A new project has been saved into MongoDB database with Accession -- " + prideFile.getAccession());
+            LOGGER.debug("A new project has been saved into MongoDB database with Accession -- " + prideFile.getAccession());
         } else
-            LOGGER.info("A project with similar accession has been found in the MongoDB database, please use update function -- " + prideFile.getAccession());
+            LOGGER.error("A project with similar accession has been found in the MongoDB database, please use update function -- " + prideFile.getAccession());
         return prideFile;
     }
 

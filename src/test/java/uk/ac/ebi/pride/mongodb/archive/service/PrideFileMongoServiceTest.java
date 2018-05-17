@@ -6,21 +6,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
-import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
-import uk.ac.ebi.pride.archive.dataprovider.user.DefaultContact;
-import uk.ac.ebi.pride.archive.dataprovider.utils.TitleConstants;
 import uk.ac.ebi.pride.archive.repo.repos.file.ProjectFile;
 import uk.ac.ebi.pride.archive.repo.repos.file.ProjectFileRepository;
-import uk.ac.ebi.pride.archive.repo.repos.project.ProjectRepository;
 import uk.ac.ebi.pride.mongodb.archive.config.ArchiveOracleConfig;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideFile;
 
-import javax.validation.constraints.AssertTrue;
-import java.util.*;
-import java.util.stream.Collectors;
+
 import java.util.stream.StreamSupport;
 
 
@@ -60,9 +52,7 @@ public class PrideFileMongoServiceTest {
         StreamSupport.stream(iterator.spliterator(), true).parallel().forEach( x-> {
 
             PrideFile file = PrideFile.builder().fileName(x.getFileName()).build();
-            file = prideFileMongoService.insert(file);
-            System.out.println( "The following File from Oracle -- " + file.getFileName() + " -- saved with Accession -- "+ file.getAccession());
-
+            prideFileMongoService.insert(file);
         });
 
         Assert.assertTrue(oracleCount == prideFileMongoService.count());

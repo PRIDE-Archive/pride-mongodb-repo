@@ -30,6 +30,7 @@
         <uk.ac.ebi.pride.px-submission-core.version>2.0.18</uk.ac.ebi.pride.px-submission-core.version>
         <uk.ac.ebi.pride.utilities.pride-utilities.version>2.0.19-SNAPSHOT</uk.ac.ebi.pride.utilities.pride-utilities.version>
         <com.github.fakemongo.version>2.2.0-RC1</com.github.fakemongo.version>
+        <archive.repo.version>1.0.2-springboot-SNAPSHOT.yasset</archive.repo.version>
         </properties>
 
 
@@ -47,8 +48,6 @@
             <version>${uk.ac.ebi.pride.architectural-pride-spring.version}</version>
             <type>pom</type>
         </dependency>
-
-
 
         <!-- TDD -->
         <dependency>
@@ -90,9 +89,30 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Tests for ORACLE -->
+        <!-- tested with the previous ORACLE DB -->
         <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-jpa</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.9.Final</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>uk.ac.ebi.pride.archive</groupId>
+            <artifactId>archive-repo</artifactId>
+            <version>${archive.repo.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>oracle-thin</artifactId>
+            <version>11.2.0.1.0</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>

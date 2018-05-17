@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.mongodb.archive.model.CounterCollection;
+import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideFile;
 import uk.ac.ebi.pride.mongodb.archive.repo.PrideFileMongoRepository;
 
@@ -34,30 +35,41 @@ public class PrideFileMongoService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PrideFileMongoService.class);
 
     /**
-     * Save a new Pride File into MongoDB
+     * Insert is allowing using to create a Accession for the File and insert the actual File into MongoDB.
      * @param prideFile PrideFile
      * @return PrideFile
      */
-    public PrideFile save(PrideFile prideFile){
+    public PrideFile insert(PrideFile prideFile) {
         NumberFormat formatter = new DecimalFormat("0000000000");
-        if(!fileRepository.findPrideFileByAccession(prideFile.getAccession()).isPresent()){
-            String accession = "PXF"+ formatter.format(getNextSequence("PrideFile"));
-            prideFile.setAccession(accession);
+        if (!fileRepository.findPrideFileByAccession(prideFile.getAccession()).isPresent()) {
+            if (prideFile.getAccession() == null) {
+                String accession = "PXF" + formatter.format(getNextSequence(PrideArchiveField.PRIDE_FILE_COLLECTION_NAME));
+                prideFile.setAccession(accession);
+            }
             prideFile = fileRepository.save(prideFile);
             LOGGER.info("A new project has been saved into MongoDB database with Accession -- " + prideFile.getAccession());
-        }else
+        } else
             LOGGER.info("A project with similar accession has been found in the MongoDB database, please use update function -- " + prideFile.getAccession());
         return prideFile;
     }
 
-
-
-    public int getNextSequence(String seqName) {
+    /**
+     * This function generates a
+     * @param seqName
+     * @return
+     */
+    private int getNextSequence(String seqName) {
         CounterCollection counter = mongo.findAndModify(Query.query(Criteria.where("_id").is(seqName)),
                 new Update().inc("seq",1), FindAndModifyOptions.options().returnNew(true).upsert(true), CounterCollection.class);
         return counter.getSeq();
     }
 
 
-
+    /**
+     * Number of Files in the Mongo Repository.
+     * @return
+     */
+    public long count() {
+        return fileRepository.count();
+    }
 }

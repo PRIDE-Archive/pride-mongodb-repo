@@ -3,12 +3,15 @@ package uk.ac.ebi.pride.mongodb.archive.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 import uk.ac.ebi.pride.mongodb.archive.model.CounterCollection;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideFile;
@@ -88,6 +91,21 @@ public class PrideFileMongoService {
         }
         LOGGER.error("The following  PrideFile is not in the database -- " + fileAccession);
         return false;
+    }
+
+
+    /**
+     * This method provides a way to search Files by different properties. The search Allows only to Filter the File using different properties. in the Ffile
+     * the structure of the filter is the following:
+     * property: propertyValue, property2: propertyValue2
+     * @param filterQuery Filter query.
+     * @param page Page to retrieve the Files.
+     * @return Page containing all the files.
+     */
+    public Page<PrideFile> searchFile(String filterQuery, Pageable page){
+        MultiValueMap<String, String> filters = PrideMongoUtils.parseFilterParameters(filterQuery);
+        return fileRepository.filterByAttributes(filters, page);
+
     }
 
 

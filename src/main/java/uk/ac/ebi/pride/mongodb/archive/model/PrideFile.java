@@ -11,9 +11,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.pride.archive.dataprovider.file.FileProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The PRIDE Archive Project File provides information around all the files provided into one PRIDE Project.
@@ -119,7 +121,10 @@ public class PrideFile implements PrideArchiveField, FileProvider {
     }
 
     @Override
-    public Collection<? extends String> getAdditionalAttributes() {
-        return null;
+    public Collection<? extends String> getAdditionalAttributesStrings() {
+        List<String> attributes = new ArrayList<>();
+        if(additionalAttributes != null)
+            attributes = additionalAttributes.stream().map(CvParamProvider::getName).collect(Collectors.toList());
+        return attributes;
     }
 }

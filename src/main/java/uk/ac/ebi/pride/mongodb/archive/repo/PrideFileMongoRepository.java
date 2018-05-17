@@ -15,7 +15,7 @@ import java.util.Optional;
  * @author ypriverol
  */
 @Repository
-public interface PrideFileMongoRepository extends MongoRepository<PrideFile, ObjectId> {
+public interface PrideFileMongoRepository extends MongoRepository<PrideFile, ObjectId> , PrideFileMongoRepositoryCustom {
 
     @Override
     <S extends PrideFile> S save(S s);

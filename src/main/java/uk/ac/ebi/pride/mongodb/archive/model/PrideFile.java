@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.pride.archive.dataprovider.file.FileProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -68,6 +69,7 @@ public class PrideFile implements PrideArchiveField, FileProvider {
     private boolean compress;
 
     @Indexed(name = ADDITIONAL_ATTRIBUTES)
+    @Getter(AccessLevel.NONE)
     List<CvParamProvider> additionalAttributes;
 
     @Override
@@ -114,5 +116,10 @@ public class PrideFile implements PrideArchiveField, FileProvider {
     @Override
     public Comparable getId() {
         return id;
+    }
+
+    @Override
+    public Collection<? extends String> getAdditionalAttributes() {
+        return null;
     }
 }

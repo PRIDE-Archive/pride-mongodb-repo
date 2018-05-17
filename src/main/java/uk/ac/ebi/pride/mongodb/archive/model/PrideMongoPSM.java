@@ -69,25 +69,6 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
   private Integer startPosition;
   private Integer endPosition;
 
-  public PrideMongoPSM() {
-    modificationsAsString = new ArrayList<>();
-    modificationNames = new ArrayList<>();
-    modificationAccessions = new ArrayList<>();
-    searchEngineAsString = new ArrayList<>();
-    searchEngineScoreAsString = new ArrayList<>();
-  }
-
-  public String getReportedId() {
-    return reportedId;
-  }
-
-  public void setReportedId(String reportedId) {
-    this.reportedId = reportedId;
-  }
-
-  public String getPeptideSequence() {
-    return peptideSequence;
-  }
 
   @Override
   public Collection<? extends IdentifiedModificationProvider> getPTMs() {

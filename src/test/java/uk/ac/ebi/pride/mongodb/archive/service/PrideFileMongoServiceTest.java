@@ -13,6 +13,7 @@ import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideFile;
 
 
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.StreamSupport;
 
 
@@ -49,13 +50,17 @@ public class PrideFileMongoServiceTest {
 
         Iterable<ProjectFile> iterator = oracleRepository.findAll();
         long oracleCount = oracleRepository.count();
+        AtomicLong currentCount = new AtomicLong();
         StreamSupport.stream(iterator.spliterator(), true).parallel().forEach( x-> {
-
-            PrideFile file = PrideFile.builder().fileName(x.getFileName()).build();
-            prideFileMongoService.insert(file);
+            if(currentCount.intValue() < 2000){
+                PrideFile file = PrideFile.builder().fileName(x.getFileName()).build();
+                prideFileMongoService.insert(file);
+                currentCount.getAndIncrement();
+                System.out.println(currentCount.toString());
+            }
         });
 
-        Assert.assertTrue(oracleCount == prideFileMongoService.count());
+        Assert.assertTrue(currentCount.intValue() == prideFileMongoService.count());
 
     }
 }

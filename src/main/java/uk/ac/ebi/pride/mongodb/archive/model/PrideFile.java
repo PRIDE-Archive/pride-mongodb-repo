@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.pride.archive.dataprovider.file.FileProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
+import uk.ac.ebi.pride.archive.dataprovider.utils.MSFileTypeConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,7 +46,7 @@ public class PrideFile implements PrideArchiveField, FileProvider {
     String accession;
 
     @Indexed(name = FILE_CATEGORY)
-    CvParamProvider fileCategory;
+    MSFileTypeConstants fileCategory;
 
     @Indexed(name = FILE_SOURCE_FOLDER)
     String fileSourceFolder;
@@ -81,7 +82,7 @@ public class PrideFile implements PrideArchiveField, FileProvider {
 
     /** Category in CvParam **/
     @Override
-    public CvParamProvider getFileCategory() {
+    public MSFileTypeConstants getFileCategory() {
         return fileCategory;
     }
 

@@ -102,7 +102,7 @@ public class PrideFileMongoService {
      * @param page Page to retrieve the Files.
      * @return Page containing all the files.
      */
-    public Page<PrideFile> searchFile(String filterQuery, Pageable page){
+    public Page<PrideFile> searchFiles(String filterQuery, Pageable page){
         MultiValueMap<String, String> filters = PrideMongoUtils.parseFilterParameters(filterQuery);
         return fileRepository.filterByAttributes(filters, page);
 

@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.util.MultiValueMap;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideFile;
 
+import java.util.List;
+
 /**
  * Custom Repository that allows customized search on the MongoDB.
  *

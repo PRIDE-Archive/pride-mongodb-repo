@@ -90,7 +90,7 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
   }
 
   @Override
-  public Collection<? extends String> getAdditionalAttributes() {
+  public Collection<? extends String> getAdditionalAttributesStrings() {
     return null;
   }
 }

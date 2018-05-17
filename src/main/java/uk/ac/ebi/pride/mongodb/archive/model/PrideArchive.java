@@ -215,7 +215,7 @@ public class PrideArchive implements ProjectProvider, PrideArchiveField {
     }
 
     @Override
-    public Collection<? extends String> getAdditionalAttributes() {
+    public Collection<? extends String> getAdditionalAttributesStrings() {
         return null;
     }
 

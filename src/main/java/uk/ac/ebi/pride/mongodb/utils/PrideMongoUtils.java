@@ -35,7 +35,7 @@ public class PrideMongoUtils {
 
     /**
      * This function is also replicated in other PRIDE libraries for Query purpose. The query Filter has the structure:
-     * field1:value1, field2:value2, ...
+     * field1==value1, field2==value2, ...
      *
      * @param filterQuery filterQuery
      * @return LinkedMultiValueMap with the key and the values.
@@ -46,7 +46,7 @@ public class PrideMongoUtils {
             String[] filtersString = (filterQuery + ",").split(",");
             if(filtersString.length > 0){
                 Arrays.asList(filtersString).forEach(filter ->{
-                    String[] filterString = filter.split(":");
+                    String[] filterString = filter.split("==");
                     if(filterString.length == 2)
                         filters.add(filterString[0], filterString[1]);
                     else
@@ -56,5 +56,30 @@ public class PrideMongoUtils {
             }
         }
         return filters;
+    }
+
+    /**
+     * Filter Criteria for Collection
+     * @param filters
+     * @return
+     */
+    public static Criteria buildQuery(MultiValueMap<String, String> filters) {
+        Criteria filterCriteria = null;
+        if(!filters.isEmpty()){
+            for(String filter: filters.keySet()){
+                filterCriteria = convertStringToCriteria(filterCriteria, filter, filters.getFirst(filter));
+            }
+        }
+
+        return filterCriteria;
+    }
+
+    private static Criteria convertStringToCriteria(Criteria filterCriteria, String filterField, String valueFilter) {
+        if(filterCriteria == null){
+            filterCriteria = new Criteria(filterField).is(valueFilter);
+        }else{
+            filterCriteria = filterCriteria.andOperator(new Criteria(filterField).is(valueFilter));
+        }
+        return filterCriteria;
     }
 }

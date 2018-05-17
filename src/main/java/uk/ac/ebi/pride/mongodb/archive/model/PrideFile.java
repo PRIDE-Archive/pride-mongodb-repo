@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.pride.archive.dataprovider.file.FileProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.ParamGroupProvider;
 
 import java.util.List;
 import java.util.Set;
@@ -22,7 +23,7 @@ import java.util.Set;
 @Data
 @Builder
 @Document(collection = PrideArchiveField.PRIDE_FILE_COLLECTION_NAME)
-public class PrideFile implements PrideArchiveField, FileProvider {
+public class PrideFile implements PrideArchiveField, FileProvider, ParamGroupProvider {
 
     @Id
     @Indexed(name = ID)
@@ -66,6 +67,9 @@ public class PrideFile implements PrideArchiveField, FileProvider {
 
     @Indexed(name = FILE_IS_COMPRESS)
     private boolean compress;
+
+    @Indexed(name = ADDITIONAL_ATTRIBUTES)
+    List<CvParamProvider> additionalAttributes;
 
     @Override
     public String getAccession() {

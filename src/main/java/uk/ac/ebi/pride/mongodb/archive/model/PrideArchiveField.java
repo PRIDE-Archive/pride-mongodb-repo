@@ -98,4 +98,10 @@ public interface PrideArchiveField {
     String FILE_EXTENSION = "file_extension";
     String FILE_NAME = "file_name";
     String FILE_IS_COMPRESS = "file_is_compress";
+
+    /** PSM Collections **/
+    String PRIDE_PSM_COLLECTION_NAME = "pride_psms";
+    String SPECTRUM_ACCESSION = "spectrum_accession";
+    String PEPTIDE_SEQUENCE = "peptide_sequence";
+    String REPORTED_PROTEIN_ACCESISION = "reported_protein_accession";
 }

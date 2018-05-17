@@ -3,10 +3,9 @@ package uk.ac.ebi.pride.mongodb.archive.repo;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
+import uk.ac.ebi.pride.mongodb.archive.model.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.model.PrideFile;
 
 import java.util.Optional;
 
@@ -16,11 +15,11 @@ import java.util.Optional;
  * @author ypriverol
  */
 @Repository
-public interface PrideFileMongoRepository extends MongoRepository<PrideFile, ObjectId> , PrideFileMongoRepositoryCustom {
+public interface PrideFileMongoRepository extends MongoRepository<MongoPrideFile, ObjectId> , PrideFileMongoRepositoryCustom {
 
     @Override
-    <S extends PrideFile> S save(S s);
+    <S extends MongoPrideFile> S save(S s);
 
     @Query("{'"+ PrideArchiveField.ACCESSION + "' : ?0}")
-    Optional<PrideFile> findPrideFileByAccession(String accession);
+    Optional<MongoPrideFile> findPrideFileByAccession(String accession);
 }

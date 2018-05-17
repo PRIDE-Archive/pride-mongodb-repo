@@ -9,6 +9,7 @@ import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
+import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
 
 import java.util.*;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
 @Document(collection = PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME)
 @Data
 @Builder
-public class PrideArchive implements ProjectProvider, PrideArchiveField {
+public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     @Id
     @Indexed(name = PrideArchiveField.ID)

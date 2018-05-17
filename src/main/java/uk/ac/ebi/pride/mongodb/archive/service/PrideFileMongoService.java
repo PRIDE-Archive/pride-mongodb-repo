@@ -5,16 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
-import uk.ac.ebi.pride.mongodb.archive.model.CounterCollection;
+import uk.ac.ebi.pride.mongodb.archive.model.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.model.PrideFile;
 import uk.ac.ebi.pride.mongodb.archive.repo.PrideFileMongoRepository;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
@@ -44,10 +39,10 @@ public class PrideFileMongoService {
 
     /**
      * Insert is allowing using to create a Accession for the File and insert the actual File into MongoDB.
-     * @param prideFile PrideFile
-     * @return PrideFile
+     * @param prideFile MongoPrideFile
+     * @return MongoPrideFile
      */
-    public PrideFile insert(PrideFile prideFile) {
+    public MongoPrideFile insert(MongoPrideFile prideFile) {
         NumberFormat formatter = new DecimalFormat("00000000000");
         if (!fileRepository.findPrideFileByAccession(prideFile.getAccession()).isPresent()) {
             if (prideFile.getAccession() == null) {
@@ -78,7 +73,7 @@ public class PrideFileMongoService {
      * @return True if the File can be updated.
      */
     public boolean addProjectAccessions(String fileAccession, List<String> projectAccessions){
-        Optional<PrideFile> prideFile = fileRepository.findPrideFileByAccession(fileAccession);
+        Optional<MongoPrideFile> prideFile = fileRepository.findPrideFileByAccession(fileAccession);
         if(prideFile.isPresent()) {
             Set<String> currentProjectAccesions = prideFile.get().getProjectAccessions();
             if (currentProjectAccesions == null)
@@ -86,10 +81,10 @@ public class PrideFileMongoService {
             currentProjectAccesions.addAll(projectAccessions);
             prideFile.get().setProjectAccessions(currentProjectAccesions);
             fileRepository.save(prideFile.get());
-            LOGGER.info("The following PrideFile -- " + prideFile.get().getAccession() + " has been updated with a new Project Accession -- " + projectAccessions);
+            LOGGER.info("The following MongoPrideFile -- " + prideFile.get().getAccession() + " has been updated with a new Project Accession -- " + projectAccessions);
             return true;
         }
-        LOGGER.error("The following  PrideFile is not in the database -- " + fileAccession);
+        LOGGER.error("The following  MongoPrideFile is not in the database -- " + fileAccession);
         return false;
     }
 
@@ -102,7 +97,7 @@ public class PrideFileMongoService {
      * @param page Page to retrieve the Files.
      * @return Page containing all the files.
      */
-    public Page<PrideFile> searchFiles(String filterQuery, Pageable page){
+    public Page<MongoPrideFile> searchFiles(String filterQuery, Pageable page){
         MultiValueMap<String, String> filters = PrideMongoUtils.parseFilterParameters(filterQuery);
         return fileRepository.filterByAttributes(filters, page);
 

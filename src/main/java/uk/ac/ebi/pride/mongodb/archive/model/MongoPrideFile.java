@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Data
 @Builder
 @Document(collection = PrideArchiveField.PRIDE_FILE_COLLECTION_NAME)
-public class PrideFile implements PrideArchiveField, FileProvider {
+public class MongoPrideFile implements PrideArchiveField, FileProvider {
 
     @Id
     @Indexed(name = ID)

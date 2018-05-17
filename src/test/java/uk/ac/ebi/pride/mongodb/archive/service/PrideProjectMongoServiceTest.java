@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectTestConfig;
-import uk.ac.ebi.pride.mongodb.archive.model.PrideArchive;
+import uk.ac.ebi.pride.mongodb.archive.model.MongoPrideProject;
 
 /**
  * @author ypriverol
@@ -23,7 +23,7 @@ public class PrideProjectMongoServiceTest {
     public void save() {
 
         /** Save Project using only an accession in the dataset **/
-        PrideArchive project = PrideArchive.builder().accession("PXD000001").build();
+        MongoPrideProject project = MongoPrideProject.builder().accession("PXD000001").build();
         prideProjectService.save(project);
     }
 }

@@ -8,18 +8,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.archive.dataprovider.utils.MSFileTypeConstants;
-import uk.ac.ebi.pride.archive.dataprovider.utils.ProjectFileCategoryConstants;
 import uk.ac.ebi.pride.archive.repo.repos.file.ProjectFile;
 import uk.ac.ebi.pride.archive.repo.repos.file.ProjectFileRepository;
 import uk.ac.ebi.pride.mongodb.archive.config.ArchiveOracleConfig;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectTestConfig;
-import uk.ac.ebi.pride.mongodb.archive.model.PrideFile;
+import uk.ac.ebi.pride.mongodb.archive.model.MongoPrideFile;
 
 
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.StreamSupport;
 
@@ -39,7 +35,7 @@ public class PrideFileMongoServiceTest {
 
     @Test
     public void save() {
-        PrideFile file = PrideFile.builder().fileName("Filename.txt").build();
+        MongoPrideFile file = MongoPrideFile.builder().fileName("Filename.txt").build();
         prideFileMongoService.insert(file);
     }
 
@@ -52,7 +48,7 @@ public class PrideFileMongoServiceTest {
     public void searchFilesTest(){
         insertFilesSave();
         String filterRaw = "fileCategory.name==RAW";
-        Page<PrideFile> pageFiles = prideFileMongoService.searchFiles(filterRaw, new PageRequest(0, 10));
+        Page<MongoPrideFile> pageFiles = prideFileMongoService.searchFiles(filterRaw, new PageRequest(0, 10));
         System.out.println(pageFiles.getTotalElements());
     }
 
@@ -64,7 +60,6 @@ public class PrideFileMongoServiceTest {
     private void insertFilesSave(){
 
         Iterable<ProjectFile> iterator = oracleRepository.findAll();
-        long oracleCount = oracleRepository.count();
         AtomicLong currentCount = new AtomicLong();
         StreamSupport.stream(iterator.spliterator(), true).parallel().forEach( x-> {
             MSFileTypeConstants fileType = MSFileTypeConstants.OTHER;
@@ -74,7 +69,7 @@ public class PrideFileMongoServiceTest {
                 }
             }
             if(currentCount.intValue() < 2000){
-                PrideFile file = PrideFile.builder().fileName(x.getFileName()).
+                MongoPrideFile file = MongoPrideFile.builder().fileName(x.getFileName()).
                         fileCategory(fileType). build();
                 prideFileMongoService.insert(file);
                 currentCount.getAndIncrement();

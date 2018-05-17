@@ -3,9 +3,7 @@ package uk.ac.ebi.pride.mongodb.archive.repo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.MultiValueMap;
-import uk.ac.ebi.pride.mongodb.archive.model.PrideFile;
-
-import java.util.List;
+import uk.ac.ebi.pride.mongodb.archive.model.MongoPrideFile;
 
 /**
  * Custom Repository that allows customized search on the MongoDB.
@@ -14,5 +12,5 @@ import java.util.List;
  */
 public interface PrideFileMongoRepositoryCustom {
 
-    Page<PrideFile> filterByAttributes(MultiValueMap<String, String> filters, Pageable page);
+    Page<MongoPrideFile> filterByAttributes(MultiValueMap<String, String> filters, Pageable page);
 }

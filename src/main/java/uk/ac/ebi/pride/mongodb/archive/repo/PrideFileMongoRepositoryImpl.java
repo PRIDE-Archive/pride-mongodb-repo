@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.util.MultiValueMap;
-import uk.ac.ebi.pride.mongodb.archive.model.PrideFile;
+import uk.ac.ebi.pride.mongodb.archive.model.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
 import java.util.List;
@@ -26,11 +26,11 @@ public class PrideFileMongoRepositoryImpl implements PrideFileMongoRepositoryCus
     MongoOperations mongoOperations;
 
     @Override
-    public Page<PrideFile> filterByAttributes(MultiValueMap<String, String> filters, Pageable page) {
+    public Page<MongoPrideFile> filterByAttributes(MultiValueMap<String, String> filters, Pageable page) {
         Criteria queryCriteria = PrideMongoUtils.buildQuery(filters);
         Query queryMongo = new Query().addCriteria(queryCriteria);
         queryMongo.with(page);
-        List<PrideFile> files =  mongoTemplate.find(queryMongo, PrideFile.class);
-        return PageableExecutionUtils.getPage(files, page, () -> mongoOperations.count(queryMongo, PrideFile.class));
+        List<MongoPrideFile> files =  mongoTemplate.find(queryMongo, MongoPrideFile.class);
+        return PageableExecutionUtils.getPage(files, page, () -> mongoOperations.count(queryMongo, MongoPrideFile.class));
     }
 }

@@ -13,9 +13,14 @@ import uk.ac.ebi.pride.mongodb.archive.model.CounterCollection;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideFile;
 import uk.ac.ebi.pride.mongodb.archive.repo.PrideFileMongoRepository;
+import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * This Service allows to handle the Project Repositories.
@@ -40,10 +45,10 @@ public class PrideFileMongoService {
      * @return PrideFile
      */
     public PrideFile insert(PrideFile prideFile) {
-        NumberFormat formatter = new DecimalFormat("0000000000");
+        NumberFormat formatter = new DecimalFormat("00000000000");
         if (!fileRepository.findPrideFileByAccession(prideFile.getAccession()).isPresent()) {
             if (prideFile.getAccession() == null) {
-                String accession = "PXF" + formatter.format(getNextSequence(PrideArchiveField.PRIDE_FILE_COLLECTION_NAME));
+                String accession = "PXF" + formatter.format(PrideMongoUtils.getNextSequence(mongo, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME));
                 prideFile.setAccession(accession);
             }
             prideFile = fileRepository.save(prideFile);
@@ -54,22 +59,36 @@ public class PrideFileMongoService {
     }
 
     /**
-     * This function generates a
-     * @param seqName
-     * @return
-     */
-    private int getNextSequence(String seqName) {
-        CounterCollection counter = mongo.findAndModify(Query.query(Criteria.where("_id").is(seqName)),
-                new Update().inc("seq",1), FindAndModifyOptions.options().returnNew(true).upsert(true), CounterCollection.class);
-        return counter.getSeq();
-    }
-
-
-    /**
      * Number of Files in the Mongo Repository.
-     * @return
+     * @return Number of Files in the MongoDB database
      */
     public long count() {
         return fileRepository.count();
     }
+
+    /**
+     * The current function add the following Project accession To the file Accession in the database. If the file is updated in the database
+     * the function return true, if the file can't be updated in the database.
+     *
+     * @param fileAccession File Accession
+     * @param projectAccessions Project Archive Accession
+     * @return True if the File can be updated.
+     */
+    public boolean addProjectAccessions(String fileAccession, List<String> projectAccessions){
+        Optional<PrideFile> prideFile = fileRepository.findPrideFileByAccession(fileAccession);
+        if(prideFile.isPresent()) {
+            Set<String> currentProjectAccesions = prideFile.get().getProjectAccessions();
+            if (currentProjectAccesions == null)
+                currentProjectAccesions = new HashSet<>();
+            currentProjectAccesions.addAll(projectAccessions);
+            prideFile.get().setProjectAccessions(currentProjectAccesions);
+            fileRepository.save(prideFile.get());
+            LOGGER.info("The following PrideFile -- " + prideFile.get().getAccession() + " has been updated with a new Project Accession -- " + projectAccessions);
+            return true;
+        }
+        LOGGER.error("The following  PrideFile is not in the database -- " + fileAccession);
+        return false;
+    }
+
+
 }

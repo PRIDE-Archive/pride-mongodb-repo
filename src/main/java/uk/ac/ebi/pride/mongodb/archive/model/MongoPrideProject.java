@@ -78,15 +78,15 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     private String submissionType;
 
     /** Publication Date **/
-    @Indexed(name = PROJECT_PUBLICATION_DATE)
+    @Indexed(name = PUBLICATION_DATE)
     private Date publicationDate;
 
     /** Submission Date **/
-    @Indexed(name = PROJECT_SUBMISSION_DATE)
+    @Indexed(name = SUBMISSION_DATE)
     private Date submissionDate;
 
     /** Updated date **/
-    @Indexed(name = PROJECT_UPDATED_DATE)
+    @Indexed(name = UPDATED_DATE)
     private Date updatedDate;
 
     /** List of PTMs for the corresponding Project, this PTMs are globallly annotated by the user, it does'nt mean that they have been found in proteins of peptides. */

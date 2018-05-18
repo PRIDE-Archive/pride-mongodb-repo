@@ -41,13 +41,13 @@ public interface PrideArchiveField {
     String PROJECT_SUBMISSION_TYPE = "project_submission_type";
 
     /** Submission Date **/
-    String PROJECT_SUBMISSION_DATE = "submission_date";
+    String SUBMISSION_DATE = "submission_date";
 
     /** Publication Date **/
-    String PROJECT_PUBLICATION_DATE = "publication_date";
+    String PUBLICATION_DATE = "publication_date";
 
     /** Update Date **/
-    String PROJECT_UPDATED_DATE = "updated_date";
+    String UPDATED_DATE = "updated_date";
 
     /** Submitter FirstName **/
     String PROJECT_SUBMITTER = "submitters";

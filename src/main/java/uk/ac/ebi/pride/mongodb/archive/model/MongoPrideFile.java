@@ -10,12 +10,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.pride.archive.dataprovider.file.FileProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.utils.MSFileTypeConstants;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -70,6 +66,15 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
 
     @Indexed(name = FILE_IS_COMPRESS)
     private boolean compress;
+
+    @Indexed(name = SUBMISSION_DATE)
+    private Date submissionDate;
+
+    @Indexed(name = PUBLICATION_DATE)
+    private Date publicationDate;
+
+    @Indexed(name = UPDATED_DATE)
+    private Date updatedDate;
 
     @Indexed(name = ADDITIONAL_ATTRIBUTES)
     @Getter(AccessLevel.NONE)

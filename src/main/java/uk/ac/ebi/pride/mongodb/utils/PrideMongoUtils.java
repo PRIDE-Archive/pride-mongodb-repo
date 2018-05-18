@@ -1,5 +1,7 @@
 package uk.ac.ebi.pride.mongodb.utils;
 
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
@@ -12,7 +14,11 @@ import org.springframework.util.MultiValueMap;
 import uk.ac.ebi.pride.mongodb.archive.model.CounterCollection;
 import uk.ac.ebi.pride.mongodb.archive.service.PrideProjectMongoService;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author ypriverol
@@ -35,21 +41,25 @@ public class PrideMongoUtils {
 
     /**
      * This function is also replicated in other PRIDE libraries for Query purpose. The query Filter has the structure:
-     * field1==value1, field2==value2, ...
+     * field1==value1, field2==value2, field=all=value2...
      *
      * @param filterQuery filterQuery
      * @return LinkedMultiValueMap with the key and the values.
      */
-    public static MultiValueMap<String, String> parseFilterParameters(String filterQuery){
-        MultiValueMap<String, String> filters = new LinkedMultiValueMap<>();
+    public static List<Triple<String, String, String>> parseFilterParameters(String filterQuery){
+        List<Triple<String, String, String>> filters = new ArrayList<>();
+        Pattern composite = Pattern.compile("(.*)=(.*)=(.*)");
         if(filterQuery != null && !filterQuery.trim().isEmpty()){
             String[] filtersString = (filterQuery + ",").split(",");
             if(filtersString.length > 0){
                 Arrays.asList(filtersString).forEach(filter ->{
                     String[] filterString = filter.split("==");
+                    Matcher matcher = composite.matcher(filter);
                     if(filterString.length == 2)
-                        filters.add(filterString[0], filterString[1]);
-                    else
+                        filters.add(new ImmutableTriple<>(filterString[0], "in",filterString[1]));
+                    else if(matcher.find()){
+                        filters.add(new ImmutableTriple<>(matcher.group(1), matcher.group(2),matcher.group(3)));
+                    } else
                         LOGGER.debug("The filter provided is not well-formatted, please format the filter in field:value -- " + filter);
 
                 });
@@ -63,22 +73,28 @@ public class PrideMongoUtils {
      * @param filters
      * @return
      */
-    public static Criteria buildQuery(MultiValueMap<String, String> filters) {
+    public static Criteria buildQuery(List<Triple<String,String, String>> filters) {
         Criteria filterCriteria = null;
         if(!filters.isEmpty()){
-            for(String filter: filters.keySet()){
-                filterCriteria = convertStringToCriteria(filterCriteria, filter, filters.getFirst(filter));
+            for(Triple filter: filters){
+                filterCriteria = convertStringToCriteria(filterCriteria, (String)filter.getLeft(), (String)filter.getMiddle(), (String)filter.getRight());
             }
         }
 
         return filterCriteria;
     }
 
-    private static Criteria convertStringToCriteria(Criteria filterCriteria, String filterField, String valueFilter) {
+    private static Criteria convertStringToCriteria(Criteria filterCriteria, String filterField, String operator, String valueFilter) {
         if(filterCriteria == null){
-            filterCriteria = new Criteria(filterField).all(valueFilter);
+            if(operator.equalsIgnoreCase("in"))
+                filterCriteria = new Criteria(filterField).in(valueFilter);
+            if(operator.equalsIgnoreCase("all"))
+                filterCriteria = new Criteria(filterField).all(valueFilter);
         }else{
-            filterCriteria = filterCriteria.andOperator(new Criteria(filterField).all(valueFilter));
+            if(operator.equalsIgnoreCase("in"))
+                filterCriteria = filterCriteria.andOperator(new Criteria(filterField).in(valueFilter));
+            if(operator.equalsIgnoreCase("all"))
+                filterCriteria = filterCriteria.andOperator(new Criteria(filterField).all(valueFilter));
         }
         return filterCriteria;
     }

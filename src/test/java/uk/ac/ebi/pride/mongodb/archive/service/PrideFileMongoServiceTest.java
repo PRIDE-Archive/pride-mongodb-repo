@@ -62,7 +62,7 @@ public class PrideFileMongoServiceTest {
 
 
 
-        filterRaw = "fileCategory.value==RESULT,projectAccessions==PRD000001";
+        filterRaw = "fileCategory.value==RESULT,projectAccessions=all=PRD000001";
         pageFiles = prideFileMongoService.searchFiles(filterRaw, new PageRequest(0, 10));
         System.out.println(pageFiles.getTotalElements());
 

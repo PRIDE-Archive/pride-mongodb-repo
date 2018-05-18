@@ -1,5 +1,6 @@
 package uk.ac.ebi.pride.mongodb.archive.repo;
 
+import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +27,7 @@ public class PrideFileMongoRepositoryImpl implements PrideFileMongoRepositoryCus
     MongoOperations mongoOperations;
 
     @Override
-    public Page<MongoPrideFile> filterByAttributes(MultiValueMap<String, String> filters, Pageable page) {
+    public Page<MongoPrideFile> filterByAttributes(List<Triple<String, String, String>> filters, Pageable page) {
         Criteria queryCriteria = PrideMongoUtils.buildQuery(filters);
         Query queryMongo = new Query().addCriteria(queryCriteria);
         queryMongo.with(page);

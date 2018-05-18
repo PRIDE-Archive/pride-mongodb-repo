@@ -1,5 +1,6 @@
 package uk.ac.ebi.pride.mongodb.archive.service;
 
+import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +99,7 @@ public class PrideFileMongoService {
      * @return Page containing all the files.
      */
     public Page<MongoPrideFile> searchFiles(String filterQuery, Pageable page){
-        MultiValueMap<String, String> filters = PrideMongoUtils.parseFilterParameters(filterQuery);
+        List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters(filterQuery);
         return fileRepository.filterByAttributes(filters, page);
 
     }

@@ -10,7 +10,6 @@ import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PeptideSequenceProvider
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
 
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 

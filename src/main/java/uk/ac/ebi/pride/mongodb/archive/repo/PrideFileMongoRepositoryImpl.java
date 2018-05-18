@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.repository.support.PageableExecutionUtils;
-import org.springframework.util.MultiValueMap;
 import uk.ac.ebi.pride.mongodb.archive.model.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
@@ -33,5 +32,12 @@ public class PrideFileMongoRepositoryImpl implements PrideFileMongoRepositoryCus
         queryMongo.with(page);
         List<MongoPrideFile> files =  mongoTemplate.find(queryMongo, MongoPrideFile.class);
         return PageableExecutionUtils.getPage(files, page, () -> mongoOperations.count(queryMongo, MongoPrideFile.class));
+    }
+
+    @Override
+    public List<MongoPrideFile> filterByAttributes(List<Triple<String, String, String>> filters) {
+        Criteria queryCriteria = PrideMongoUtils.buildQuery(filters);
+        Query queryMongo = new Query().addCriteria(queryCriteria);
+        return mongoTemplate.find(queryMongo, MongoPrideFile.class);
     }
 }

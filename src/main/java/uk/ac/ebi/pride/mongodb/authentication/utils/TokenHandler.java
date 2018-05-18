@@ -2,17 +2,6 @@ package uk.ac.ebi.pride.mongodb.authentication.utils;
 
 //import com.fasterxml.jackson.core.JsonProcessingException;
 //import com.fasterxml.jackson.databind.ObjectMapper;
-import uk.ac.ebi.pride.mongodb.authentication.model.User;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Token handler is an utility to handler the token information.

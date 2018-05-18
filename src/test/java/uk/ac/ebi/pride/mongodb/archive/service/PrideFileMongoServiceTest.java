@@ -21,9 +21,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
-import java.util.stream.StreamSupport;
 
 
 /**
@@ -60,11 +58,12 @@ public class PrideFileMongoServiceTest {
         Page<MongoPrideFile> pageFiles = prideFileMongoService.searchFiles(filterRaw, new PageRequest(0, 10));
         System.out.println(pageFiles.getTotalElements());
 
-
-
         filterRaw = "fileCategory.value==RESULT,projectAccessions=all=PRD000001";
         pageFiles = prideFileMongoService.searchFiles(filterRaw, new PageRequest(0, 10));
         System.out.println(pageFiles.getTotalElements());
+
+        List<MongoPrideFile> projectFiles = prideFileMongoService.findFilesByProjectAccession("PRD000001");
+        System.out.println(projectFiles.size());
 
 
     }
@@ -78,9 +77,7 @@ public class PrideFileMongoServiceTest {
 
         Iterable<ProjectFile> iterator = oracleFileRepository.findAll();
         List<ProjectFile> files = new ArrayList<>();
-        IntStream.range(0,100).forEach( x-> {
-            files.add(iterator.iterator().next());
-        });
+        IntStream.range(0,100).forEach( x-> files.add(iterator.iterator().next()));
        files.stream().parallel().forEach(x-> {
             MSFileTypeConstants fileType = MSFileTypeConstants.OTHER;
             Set<String> projectAccessions = new HashSet<>();
@@ -95,7 +92,7 @@ public class PrideFileMongoServiceTest {
        }
        );
 
-        Assert.assertTrue(100 == prideFileMongoService.count());
+        Assert.assertEquals(100, prideFileMongoService.count());
 
     }
 }

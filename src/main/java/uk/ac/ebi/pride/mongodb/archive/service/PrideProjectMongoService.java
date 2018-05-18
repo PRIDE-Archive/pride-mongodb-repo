@@ -18,8 +18,12 @@ public class PrideProjectMongoService {
     /** Logger use to query and filter the data **/
     private static final Logger LOGGER = LoggerFactory.getLogger(PrideProjectMongoService.class);
 
+    final PrideProjectMongoRepository repository;
+
     @Autowired
-    PrideProjectMongoRepository repository;
+    public PrideProjectMongoService(PrideProjectMongoRepository repository) {
+        this.repository = repository;
+    }
 
     /**
      * This function save a project in the Mongo Database, if the project already exist in the database, the function will skip the function.

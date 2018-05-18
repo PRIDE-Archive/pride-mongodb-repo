@@ -204,7 +204,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     @Override
     public Collection<? extends String> getAllAffiliations() {
-        Set<String> affiliations = new HashSet<>(submitters.stream().map(ContactProvider::getAffiliation).collect(Collectors.toList()));
+        Set<String> affiliations = submitters.stream().map(ContactProvider::getAffiliation).collect(Collectors.toSet());
         affiliations.addAll(headLab.stream().map(ContactProvider::getAffiliation).collect(Collectors.toList()));
         return affiliations;
     }

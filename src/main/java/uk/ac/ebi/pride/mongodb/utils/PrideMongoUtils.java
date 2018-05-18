@@ -9,10 +9,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import uk.ac.ebi.pride.mongodb.archive.model.CounterCollection;
-import uk.ac.ebi.pride.mongodb.archive.service.PrideProjectMongoService;
 
 import java.util.ArrayList;
 import java.util.Arrays;

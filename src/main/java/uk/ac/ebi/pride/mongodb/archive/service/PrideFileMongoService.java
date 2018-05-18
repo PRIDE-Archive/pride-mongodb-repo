@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 import uk.ac.ebi.pride.mongodb.archive.model.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.repo.PrideFileMongoRepository;
@@ -29,7 +28,7 @@ import java.util.Set;
 @Service
 public class PrideFileMongoService {
 
-    @Autowired
+    final
     PrideFileMongoRepository fileRepository;
 
     @Autowired
@@ -37,6 +36,11 @@ public class PrideFileMongoService {
 
     /** Logger use to query and filter the data **/
     private static final Logger LOGGER = LoggerFactory.getLogger(PrideFileMongoService.class);
+
+    @Autowired
+    public PrideFileMongoService(PrideFileMongoRepository fileRepository) {
+        this.fileRepository = fileRepository;
+    }
 
     /**
      * Insert is allowing using to create a Accession for the File and insert the actual File into MongoDB.
@@ -102,6 +106,16 @@ public class PrideFileMongoService {
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters(filterQuery);
         return fileRepository.filterByAttributes(filters, page);
 
+    }
+
+    /**
+     * Find by Project Accession the following Files.
+     * @param accession
+     * @return
+     */
+    public List<MongoPrideFile> findFilesByProjectAccession(String accession){
+        List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("projectAccessions=all=" + accession);
+        return fileRepository.filterByAttributes(filters);
     }
 
 

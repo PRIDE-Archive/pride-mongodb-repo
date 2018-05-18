@@ -20,12 +20,7 @@ public class UserAuthentication implements Authentication {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        final GrantedAuthority a = new GrantedAuthority(){
-            @Override
-            public String getAuthority() {
-                return "USER";
-            }
-        };
+        final GrantedAuthority a = (GrantedAuthority) () -> "USER";
         return new HashSet<GrantedAuthority>(){{ add(a); }};
     }
 

@@ -76,9 +76,9 @@ public class PrideMongoUtils {
 
     private static Criteria convertStringToCriteria(Criteria filterCriteria, String filterField, String valueFilter) {
         if(filterCriteria == null){
-            filterCriteria = new Criteria(filterField).is(valueFilter);
+            filterCriteria = new Criteria(filterField).all(valueFilter);
         }else{
-            filterCriteria = filterCriteria.andOperator(new Criteria(filterField).is(valueFilter));
+            filterCriteria = filterCriteria.andOperator(new Criteria(filterField).all(valueFilter));
         }
         return filterCriteria;
     }

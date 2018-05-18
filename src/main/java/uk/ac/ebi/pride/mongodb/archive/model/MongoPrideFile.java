@@ -46,7 +46,7 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
     String accession;
 
     @Indexed(name = FILE_CATEGORY)
-    MSFileTypeConstants fileCategory;
+    CvParamProvider fileCategory;
 
     @Indexed(name = FILE_SOURCE_FOLDER)
     String fileSourceFolder;
@@ -82,7 +82,7 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
 
     /** Category in CvParam **/
     @Override
-    public MSFileTypeConstants getFileCategory() {
+    public CvParamProvider getFileCategory() {
         return fileCategory;
     }
 

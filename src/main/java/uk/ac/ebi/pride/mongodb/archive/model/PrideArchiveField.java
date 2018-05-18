@@ -72,7 +72,7 @@ public interface PrideArchiveField {
     String PROJECT_REFERENCES = "project_references";
 
     /** Identified PTMs in the Project**/
-    String PROJECT_IDENTIFIED_PTM_STRING = "project_identified_ptms";
+    String PROJECT_IDENTIFIED_PTM = "project_identified_ptms";
 
     /** Collections Name **/
     String PRIDE_PROJECTS_COLLECTION_NAME = "pride_projects";

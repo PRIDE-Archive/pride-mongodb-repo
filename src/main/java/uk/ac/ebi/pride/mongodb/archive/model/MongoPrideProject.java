@@ -9,7 +9,6 @@ import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
-import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
 
 import java.util.*;
@@ -91,7 +90,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     private Date updatedDate;
 
     /** List of PTMs for the corresponding Project, this PTMs are globallly annotated by the user, it does'nt mean that they have been found in proteins of peptides. */
-    @Indexed(name = PROJECT_IDENTIFIED_PTM_STRING)
+    @Indexed(name = PROJECT_IDENTIFIED_PTM)
     private Collection<CvParamProvider> ptmList;
 
     /**

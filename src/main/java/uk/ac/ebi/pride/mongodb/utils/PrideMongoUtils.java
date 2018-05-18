@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.model.CounterCollection;
 
 import java.util.ArrayList;
@@ -87,12 +88,30 @@ public class PrideMongoUtils {
                 filterCriteria = new Criteria(filterField).in(valueFilter);
             if(operator.equalsIgnoreCase("all"))
                 filterCriteria = new Criteria(filterField).all(valueFilter);
+            if(operator.equalsIgnoreCase("between")){
+                Tuple<String, String> betweenClass = parseFilterBetween(valueFilter);
+                filterCriteria = Criteria.where(filterField).gte(betweenClass.getKey()).and(filterField).lt(betweenClass.getValue());
+            }
         }else{
             if(operator.equalsIgnoreCase("in"))
                 filterCriteria = filterCriteria.andOperator(new Criteria(filterField).in(valueFilter));
             if(operator.equalsIgnoreCase("all"))
                 filterCriteria = filterCriteria.andOperator(new Criteria(filterField).all(valueFilter));
+            if(operator.equalsIgnoreCase("between")){
+                Tuple<String, String> betweenClass = parseFilterBetween(valueFilter);
+                filterCriteria = Criteria.where(filterField).gte(betweenClass.getKey()).and(filterField).lt(betweenClass.getValue());
+            }
+
         }
         return filterCriteria;
+    }
+
+    private static Tuple<String, String> parseFilterBetween(String valueFilter) {
+        Pattern composite = Pattern.compile("\\[(.*)TO(.*)\\]");
+        Matcher matcher = composite.matcher(valueFilter);
+        Tuple<String, String> queries = null;
+        if(matcher.find())
+             queries = new Tuple<>(matcher.group(1), matcher.group(2));
+        return queries;
     }
 }

@@ -90,20 +90,20 @@ public interface PrideArchiveField {
     String EXTERNAL_ANALYSIS_ACCESSIONS = "pride_analysis_accessions";
 
     //** File Fields **/
-    String FILE_CATEGORY = "file_category";
-    String FILE_SOURCE_FOLDER = "file_source_folder";
-    String FILE_MD5_CHECKSUM = "file_md5_checksum";
-    String FILE_PUBLIC_LOCATIONS = "file_public_locations";
-    String FILE_SIZE_MB = "file_size_mb";
-    String FILE_EXTENSION = "file_extension";
-    String FILE_NAME = "file_name";
-    String FILE_IS_COMPRESS = "file_is_compress";
+    String FILE_CATEGORY = "fileCategory";
+    String FILE_SOURCE_FOLDER = "fileSourceFolder";
+    String FILE_MD5_CHECKSUM = "fileMD5Checksum";
+    String FILE_PUBLIC_LOCATIONS = "filePublicLocations";
+    String FILE_SIZE_MB = "fileSizeMB";
+    String FILE_EXTENSION = "fileExtension";
+    String FILE_NAME = "fileName";
+    String FILE_IS_COMPRESS = "fileCompress";
 
     /** PSM Collections **/
     String PRIDE_PSM_COLLECTION_NAME = "pride_psms";
-    String SPECTRUM_ACCESSION = "spectrum_accession";
-    String PEPTIDE_SEQUENCE = "peptide_sequence";
-    String REPORTED_PROTEIN_ACCESISION = "reported_protein_accession";
+    String SPECTRUM_ACCESSION = "spectrumAccession";
+    String PEPTIDE_SEQUENCE = "peptideSequence";
+    String REPORTED_PROTEIN_ACCESISION = "reportedProteinAccession";
 
     /** PRIDE Analysis Collection **/
     String PRIDE_ANALYSIS_COLLECTION = "pride_analysis_collection";

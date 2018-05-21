@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.model.CounterCollection;
-import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideFieldEnum;
 
 import java.text.ParseException;
@@ -92,7 +91,7 @@ public class PrideMongoUtils {
                 filterCriteria = new Criteria(filterField).in(valueFilter);
             if(operator.equalsIgnoreCase("all"))
                 filterCriteria = new Criteria(filterField).all(valueFilter);
-            if(operator.equalsIgnoreCase("between")){
+            if(operator.equalsIgnoreCase("range")){
                 Tuple<Object, Object> betweenClass = parseBetweenObjects(parseFilterBetween(valueFilter), filterField);
                 filterCriteria = Criteria.where(filterField).gte(betweenClass.getKey()).lt(betweenClass.getValue());
             }
@@ -101,7 +100,7 @@ public class PrideMongoUtils {
                 filterCriteria = filterCriteria.andOperator(new Criteria(filterField).in(valueFilter));
             if(operator.equalsIgnoreCase("all"))
                 filterCriteria = filterCriteria.andOperator(new Criteria(filterField).all(valueFilter));
-            if(operator.equalsIgnoreCase("between")){
+            if(operator.equalsIgnoreCase("range")){
                 Tuple<Object, Object> betweenClass = parseBetweenObjects(parseFilterBetween(valueFilter), filterField);
                 filterCriteria = Criteria.where(filterField).gte(betweenClass.getKey()).lt(betweenClass.getValue());
             }
@@ -110,6 +109,12 @@ public class PrideMongoUtils {
         return filterCriteria;
     }
 
+    /**
+     * PArse the values between a Range.
+     * @param stringTuple The Tuple containing the first Value of the range and the Second value.
+     * @param filterField The filterField.
+     * @return The Obejcts to filter,
+     */
     private static Tuple<Object, Object> parseBetweenObjects(Tuple<String, String> stringTuple, String filterField) {
         Class classType = String.class;
         Tuple<Object, Object> resultTuple = new Tuple<>(stringTuple.getKey(), stringTuple.getValue());
@@ -136,6 +141,11 @@ public class PrideMongoUtils {
 
     }
 
+    /**
+     * Parse a Range String
+     * @param valueFilter Value String
+     * @return a Tuple of Start and End Values.
+     */
     private static Tuple<String, String> parseFilterBetween(String valueFilter) {
         Pattern composite = Pattern.compile("\\[(.*)TO(.*)\\]");
         Matcher matcher = composite.matcher(valueFilter);

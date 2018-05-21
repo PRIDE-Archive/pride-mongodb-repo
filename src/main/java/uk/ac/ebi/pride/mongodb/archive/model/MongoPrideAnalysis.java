@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.project.AnalysisProvider;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
-import uk.ac.ebi.pride.archive.dataprovider.software.SoftwareProvider;
+import uk.ac.ebi.pride.archive.dataprovider.data.software.SoftwareProvider;
 import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
 
 import java.util.*;

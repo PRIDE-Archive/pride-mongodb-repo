@@ -32,7 +32,7 @@ public interface PrideArchiveField {
     String PROJECT_KEYWORDS = "keywords";
 
     /** PROJECT DOI **/
-    String PROJECT_DOI = "project_doi";
+    String PROJECT_DOI = "projectDoi";
 
     /** PROJECT OMICS **/
     String PROJECT_OMICS_LINKS = "project_other_omics";
@@ -103,8 +103,24 @@ public interface PrideArchiveField {
     String PRIDE_PSM_COLLECTION_NAME = "pride_psms";
     String SPECTRUM_ACCESSION = "spectrumAccession";
     String PEPTIDE_SEQUENCE = "peptideSequence";
-    String REPORTED_PROTEIN_ACCESISION = "reportedProteinAccession";
+    String REPORTED_PROTEIN_ACCESSSION = "reportedProteinAccession";
+    String REPORTED_FILE_ID = "reportedFileID";
+    String EXTERNAL_PROJECT_ACCESSION = "externalProjectAccession";
+    String EXTERNAL_ANALYSIS_ACCESSION = "externalAnalysisAccession";
+    String EXTERNAL_RESULT_FILE_ACCESSION = "externalResultFileAccession";
+    String IDENTIFICATION_DATABASE = "database";
+    String PEPTIDE_UNIQUE = "peptideUnique";
+    String BEST_PSM_SCORE = "bestPSMScore";
+    String RETENTION_TIME = "retentionTime";
+    String CHARGE = "charge";
+    String EXPERIMENTAL_MASS_TO_CHARGE = "expMassToCharge";
+    String CALCULATED_MASS_TO_CHARGE = "calculatedMassToCharge";
+    String PRE_AMINO_ACID = "preAminoAcid";
+    String POST_AMINO_ACID  = "postAminoAcid";
+    String START_POSITION = "startPosition";
+    String END_POSITION = "endPosition";
 
     /** PRIDE Analysis Collection **/
     String PRIDE_ANALYSIS_COLLECTION = "pride_analysis_collection";
+
 }

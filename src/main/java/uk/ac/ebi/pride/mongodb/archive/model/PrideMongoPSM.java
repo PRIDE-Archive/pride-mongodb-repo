@@ -6,8 +6,10 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import uk.ac.ebi.pride.archive.dataprovider.data.database.DatabaseProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PeptideSequenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 
 
 import java.util.Collection;
@@ -36,7 +38,9 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
   @Indexed(name = ACCESSION, unique = true)
   String accession;
 
-  private String reportedId;
+  /** reported ID in the file **/
+  @Indexed(name = PrideArchiveField.REPORTED_FILE_ID)
+  private String reportedFileID;
 
   @Indexed(name = PrideArchiveField.PEPTIDE_SEQUENCE)
   private String peptideSequence;
@@ -45,32 +49,69 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
   @Indexed(name = PrideArchiveField.SPECTRUM_ACCESSION)
   private String spectrumAccession;
 
-  @Indexed(name = PrideArchiveField.REPORTED_PROTEIN_ACCESISION)
+  @Indexed(name = PrideArchiveField.REPORTED_PROTEIN_ACCESSSION)
   private String reportedProteinAccession;
 
+  /** External Project that contains the PSM **/
+  @Indexed(name = EXTERNAL_PROJECT_ACCESSION)
+  private String externalProjectAccession;
 
-  private String database;
-  private String databaseVersion;
-  private String projectAccession;
-  private String assayAccession;
-  private List<String> modificationsAsString;
-  private List<String> modificationNames;
-  private List<String> modificationAccessions;
+  /** External Analysis that contains the PSM **/
+  @Indexed(name = EXTERNAL_ANALYSIS_ACCESSION)
+  private String externalAnalysisAccession;
+
+  /** External RESULT FILE that contains the PSM **/
+  @Indexed(name = EXTERNAL_RESULT_FILE_ACCESSION)
+  private String externalResultFileAccession;
+
+  /** Database information used to perform the idnetification/quantification **/
+  @Indexed(name = IDENTIFICATION_DATABASE)
+  private DatabaseProvider database;
+
+  /** PTMs Identified in the PEptide Sequence **/
+  @Indexed(name = PROJECT_IDENTIFIED_PTM)
+  private List<IdentifiedModificationProvider> ptmList;
+
+  /** UNIQUE in the Analysis **/
+  @Indexed(name = PEPTIDE_UNIQUE)
   private Boolean unique;
-  private List<String> searchEngineAsString;
-  private List<String> searchEngineScoreAsString;
+
+  /** Best Search engine scores **/
+  @Indexed(name = BEST_PSM_SCORE)
+  CvParamProvider bestPSMScore;
+
+  @Indexed(name = RETENTION_TIME)
   private Double retentionTime;
+
+  @Indexed(name = CHARGE)
   private Integer charge;
+
+  @Indexed(name = EXPERIMENTAL_MASS_TO_CHARGE)
   private Double expMassToCharge;
+
+  @Indexed(name = CALCULATED_MASS_TO_CHARGE)
   private Double calculatedMassToCharge;
+
+  @Indexed(name = PRE_AMINO_ACID)
   private String preAminoAcid;
+
+  @Indexed(name = POST_AMINO_ACID)
   private String postAminoAcid;
+
+  @Indexed(name = START_POSITION)
   private Integer startPosition;
+
+  @Indexed(name = END_POSITION)
   private Integer endPosition;
 
 
   @Override
   public Collection<? extends IdentifiedModificationProvider> getPTMs() {
+    return null;
+  }
+
+  @Override
+  public Collection<String> getModificationNames() {
     return null;
   }
 

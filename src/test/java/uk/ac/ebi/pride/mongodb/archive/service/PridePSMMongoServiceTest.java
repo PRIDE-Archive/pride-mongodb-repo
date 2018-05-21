@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.QSort;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -200,5 +202,12 @@ public class PridePSMMongoServiceTest {
 
         mongoService.save(psm);
         mongoPsms.add(psm);
+    }
+
+
+    @Test
+    public void searchWildcard(){
+        Page<PrideMongoPSM> psms = mongoService.searchPSMs("reportedProteinAccession=regex=" + PARTIAL_ACCESSION_WILDCARD, new PageRequest(0,10));
+        Assert.assertTrue(psms.getTotalElements() == 3);
     }
 }

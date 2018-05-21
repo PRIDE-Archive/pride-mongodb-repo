@@ -131,4 +131,10 @@ public class PridePSMMongoService {
     public void deleteAll() {
         psmMongoRepository.deleteAll();
     }
+
+    public Page<PrideMongoPSM> searchPSMs(String filterQuery, Pageable page) {
+        List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters(filterQuery);
+        return psmMongoRepository.filterByAttributes(filters, page);
+
+    }
 }

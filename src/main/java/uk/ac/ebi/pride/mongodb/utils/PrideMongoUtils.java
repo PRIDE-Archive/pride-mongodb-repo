@@ -93,6 +93,9 @@ public class PrideMongoUtils {
                 Tuple<Object, Object> betweenClass = parseBetweenObjects(parseFilterBetween(valueFilter), filterField);
                 filterCriteria = Criteria.where(filterField).gte(betweenClass.getKey()).lt(betweenClass.getValue());
             }
+            if(operator.equalsIgnoreCase("regex")){
+                filterCriteria = Criteria.where(filterField).regex(valueFilter);
+            }
         }else{
             if(operator.equalsIgnoreCase("in"))
                 filterCriteria = filterCriteria.andOperator(new Criteria(filterField).in(valueFilter));
@@ -101,6 +104,9 @@ public class PrideMongoUtils {
             if(operator.equalsIgnoreCase("range")){
                 Tuple<Object, Object> betweenClass = parseBetweenObjects(parseFilterBetween(valueFilter), filterField);
                 filterCriteria = Criteria.where(filterField).gte(betweenClass.getKey()).lt(betweenClass.getValue());
+            }
+            if(operator.equalsIgnoreCase("regex")){
+                filterCriteria = filterCriteria.andOperator(new Criteria(filterField).regex(valueFilter));
             }
 
         }

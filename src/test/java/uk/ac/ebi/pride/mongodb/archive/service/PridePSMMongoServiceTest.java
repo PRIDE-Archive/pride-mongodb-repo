@@ -96,14 +96,10 @@ public class PridePSMMongoServiceTest {
     private PridePSMMongoService mongoService;
 
     /** Ensures all existing data are deleted, and inserts test data. */
-    @PostConstruct
-    public void setUp() {
-        insertTestData();
-    }
-
-    @PreDestroy
-    public void destroy(){
+    @Before
+    public void setUp(){
         mongoService.deleteAll();
+        insertTestData();
     }
 
     /** Inserts test data. */

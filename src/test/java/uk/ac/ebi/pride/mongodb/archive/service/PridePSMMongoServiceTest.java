@@ -188,7 +188,7 @@ public class PridePSMMongoServiceTest {
             String projectAccession,
             String assayAccession) {
 
-        IdentifiedModificationProvider mod1 = new DefaultIdentifiedModification(new DefaultCvParam(MOD_1_ACCESSION, MOD_1_NAME), Arrays.asList(MOD_1_POS));
+        IdentifiedModificationProvider mod1 = new DefaultIdentifiedModification(new DefaultCvParam(MOD_1_ACCESSION, MOD_1_NAME), new DefaultCvParam("MS",NEUTRAL_LOSS_ACC, NEUTRAL_LOSS_NAME,NEUTRAL_LOSS_VAL), Arrays.asList(MOD_1_POS));
         IdentifiedModificationProvider mod2 = new DefaultIdentifiedModification(new DefaultCvParam(MOD_2_ACCESSION, MOD_2_NAME), Arrays.asList(MOD_2_POS));
 
         PrideMongoPSM psm = PrideMongoPSM.builder().accession(psmId).reportedFileID(psmReportedId)

@@ -119,8 +119,10 @@ public interface PrideArchiveField {
     String POST_AMINO_ACID  = "postAminoAcid";
     String START_POSITION = "startPosition";
     String END_POSITION = "endPosition";
+    String SEARCH_ENGINE_SCORES = "searchEngineScores";
 
     /** PRIDE Analysis Collection **/
     String PRIDE_ANALYSIS_COLLECTION = "pride_analysis_collection";
+
 
 }

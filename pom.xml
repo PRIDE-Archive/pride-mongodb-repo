@@ -31,6 +31,8 @@
         <com.github.fakemongo.version>2.2.0-RC1</com.github.fakemongo.version>
         <archive.repo.version>1.0.2-springboot-SNAPSHOT.yasset</archive.repo.version>
         <uk.ac.ebi.pride-utilities.version>2.0.19-SNAPSHOT</uk.ac.ebi.pride-utilities.version>
+        <jmztab.version>3.0.7</jmztab.version>
+        <pride.mod.version>2.1.2</pride.mod.version>
         </properties>
 
 
@@ -95,7 +97,8 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Tests for ORACLE -->
+        <!-- Tests for Dependencies -->
+
         <!-- tested with the previous ORACLE DB -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -126,6 +129,30 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- jmzTab -->
+        <dependency>
+            <groupId>uk.ac.ebi.pride</groupId>
+            <artifactId>jmztab-modular-model</artifactId>
+            <version>${jmztab.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>uk.ac.ebi.pride</groupId>
+            <artifactId>jmztab-modular-util</artifactId>
+            <version>${jmztab.version}</version>
+            <scope>test</scope>
+            <!-- based on mzTab specification version 1.0.0-->
+        </dependency>
+
+        <!-- pride tools for ontology translation -->
+        <dependency>
+            <groupId>uk.ac.ebi.pride.utilities</groupId>
+            <artifactId>pride-mod</artifactId>
+            <version>${pride.mod.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

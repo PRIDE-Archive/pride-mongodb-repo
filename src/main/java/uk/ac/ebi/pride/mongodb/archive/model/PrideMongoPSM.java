@@ -12,11 +12,13 @@ import uk.ac.ebi.pride.archive.dataprovider.data.database.DatabaseProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PeptideSequenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
+import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
 
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -79,7 +81,7 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
 
   /** Best Search engine scores **/
   @Indexed(name = BEST_PSM_SCORE)
-  CvParamProvider bestPSMScore;
+  Tuple<CvParamProvider, CvParamProvider> bestPSMScore;
 
   @Indexed(name = RETENTION_TIME)
   private Double retentionTime;
@@ -105,9 +107,12 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
   @Indexed(name = END_POSITION)
   private Integer endPosition;
 
-  /** Additional Attributes including Scores **/
+  /** Additional Attributes **/
   @Indexed(name = PrideArchiveField.ADDITIONAL_ATTRIBUTES)
   private List<CvParamProvider> additionalAttributes;
+
+  @Indexed(name = PrideArchiveField.SEARCH_ENGINE_SCORES)
+  private Map<CvParamProvider, List<CvParamProvider>> searchEngineScores;
 
   @Override
   public Collection<? extends IdentifiedModificationProvider> getPTMs() {

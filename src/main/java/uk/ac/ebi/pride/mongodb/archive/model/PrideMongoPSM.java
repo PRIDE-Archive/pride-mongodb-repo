@@ -13,7 +13,9 @@ import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * PrideMongoPSMS models the PRIDE PSMs provided to PRIDE by each experiment.
@@ -104,33 +106,38 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
   @Indexed(name = END_POSITION)
   private Integer endPosition;
 
+  /** Additional Attributes including Scores **/
+  @Indexed(name = PrideArchiveField.ADDITIONAL_ATTRIBUTES)
+  private List<CvParamProvider> additionalAttributes;
 
   @Override
   public Collection<? extends IdentifiedModificationProvider> getPTMs() {
-    return null;
+    return ptmList;
   }
 
   @Override
   public Collection<String> getModificationNames() {
-    return null;
+      List<String> ptms = Collections.EMPTY_LIST;
+      if(this.ptmList != null && !this.ptmList.isEmpty())
+          ptms = ptmList.stream().map(CvParamProvider::getName).collect(Collectors.toList());
+    return ptms;
   }
 
   @Override
-  public int getUniqueModificationCount() {
+  public int getNumberModifiedSites() {
+      final int[] sites = {0};
+      if(this.ptmList != null && !this.ptmList.isEmpty()){
+          this.ptmList.forEach(x -> sites[0] += x.getPositionMap().size());
+          return sites[0];
+      }
     return 0;
-  }
-
-  @Override
-  public int getModifiedResiduesCount() {
-    return 0;
-  }
-
-  public void setPeptideSequence(String peptideSequence) {
-    this.peptideSequence = peptideSequence;
   }
 
   @Override
   public Collection<? extends String> getAdditionalAttributesStrings() {
-    return null;
+      List<String> attributes = Collections.EMPTY_LIST;
+      if(this.additionalAttributes != null )
+          return additionalAttributes.stream().map(CvParamProvider::getName).collect(Collectors.toList());
+      return attributes;
   }
 }

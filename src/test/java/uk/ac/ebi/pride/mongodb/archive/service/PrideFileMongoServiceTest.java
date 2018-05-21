@@ -65,7 +65,7 @@ public class PrideFileMongoServiceTest {
         List<MongoPrideFile> projectFiles = prideFileMongoService.findFilesByProjectAccession("PRD000001");
         System.out.println(projectFiles.size());
 
-        filterRaw = "publicationDate=between=[2005-01-01 TO 2016-31-31]";
+        filterRaw = "publicationDate=between=[2005-01-01 TO 2016-12-31]";
         pageFiles = prideFileMongoService.searchFiles(filterRaw, new PageRequest(0, 10));
         System.out.println(pageFiles.getTotalElements());
 
@@ -81,7 +81,7 @@ public class PrideFileMongoServiceTest {
 
         Iterable<ProjectFile> iterator = oracleFileRepository.findAll();
         List<ProjectFile> files = new ArrayList<>();
-        IntStream.range(0,100).forEach( x-> files.add(iterator.iterator().next()));
+        IntStream.range(0,400).forEach( x-> files.add(iterator.iterator().next()));
        files.stream().parallel().forEach(x-> {
             MSFileTypeConstants fileType = MSFileTypeConstants.OTHER;
             Set<String> projectAccessions = new HashSet<>();
@@ -100,7 +100,7 @@ public class PrideFileMongoServiceTest {
        }
        );
 
-        Assert.assertEquals(100, prideFileMongoService.count());
+        Assert.assertEquals(400, prideFileMongoService.count());
 
     }
 }

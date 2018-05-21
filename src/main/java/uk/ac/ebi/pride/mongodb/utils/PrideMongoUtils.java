@@ -11,9 +11,14 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.model.CounterCollection;
+import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
+import uk.ac.ebi.pride.mongodb.archive.model.PrideFieldEnum;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,7 +83,6 @@ public class PrideMongoUtils {
                 filterCriteria = convertStringToCriteria(filterCriteria, (String)filter.getLeft(), (String)filter.getMiddle(), (String)filter.getRight());
             }
         }
-
         return filterCriteria;
     }
 
@@ -89,8 +93,8 @@ public class PrideMongoUtils {
             if(operator.equalsIgnoreCase("all"))
                 filterCriteria = new Criteria(filterField).all(valueFilter);
             if(operator.equalsIgnoreCase("between")){
-                Tuple<String, String> betweenClass = parseFilterBetween(valueFilter);
-                filterCriteria = Criteria.where(filterField).gte(betweenClass.getKey()).and(filterField).lt(betweenClass.getValue());
+                Tuple<Object, Object> betweenClass = parseBetweenObjects(parseFilterBetween(valueFilter), filterField);
+                filterCriteria = Criteria.where(filterField).gte(betweenClass.getKey()).lt(betweenClass.getValue());
             }
         }else{
             if(operator.equalsIgnoreCase("in"))
@@ -98,12 +102,38 @@ public class PrideMongoUtils {
             if(operator.equalsIgnoreCase("all"))
                 filterCriteria = filterCriteria.andOperator(new Criteria(filterField).all(valueFilter));
             if(operator.equalsIgnoreCase("between")){
-                Tuple<String, String> betweenClass = parseFilterBetween(valueFilter);
-                filterCriteria = Criteria.where(filterField).gte(betweenClass.getKey()).and(filterField).lt(betweenClass.getValue());
+                Tuple<Object, Object> betweenClass = parseBetweenObjects(parseFilterBetween(valueFilter), filterField);
+                filterCriteria = Criteria.where(filterField).gte(betweenClass.getKey()).lt(betweenClass.getValue());
             }
 
         }
         return filterCriteria;
+    }
+
+    private static Tuple<Object, Object> parseBetweenObjects(Tuple<String, String> stringTuple, String filterField) {
+        Class classType = String.class;
+        Tuple<Object, Object> resultTuple = new Tuple<>(stringTuple.getKey(), stringTuple.getValue());
+        for(PrideFieldEnum field: PrideFieldEnum.values()){
+            if(field.getFieldName().equalsIgnoreCase(filterField)){
+                classType = field.getClassType();
+            }
+        }
+        try{
+            if(classType == Date.class){
+                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(stringTuple.getKey());
+                Date startDate = uk.ac.ebi.pride.utilities.util.DateUtils.atStartOfDay(date);
+
+                date = new SimpleDateFormat("yyyy-MM-dd").parse(stringTuple.getValue());
+                Date endDate = uk.ac.ebi.pride.utilities.util.DateUtils.atEndOfDay(date);
+                resultTuple = new Tuple<>(startDate, endDate);
+
+
+            }
+        }catch(ParseException ex){
+            LOGGER.error(ex.getMessage());
+        }
+        return resultTuple;
+
     }
 
     private static Tuple<String, String> parseFilterBetween(String valueFilter) {
@@ -111,7 +141,7 @@ public class PrideMongoUtils {
         Matcher matcher = composite.matcher(valueFilter);
         Tuple<String, String> queries = null;
         if(matcher.find())
-             queries = new Tuple<>(matcher.group(1), matcher.group(2));
+             queries = new Tuple<>(matcher.group(1).trim(), matcher.group(2).trim());
         return queries;
     }
 }

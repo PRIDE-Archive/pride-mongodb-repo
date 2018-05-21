@@ -25,12 +25,12 @@
     <properties>
         <archive.data.provider.api.version>1.0.0-SNAPSHOT</archive.data.provider.api.version>
         <uk.ac.ebi.pride.architectural-pride-tdd.version>1.0.3</uk.ac.ebi.pride.architectural-pride-tdd.version>
-        <uk.ac.ebi.pride.architectural-pride-spring.version>1.0.0-SNAPSHOT
-        </uk.ac.ebi.pride.architectural-pride-spring.version>
+        <uk.ac.ebi.pride.architectural-pride-spring.version>1.0.0-SNAPSHOT</uk.ac.ebi.pride.architectural-pride-spring.version>
         <uk.ac.ebi.pride.px-submission-core.version>2.0.18</uk.ac.ebi.pride.px-submission-core.version>
         <uk.ac.ebi.pride.utilities.pride-utilities.version>2.0.19-SNAPSHOT</uk.ac.ebi.pride.utilities.pride-utilities.version>
         <com.github.fakemongo.version>2.2.0-RC1</com.github.fakemongo.version>
         <archive.repo.version>1.0.2-springboot-SNAPSHOT.yasset</archive.repo.version>
+        <uk.ac.ebi.pride-utilities.version>2.0.19-SNAPSHOT</uk.ac.ebi.pride-utilities.version>
         </properties>
 
 
@@ -79,6 +79,12 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>uk.ac.ebi.pride.utilities</groupId>
+            <artifactId>pride-utilities</artifactId>
+            <version>${uk.ac.ebi.pride-utilities.version}</version>
         </dependency>
 
         <!-- fongo in memory mongo db for unit testing -->

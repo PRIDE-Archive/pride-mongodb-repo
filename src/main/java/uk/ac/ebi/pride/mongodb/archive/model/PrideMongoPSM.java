@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.pride.archive.dataprovider.data.database.DatabaseProvider;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
 @Data
 @Builder
 @Document(collection = PrideArchiveField.PRIDE_PSM_COLLECTION_NAME)
+@CompoundIndexes({@CompoundIndex(name = "compound_psm_accession", def = "{'reportedFileID' : 1, 'reportedProteinAccession': 1, 'externalProjectAccession':1}", unique = true)})
 public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider {
   /*  */
 
@@ -61,10 +64,6 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
   /** External Analysis that contains the PSM **/
   @Indexed(name = EXTERNAL_ANALYSIS_ACCESSION)
   private String externalAnalysisAccession;
-
-  /** External RESULT FILE that contains the PSM **/
-  @Indexed(name = EXTERNAL_RESULT_FILE_ACCESSION)
-  private String externalResultFileAccession;
 
   /** Database information used to perform the idnetification/quantification **/
   @Indexed(name = IDENTIFICATION_DATABASE)

@@ -4,6 +4,7 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -14,6 +15,7 @@ import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideMongoPSM;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -34,5 +36,13 @@ public class PridePSMMongoRepositoryImpl implements PridePSMMongoRepositoryCusto
         queryMongo.with(page);
         List<PrideMongoPSM> files =  mongoTemplate.find(queryMongo, PrideMongoPSM.class);
         return PageableExecutionUtils.getPage(files, page, () -> mongoOperations.count(queryMongo, PrideMongoPSM.class));
+    }
+
+    @Override
+    public List<PrideMongoPSM> findByIdAccessions(Collection<String> accessions, Sort sort) {
+        Criteria queryCriteria = PrideMongoUtils.builQueryByAccessions(accessions);
+        Query queryMongo = new Query().addCriteria(queryCriteria);
+        queryMongo.with(sort);
+        return mongoTemplate.find(queryMongo, PrideMongoPSM.class);
     }
 }

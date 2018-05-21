@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.stereotype.Component;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideMongoPSM;
 import uk.ac.ebi.pride.mongodb.archive.repo.PridePSMMongoRepository;
@@ -21,6 +22,8 @@ import java.util.List;
  *
  * @author ypriverol
  */
+
+@Component
 public class PridePSMMongoService {
 
     final PridePSMMongoRepository psmMongoRepository;
@@ -112,5 +115,20 @@ public class PridePSMMongoService {
      */
     public long countByAssayAccession(String assayAccession) {
         return findPSMsByProjectAccession(assayAccession, new PageRequest(0,10)).getTotalElements();
+    }
+
+    /**
+     * Save an specific PSM in MongoDB
+     * @param psm {@link PrideMongoPSM}
+     */
+    public void save(PrideMongoPSM psm){
+        psmMongoRepository.save(psm);
+    }
+
+    /**
+     * Delete all the PSMs in the Mongo Database
+     */
+    public void deleteAll() {
+        psmMongoRepository.deleteAll();
     }
 }

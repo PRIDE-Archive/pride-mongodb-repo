@@ -11,14 +11,12 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.model.CounterCollection;
+import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideFieldEnum;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -153,5 +151,14 @@ public class PrideMongoUtils {
         if(matcher.find())
              queries = new Tuple<>(matcher.group(1).trim(), matcher.group(2).trim());
         return queries;
+    }
+
+    /**
+     * Search by Accessions if any accession contains one of the values in the List.
+     * @param accessions List of Accessions
+     * @return accessions.
+     */
+    public static Criteria builQueryByAccessions(Collection<String> accessions) {
+        return new Criteria(PrideArchiveField.ACCESSION).in(accessions);
     }
 }

@@ -10,7 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.QSort;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.ac.ebi.pride.archive.dataprovider.data.ptm.DefaultIdentifiedModification;
+import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.identification.ModificationProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.config.ArchiveOracleConfig;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
@@ -20,6 +23,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -186,20 +190,16 @@ public class PridePSMMongoServiceTest {
             String projectAccession,
             String assayAccession) {
 
-//        Modification mod1 = new Modification();
-//        mod1.addPosition(MOD_1_POS, null);
-//        mod1.setAccession(MOD_1_ACCESSION);
-//        mod1.setName(MOD_1_NAME);
-//        Modification mod2 = new Modification();
-//        mod2.addPosition(MOD_2_POS, null);
-//        mod2.setAccession(MOD_2_ACCESSION);
-//        mod2.setName(MOD_2_NAME);
+        IdentifiedModificationProvider mod1 = new DefaultIdentifiedModification(new DefaultCvParam(MOD_1_ACCESSION, MOD_1_NAME), Arrays.asList(MOD_1_POS));
+        IdentifiedModificationProvider mod2 = new DefaultIdentifiedModification(new DefaultCvParam(MOD_2_ACCESSION, MOD_2_NAME), Arrays.asList(MOD_2_POS));
+
         PrideMongoPSM psm = PrideMongoPSM.builder().accession(psmId).reportedFileID(psmReportedId)
                 .peptideSequence(psmSequence)
                 .spectrumAccession(psmSpectrum)
                 .reportedProteinAccession(proteinAcccession)
                 .externalProjectAccession(projectAccession)
                 .externalAnalysisAccession(assayAccession)
+                .ptmList(Arrays.asList(mod1, mod2))
         .build();
 
         mongoService.save(psm);

@@ -118,7 +118,7 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
   public Collection<String> getModificationNames() {
       List<String> ptms = Collections.EMPTY_LIST;
       if(this.ptmList != null && !this.ptmList.isEmpty())
-          ptms = ptmList.stream().map(CvParamProvider::getName).collect(Collectors.toList());
+          ptms = ptmList.stream().map(x-> x.getModificationCvTerm().getName()).collect(Collectors.toList());
     return ptms;
   }
 

@@ -143,7 +143,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     }
 
     @Override
-    public String getProjectDescription() {
+    public String getDescription() {
         return this.description;
     }
 

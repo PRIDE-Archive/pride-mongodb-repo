@@ -11,25 +11,25 @@ public interface PrideArchiveField {
     String ACCESSION = "accession";
 
     /** Project Title **/
-    String PROJECT_TILE = "project_title";
+    String PROJECT_TILE = "title";
 
     /** Additional Attributes Accessions **/
-    String ADDITIONAL_ATTRIBUTES = "additional_attributes";
+    String ADDITIONAL_ATTRIBUTES = "additionalAttributes";
 
     /** Project Description **/
-    String PROJECT_DESCRIPTION = "project_description";
+    String PROJECT_DESCRIPTION = "description";
 
     /** Sample Protocol **/
-    String PROJECT_SAMPLE_PROTOCOL = "project_sample_protocol";
+    String PROJECT_SAMPLE_PROTOCOL = "sampleProtocol";
 
     /** Data Processing Protocol **/
-    String PROJECT_DATA_PROTOCOL = "project_data_protocol";
+    String PROJECT_DATA_PROTOCOL = "dataProtocol";
 
     /** Project Tags **/
-    String PROJECT_TAGS = "project_tags";
+    String PROJECT_TAGS = "tags";
 
     /** Keywords **/
-    String PROJECT_KEYWORDS = "project_keywords";
+    String PROJECT_KEYWORDS = "keywords";
 
     /** PROJECT DOI **/
     String PROJECT_DOI = "project_doi";
@@ -38,7 +38,7 @@ public interface PrideArchiveField {
     String PROJECT_OMICS_LINKS = "project_other_omics";
 
     /** Submission Type **/
-    String PROJECT_SUBMISSION_TYPE = "project_submission_type";
+    String PROJECT_SUBMISSION_TYPE = "submissionType";
 
     /** Submission Date **/
     String SUBMISSION_DATE = "submissionDate";
@@ -60,7 +60,7 @@ public interface PrideArchiveField {
 
     String SOFTWARES = "softwares";
 
-    String QUANTIFICATION_METHODS = "quantification_methods";
+    String QUANTIFICATION_METHODS = "quantificationMethods";
 
     /** This field store all the countries associated with the experiment **/
     String COUNTRIES = "countries";
@@ -72,7 +72,7 @@ public interface PrideArchiveField {
     String PROJECT_REFERENCES = "project_references";
 
     /** Identified PTMs in the Project**/
-    String PROJECT_IDENTIFIED_PTM = "project_identified_ptms";
+    String PROJECT_IDENTIFIED_PTM = "ptmList";
 
     /** Collections Name **/
     String PRIDE_PROJECTS_COLLECTION_NAME = "pride_projects";
@@ -81,10 +81,10 @@ public interface PrideArchiveField {
     String PUBLIC_PROJECT = "public_project";
 
     /** Experimental Factors **/
-    String EXPERIMENTAL_FACTORS = "experimental_factors";
+    String EXPERIMENTAL_FACTORS = "experimentalFactors";
 
     /** External Project accessions that use this following file **/
-    String EXTERNAL_PROJECT_ACCESSIONS = "pride_project_accessions";
+    String EXTERNAL_PROJECT_ACCESSIONS = "externalProjectAccessions";
 
     /** External Project Analysis Accessions that use the file **/
     String EXTERNAL_ANALYSIS_ACCESSIONS = "pride_analysis_accessions";
@@ -104,4 +104,7 @@ public interface PrideArchiveField {
     String SPECTRUM_ACCESSION = "spectrum_accession";
     String PEPTIDE_SEQUENCE = "peptide_sequence";
     String REPORTED_PROTEIN_ACCESISION = "reported_protein_accession";
+
+    /** PRIDE Analysis Collection **/
+    String PRIDE_ANALYSIS_COLLECTION = "pride_analysis_collection";
 }

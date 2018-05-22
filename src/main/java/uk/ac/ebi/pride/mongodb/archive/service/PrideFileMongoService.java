@@ -110,8 +110,8 @@ public class PrideFileMongoService {
 
     /**
      * Find by Project Accession the following Files.
-     * @param accession
-     * @return
+     * @param accession Find Files by Project Accession
+     * @return Return File List
      */
     public List<MongoPrideFile> findFilesByProjectAccession(String accession){
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("projectAccessions=all=" + accession);

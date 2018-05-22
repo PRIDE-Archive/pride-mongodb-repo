@@ -55,18 +55,19 @@ public class PrideFileMongoServiceTest {
     public void searchFilesTest(){
         insertFilesSave();
         String filterRaw = "fileCategory.value==RESULT";
-        Page<MongoPrideFile> pageFiles = prideFileMongoService.searchFiles(filterRaw, new PageRequest(0, 10));
+        //noinspection deprecation
+        Page<MongoPrideFile> pageFiles = prideFileMongoService.searchFiles(filterRaw, PageRequest.of(0, 10));
         System.out.println(pageFiles.getTotalElements());
 
         filterRaw = "fileCategory.value==RESULT,projectAccessions=all=PRD000001";
-        pageFiles = prideFileMongoService.searchFiles(filterRaw, new PageRequest(0, 10));
+        pageFiles = prideFileMongoService.searchFiles(filterRaw, PageRequest.of(0, 10));
         System.out.println(pageFiles.getTotalElements());
 
         List<MongoPrideFile> projectFiles = prideFileMongoService.findFilesByProjectAccession("PRD000001");
         System.out.println(projectFiles.size());
 
         filterRaw = "publicationDate=range=[2005-01-01 TO 2016-12-31]";
-        pageFiles = prideFileMongoService.searchFiles(filterRaw, new PageRequest(0, 10));
+        pageFiles = prideFileMongoService.searchFiles(filterRaw, PageRequest.of(0, 10));
         System.out.println(pageFiles.getTotalElements());
 
     }

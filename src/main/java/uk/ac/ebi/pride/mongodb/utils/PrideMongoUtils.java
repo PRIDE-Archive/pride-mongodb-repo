@@ -30,8 +30,8 @@ public class PrideMongoUtils {
 
     /**
      * This function generates a File accession with the following structure PXF 00000000000.
-     * @param seqName
-     * @return
+     * @param seqName The collection in the MongoDB
+     * @return Incremental Accession
      */
     public static int getNextSequence(MongoOperations mongo, String seqName) {
         CounterCollection counter = mongo.findAndModify(Query.query(Criteria.where("_id").is(seqName)),
@@ -70,8 +70,8 @@ public class PrideMongoUtils {
 
     /**
      * Filter Criteria for Collection
-     * @param filters
-     * @return
+     * @param filters Filters to Create Criteria
+     * @return Final Criteria to Filter
      */
     public static Criteria buildQuery(List<Triple<String,String, String>> filters) {
         Criteria filterCriteria = null;

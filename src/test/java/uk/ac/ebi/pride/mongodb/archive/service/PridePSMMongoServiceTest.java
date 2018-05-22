@@ -10,27 +10,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.querydsl.QSort;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.DefaultIdentifiedModification;
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
-import uk.ac.ebi.pride.archive.dataprovider.identification.ModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.config.ArchiveOracleConfig;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideMongoPSM;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author ypriverol
@@ -175,8 +166,8 @@ public class PridePSMMongoServiceTest {
             String projectAccession,
             String assayAccession) {
 
-        IdentifiedModificationProvider mod1 = new DefaultIdentifiedModification(new DefaultCvParam(MOD_1_ACCESSION, MOD_1_NAME), new DefaultCvParam("MS",NEUTRAL_LOSS_ACC, NEUTRAL_LOSS_NAME,NEUTRAL_LOSS_VAL), Arrays.asList(MOD_1_POS));
-        IdentifiedModificationProvider mod2 = new DefaultIdentifiedModification(new DefaultCvParam(MOD_2_ACCESSION, MOD_2_NAME), Arrays.asList(MOD_2_POS));
+        IdentifiedModificationProvider mod1 = new DefaultIdentifiedModification(new DefaultCvParam(MOD_1_ACCESSION, MOD_1_NAME), new DefaultCvParam("MS",NEUTRAL_LOSS_ACC, NEUTRAL_LOSS_NAME,NEUTRAL_LOSS_VAL), Collections.singletonList(MOD_1_POS));
+        IdentifiedModificationProvider mod2 = new DefaultIdentifiedModification(new DefaultCvParam(MOD_2_ACCESSION, MOD_2_NAME), Collections.singletonList(MOD_2_POS));
 
         PrideMongoPSM psm = PrideMongoPSM.builder().accession(psmId).reportedFileID(psmReportedId)
                 .peptideSequence(psmSequence)
@@ -194,7 +185,7 @@ public class PridePSMMongoServiceTest {
 
     @Test
     public void searchWildcard(){
-        Page<PrideMongoPSM> psms = mongoService.searchPSMs("reportedProteinAccession=regex=" + PARTIAL_ACCESSION_WILDCARD, new PageRequest(0,10));
+        Page<PrideMongoPSM> psms = mongoService.searchPSMs("reportedProteinAccession=regex=" + PARTIAL_ACCESSION_WILDCARD, PageRequest.of(0,10));
         Assert.assertTrue(psms.getTotalElements() == 3);
     }
 }

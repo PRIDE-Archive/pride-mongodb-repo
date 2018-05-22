@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
  * Pride project information collections contains the information for the corresponding project in PRIDE including information about the title, accession, samples, etc. Please
  * read the specification of a PRIDE project here:
  *
- * @author: Yasset Perez-Riverol
- * @version $Id$
+ * @author Yasset Perez-Riverol
+ *
  */
 @Document(collection = PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME)
 @Data

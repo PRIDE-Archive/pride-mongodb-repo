@@ -104,7 +104,7 @@ public class PridePSMMongoService {
      * @return the number of PSMs corresponding to the provided project accession
      */
     public long countByProjectAccession(String projectAccession) {
-        return findPSMsByProjectAccession(projectAccession, new PageRequest(0,10)).getTotalElements();
+        return findPSMsByProjectAccession(projectAccession, PageRequest.of(0,10)).getTotalElements();
     }
 
     /**
@@ -114,7 +114,7 @@ public class PridePSMMongoService {
      * @return the number of PSMs corresponding to the provided project accession
      */
     public long countByAssayAccession(String assayAccession) {
-        return findPSMsByProjectAccession(assayAccession, new PageRequest(0,10)).getTotalElements();
+        return findPSMsByProjectAccession(assayAccession, PageRequest.of(0,10)).getTotalElements();
     }
 
     /**

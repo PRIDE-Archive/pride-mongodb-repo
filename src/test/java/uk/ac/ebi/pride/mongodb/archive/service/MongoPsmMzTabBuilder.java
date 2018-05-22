@@ -53,8 +53,8 @@ public class MongoPsmMzTabBuilder {
               .reportedFileID(metadata.getMZTabID())
               .spectrumAccession(createSpectrumId(mzTabPsm, projectAccession))
               .peptideSequence(mzTabPsm.getSequence())
-              .externalProjectAccession(projectAccession)
-              .externalAnalysisAccession(assayAccession)
+              .projectAccession(projectAccession)
+              .analysisAccession(assayAccession)
               .build();
       result.add(newPsm);
       // To be compatible with the project index we don't clean the protein accession

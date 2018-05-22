@@ -23,13 +23,11 @@ public class MongoPsmMzTabBuilder {
    *
    * @return A map of assay accessions to PSMs
    */
-  public static List<PrideMongoPSM> readPsmsFromMzTabFile(
-      String projectAccession, String assayAccession, MZTabFile mzTabFile) {
+  public static List<PrideMongoPSM> readPsmsFromMzTabFile(String projectAccession, String assayAccession, MZTabFile mzTabFile) {
     List<PrideMongoPSM> result = new LinkedList<>();
     if (mzTabFile != null) {
       result = convertFromMzTabPsmsToPrideArchivePsms(mzTabFile.getPSMs(), mzTabFile.getMetadata(), projectAccession, assayAccession);
-      logger.debug(
-          "Found " + result.size() + " psms for Assay " + assayAccession + " in file " + mzTabFile);
+      logger.debug("Found " + result.size() + " psms for Assay " + assayAccession + " in file " + mzTabFile);
     }
     return result;
   }

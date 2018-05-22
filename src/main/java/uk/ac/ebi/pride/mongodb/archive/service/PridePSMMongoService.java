@@ -46,7 +46,7 @@ public class PridePSMMongoService {
      * @return List of PSMs
      */
     public Page<PrideMongoPSM> findPSMsByProjectAccession(String projectAccession, Pageable page){
-        List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("externalProjectAccession=in=" + projectAccession);
+        List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("projectAccession=in=" + projectAccession);
         Page<PrideMongoPSM> psms =  psmMongoRepository.filterByAttributes(filters, page);
         LOGGER.debug("The number of PSMs for the Project Accession -- " + projectAccession + " -- "+ psms.getTotalElements());
         return psms;
@@ -59,7 +59,7 @@ public class PridePSMMongoService {
      * @return List of PSMs
      */
     public Page<PrideMongoPSM> findPSMsByAnalysisAccession(String analysisAccession, Pageable page){
-        List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("externalAnalysisAccession=in=" + analysisAccession);
+        List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("analysisAccession=in=" + analysisAccession);
         Page<PrideMongoPSM> psms = psmMongoRepository.filterByAttributes(filters, page);
         LOGGER.debug("The number of PSMs for the Analysis Accession -- " + analysisAccession + " -- "+ psms.getTotalElements());
         return psms;

@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @Data
 @Builder
 @Document(collection = PrideArchiveField.PRIDE_PSM_COLLECTION_NAME)
-@CompoundIndexes({@CompoundIndex(name = "compound_psm_accession", def = "{'reportedFileID' : 1, 'reportedProteinAccession': 1, 'externalProjectAccession':1}", unique = true)})
+@CompoundIndexes({@CompoundIndex(name = "compound_psm_accession", def = "{'reportedFileID' : 1, 'reportedProteinAccession': 1, 'projectAccession':1}", unique = true)})
 public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider {
   /*  */
 
@@ -61,13 +61,17 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
 
   /** External Project that contains the PSM **/
   @Indexed(name = EXTERNAL_PROJECT_ACCESSION)
-  private String externalProjectAccession;
+  private String projectAccession;
 
   /** External Analysis that contains the PSM **/
   @Indexed(name = EXTERNAL_ANALYSIS_ACCESSION)
-  private String externalAnalysisAccession;
+  private String analysisAccession;
 
-  /** Database information used to perform the idnetification/quantification **/
+  @Indexed(name = EXTERNAL_RESULT_FILE_ACCESSION)
+  private String resultFileAccession;
+
+
+  /** Database information used to perform the identification/quantification **/
   @Indexed(name = IDENTIFICATION_DATABASE)
   private DatabaseProvider database;
 

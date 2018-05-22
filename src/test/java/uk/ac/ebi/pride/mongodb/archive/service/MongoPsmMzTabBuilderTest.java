@@ -1,7 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.service;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,29 +41,14 @@ public class MongoPsmMzTabBuilderTest {
    *
    * @throws Exception problems reading mzTab files
    */
-  @BeforeClass
-  public static void initialise() throws Exception {
+  @Before
+  public void setup() throws Exception {
 
-    mzTabFileP1A1 =
-        new MZTabFileParser(
-                new File(MongoPsmMzTabBuilderTest.class.getClassLoader().getResource("submissions/2014/01/PXD000581/generated/PRIDE_Exp_Complete_Ac_32411.mztab").toURI()),System.out)
-            .getMZTabFile();
-    mzTabFileP1A2 =
-        new MZTabFileParser(
-                new File(MongoPsmMzTabBuilderTest.class.getClassLoader().getResource("submissions/2014/01/PXD000581/generated/PRIDE_Exp_Complete_Ac_32416.mztab").toURI()), System.out)
-            .getMZTabFile();
-    mzTabFileP1A3 =
-        new MZTabFileParser(
-                new File(MongoPsmMzTabBuilderTest.class.getClassLoader().getResource("submissions/2014/01/PXD000581/generated/PRIDE_Exp_Complete_Ac_32417_null.mztab").toURI()), System.out)
-            .getMZTabFile();
-    mzTabFileP2A1 =
-        new MZTabFileParser(
-                new File(MongoPsmMzTabBuilderTest.class.getClassLoader().getResource("submissions/TST000121/generated/PRIDE_Exp_Complete_Ac_00001.mztab").toURI()),
-                System.out)
-            .getMZTabFile();
+    mzTabFileP1A1 = new MZTabFileParser(new File(Objects.requireNonNull(MongoPsmMzTabBuilderTest.class.getClassLoader().getResource("submissions/2014/01/PXD000581/generated/PRIDE_Exp_Complete_Ac_32411.mztab")).toURI()),System.out).getMZTabFile();
+    mzTabFileP1A2 = new MZTabFileParser(new File(Objects.requireNonNull(MongoPsmMzTabBuilderTest.class.getClassLoader().getResource("submissions/2014/01/PXD000581/generated/PRIDE_Exp_Complete_Ac_32416.mztab")).toURI()), System.out).getMZTabFile();
+    mzTabFileP1A3 = new MZTabFileParser(new File(Objects.requireNonNull(MongoPsmMzTabBuilderTest.class.getClassLoader().getResource("submissions/2014/01/PXD000581/generated/PRIDE_Exp_Complete_Ac_32417_null.mztab")).toURI()), System.out).getMZTabFile();
+    mzTabFileP2A1 = new MZTabFileParser(new File(Objects.requireNonNull(MongoPsmMzTabBuilderTest.class.getClassLoader().getResource("submissions/TST000121/generated/PRIDE_Exp_Complete_Ac_00001.mztab")).toURI()), System.out).getMZTabFile();
   }
-
-
 
   /** Tests reading PSMs from mzTab files. */
   @Test
@@ -88,8 +73,8 @@ public class MongoPsmMzTabBuilderTest {
                     PROJECT_1_ACCESSION + FILE_PRE + stringLinkedListEntry.getKey() + FILE_POST));
         logger.debug("PSM Database: " + psm.getDatabase());
         logger.debug("PSM Database version: " + psm.getDatabase().getVersion());
-        logger.debug("PSM Project Accession: " + psm.getExternalProjectAccession());
-        logger.debug("PSM Assay Accession: " + psm.getExternalAnalysisAccession());
+        logger.debug("PSM Project Accession: " + psm.getProjectAccession());
+        logger.debug("PSM Assay Accession: " + psm.getAnalysisAccession());
         logger.debug("PSM Peptide sequence : " + psm.getPeptideSequence());
         List<CvParamProvider> cvParams = new ArrayList<>();
         CvParamProvider cvParam = new DefaultCvParam("label", "accession", "name", "value");
@@ -103,18 +88,14 @@ public class MongoPsmMzTabBuilderTest {
   @Test
   public void testReadPsmFromMzTabFileAndCompare() {
     Map<String, List<PrideMongoPSM>> psms = new HashMap<>();
-    psms.put(
-        PROJECT_2_ASSAY_1,
-        MongoPsmMzTabBuilder.readPsmsFromMzTabFile(
-            PROJECT_2_ACCESSION, PROJECT_2_ASSAY_1, mzTabFileP2A1));
+    psms.put(PROJECT_2_ASSAY_1, MongoPsmMzTabBuilder.readPsmsFromMzTabFile(PROJECT_2_ACCESSION, PROJECT_2_ASSAY_1, mzTabFileP2A1));
     Assert.assertEquals(1, psms.size());
     PrideMongoPSM firstPsm = psms.entrySet().iterator().next().getValue().get(0);
-    Assert.assertEquals(
-        "TST000121_00001_175_orf19/5636_QSTSSTPCPYWDTGCLCVMPQFAGAVGNCVAK", firstPsm.getId());
+    Assert.assertEquals("TST000121_00001_175_orf19/5636_QSTSSTPCPYWDTGCLCVMPQFAGAVGNCVAK", firstPsm.getId());
     Assert.assertEquals("175", firstPsm.getReportedFileID());
     Assert.assertEquals(
         "TST000121;result_1_sample_1_dat.pride.xml;spectrum=175", firstPsm.getSpectrumAccession());
-    Assert.assertEquals("orf19/5636", firstPsm.getExternalProjectAccession());
+    Assert.assertEquals("orf19/5636", firstPsm.getProjectAccession());
     Assert.assertNull(firstPsm.getUnique());
     Assert.assertNull(firstPsm.getRetentionTime());
     Assert.assertNull(firstPsm.getCharge());

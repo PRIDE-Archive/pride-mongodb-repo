@@ -103,11 +103,11 @@ public interface PrideArchiveField {
     String PRIDE_PSM_COLLECTION_NAME = "pride_psms";
     String SPECTRUM_ACCESSION = "spectrumAccession";
     String PEPTIDE_SEQUENCE = "peptideSequence";
-    String REPORTED_PROTEIN_ACCESSSION = "reportedProteinAccession";
+    String REPORTED_PROTEIN_ACCESSION = "reportedProteinAccession";
     String REPORTED_FILE_ID = "reportedFileID";
     String EXTERNAL_PROJECT_ACCESSION = "projectAccession";
     String EXTERNAL_ANALYSIS_ACCESSION = "analysisAccession";
-    String EXTERNAL_RESULT_FILE_ACCESSION = "resultFileAccession";
+    String ACCESSION_IN_REPORTED_FILE = "accessionInReportedFile";
     String IDENTIFICATION_DATABASE = "database";
     String PEPTIDE_UNIQUE = "peptideUnique";
     String BEST_PSM_SCORE = "bestPSMScore";

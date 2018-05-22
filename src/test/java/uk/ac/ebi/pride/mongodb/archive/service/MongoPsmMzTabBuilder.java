@@ -4,6 +4,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
+import uk.ac.ebi.pride.archive.dataprovider.data.database.DefaultDatabase;
 import uk.ac.ebi.pride.archive.utils.spectrum.SpectrumIDGenerator;
 import uk.ac.ebi.pride.archive.utils.spectrum.SpectrumIdGeneratorPrideArchive;
 import uk.ac.ebi.pride.jmztab.model.*;
@@ -49,12 +50,18 @@ public class MongoPsmMzTabBuilder {
     LinkedList<PrideMongoPSM> result = new LinkedList<>();
     for (PSM mzTabPsm : mzTabPsms) {
       PrideMongoPSM newPsm = PrideMongoPSM.builder()
-              .accession(mzTabPsm.getPSM_ID())
+              .accessionInReportedFile(mzTabPsm.getPSM_ID())
               .reportedFileID(metadata.getMZTabID())
               .spectrumAccession(createSpectrumId(mzTabPsm, projectAccession))
               .peptideSequence(mzTabPsm.getSequence())
               .projectAccession(projectAccession)
               .analysisAccession(assayAccession)
+              .database(new DefaultDatabase(mzTabPsm.getDatabase(), mzTabPsm.getDatabaseVersion()))
+              .projectAccession(projectAccession)
+              .expMassToCharge(mzTabPsm.getExpMassToCharge())
+              .startPosition(mzTabPsm.getStart())
+              .endPosition(mzTabPsm.getEnd())
+              .charge(mzTabPsm.getCharge())
               .build();
       result.add(newPsm);
       // To be compatible with the project index we don't clean the protein accession

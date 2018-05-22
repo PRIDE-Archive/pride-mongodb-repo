@@ -21,10 +21,10 @@ public class MongoPsmMzTabBuilderTest {
 
   private static final String PROJECT_1_ACCESSION = "PXD000581";
   private static final String PROJECT_2_ACCESSION = "TST000121";
-  private static final String PROJECT_1_ASSAY_1 = "32411";
-  private static final String PROJECT_1_ASSAY_2 = "32416";
-  private static final String PROJECT_1_ASSAY_3 = "32417";
-  private static final String PROJECT_2_ASSAY_1 = "00001";
+  private static final String PROJECT_1_ANALYSIS_1 = "32411";
+  private static final String PROJECT_1_ANALYSIS_2 = "32416";
+  private static final String PROJECT_1_ANALYSIS_3 = "32417";
+  private static final String PROJECT_2_ANALYSIS_1 = "00001";
   private static final String MOD_ACCESSION = "MOD:01214";
   private static final String MOD_NAME = "iodoacetamide - site C";
   private static final String FILE_PRE = ";PRIDE_Exp_Complete_Ac_";
@@ -54,23 +54,16 @@ public class MongoPsmMzTabBuilderTest {
   @Test
   public void testReadPsmsFromMzTabFilesDirectory() {
     Map<String, List<PrideMongoPSM>> psms = new HashMap<>();
-    psms.put(
-        PROJECT_1_ASSAY_1, MongoPsmMzTabBuilder.readPsmsFromMzTabFile(
-            PROJECT_1_ACCESSION, PROJECT_1_ASSAY_1, mzTabFileP1A1));
-    psms.put(
-        PROJECT_1_ASSAY_2, MongoPsmMzTabBuilder.readPsmsFromMzTabFile(
-            PROJECT_1_ACCESSION, PROJECT_1_ASSAY_2, mzTabFileP1A2));
-    psms.put(
-        PROJECT_1_ASSAY_3,  MongoPsmMzTabBuilder.readPsmsFromMzTabFile(
-            PROJECT_1_ACCESSION, PROJECT_1_ASSAY_3, mzTabFileP1A3));
+    psms.put(PROJECT_1_ANALYSIS_1, MongoPsmMzTabBuilder.readPsmsFromMzTabFile(PROJECT_1_ACCESSION, PROJECT_1_ANALYSIS_1, mzTabFileP1A1));
+    psms.put(PROJECT_1_ANALYSIS_2, MongoPsmMzTabBuilder.readPsmsFromMzTabFile(PROJECT_1_ACCESSION, PROJECT_1_ANALYSIS_2, mzTabFileP1A2));
+    psms.put(PROJECT_1_ANALYSIS_3,  MongoPsmMzTabBuilder.readPsmsFromMzTabFile(PROJECT_1_ACCESSION, PROJECT_1_ANALYSIS_3, mzTabFileP1A3));
     Assert.assertEquals(psms.size(), NUM_ASSAYS);
     for (Map.Entry<String, List<PrideMongoPSM>> stringLinkedListEntry : psms.entrySet()) {
       for (PrideMongoPSM psm : stringLinkedListEntry.getValue()) {
         logger.debug(psm.getSpectrumAccession());
         Assert.assertTrue(
             psm.getSpectrumAccession()
-                .startsWith(
-                    PROJECT_1_ACCESSION + FILE_PRE + stringLinkedListEntry.getKey() + FILE_POST));
+                .startsWith(PROJECT_1_ACCESSION + FILE_PRE + stringLinkedListEntry.getKey() + FILE_POST));
         logger.debug("PSM Database: " + psm.getDatabase());
         logger.debug("PSM Database version: " + psm.getDatabase().getVersion());
         logger.debug("PSM Project Accession: " + psm.getProjectAccession());
@@ -88,14 +81,13 @@ public class MongoPsmMzTabBuilderTest {
   @Test
   public void testReadPsmFromMzTabFileAndCompare() {
     Map<String, List<PrideMongoPSM>> psms = new HashMap<>();
-    psms.put(PROJECT_2_ASSAY_1, MongoPsmMzTabBuilder.readPsmsFromMzTabFile(PROJECT_2_ACCESSION, PROJECT_2_ASSAY_1, mzTabFileP2A1));
+    psms.put(PROJECT_2_ANALYSIS_1, MongoPsmMzTabBuilder.readPsmsFromMzTabFile(PROJECT_2_ACCESSION, PROJECT_2_ANALYSIS_1, mzTabFileP2A1));
     Assert.assertEquals(1, psms.size());
     PrideMongoPSM firstPsm = psms.entrySet().iterator().next().getValue().get(0);
-    Assert.assertEquals("TST000121_00001_175_orf19/5636_QSTSSTPCPYWDTGCLCVMPQFAGAVGNCVAK", firstPsm.getId());
-    Assert.assertEquals("175", firstPsm.getReportedFileID());
+    Assert.assertEquals("175", firstPsm.getAccessionInReportedFile());
     Assert.assertEquals(
         "TST000121;result_1_sample_1_dat.pride.xml;spectrum=175", firstPsm.getSpectrumAccession());
-    Assert.assertEquals("orf19/5636", firstPsm.getProjectAccession());
+    Assert.assertEquals("TST000121", firstPsm.getProjectAccession());
     Assert.assertNull(firstPsm.getUnique());
     Assert.assertNull(firstPsm.getRetentionTime());
     Assert.assertNull(firstPsm.getCharge());

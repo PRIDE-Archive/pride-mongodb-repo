@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.archive.model;
+package uk.ac.ebi.pride.mongodb.archive.model.psms;
 
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +13,7 @@ import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PeptideSequenceProvider
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
+import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
 
 import java.util.Collection;

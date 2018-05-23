@@ -1,6 +1,5 @@
 package uk.ac.ebi.pride.mongodb.archive.service;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +16,8 @@ import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.config.ArchiveOracleConfig;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.model.PrideMongoPSM;
+import uk.ac.ebi.pride.mongodb.archive.model.psms.PrideMongoPSM;
+import uk.ac.ebi.pride.mongodb.archive.service.psms.PridePSMMongoService;
 
 
 import java.util.*;

@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.archive.model;
+package uk.ac.ebi.pride.mongodb.archive.model.projects;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,6 +13,7 @@ import uk.ac.ebi.pride.archive.dataprovider.project.AnalysisProvider;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.software.SoftwareProvider;
 import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
+import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
 import java.util.*;
 

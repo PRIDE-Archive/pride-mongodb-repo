@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.archive.model;
+package uk.ac.ebi.pride.mongodb.archive.model.projects;
 
 import lombok.Builder;
 import lombok.Data;

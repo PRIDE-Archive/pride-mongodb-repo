@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.archive.model;
+package uk.ac.ebi.pride.mongodb.archive.model.projects;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.pride.archive.dataprovider.file.FileProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
+import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,7 +29,7 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
     @Indexed(name = ID)
     ObjectId id;
 
-    /** The project accessions are releated with the following File **/
+    /** The project accessions are related with the following File **/
     @Indexed(name = EXTERNAL_PROJECT_ACCESSIONS)
     Set<String> projectAccessions;
 

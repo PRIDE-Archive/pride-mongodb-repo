@@ -1,10 +1,10 @@
-package uk.ac.ebi.pride.mongodb.archive.repo;
+package uk.ac.ebi.pride.mongodb.archive.repo.psms;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import uk.ac.ebi.pride.mongodb.archive.model.PrideMongoPSM;
+import uk.ac.ebi.pride.mongodb.archive.model.psms.PrideMongoPSM;
 
 
 import java.util.Collection;

@@ -1,10 +1,10 @@
-package uk.ac.ebi.pride.mongodb.archive.repo;
+package uk.ac.ebi.pride.mongodb.archive.repo.projects;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
-import uk.ac.ebi.pride.mongodb.archive.model.MongoPrideFile;
+import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
 import java.util.Optional;

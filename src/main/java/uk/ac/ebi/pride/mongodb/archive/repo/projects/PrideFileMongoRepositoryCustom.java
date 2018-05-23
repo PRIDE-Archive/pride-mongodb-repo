@@ -1,9 +1,9 @@
-package uk.ac.ebi.pride.mongodb.archive.repo;
+package uk.ac.ebi.pride.mongodb.archive.repo.projects;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import uk.ac.ebi.pride.mongodb.archive.model.MongoPrideFile;
+import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideFile;
 
 import java.util.List;
 

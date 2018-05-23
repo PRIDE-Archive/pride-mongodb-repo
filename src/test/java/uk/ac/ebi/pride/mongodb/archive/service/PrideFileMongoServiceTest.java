@@ -14,7 +14,8 @@ import uk.ac.ebi.pride.archive.repo.repos.file.ProjectFileRepository;
 import uk.ac.ebi.pride.archive.repo.repos.project.ProjectRepository;
 import uk.ac.ebi.pride.mongodb.archive.config.ArchiveOracleConfig;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectTestConfig;
-import uk.ac.ebi.pride.mongodb.archive.model.MongoPrideFile;
+import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideFile;
+import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideFileMongoService;
 
 
 import java.util.ArrayList;
@@ -44,11 +45,6 @@ public class PrideFileMongoServiceTest {
     public void save() {
         MongoPrideFile file = MongoPrideFile.builder().fileName("Filename.txt").build();
         prideFileMongoService.insert(file);
-    }
-
-    @Test
-    public void parallelSave() {
-        insertFilesSave();
     }
 
     @Test
@@ -100,7 +96,7 @@ public class PrideFileMongoServiceTest {
        }
        );
 
-        Assert.assertEquals(400, prideFileMongoService.count());
+        Assert.assertEquals(401, prideFileMongoService.count());
 
     }
 }

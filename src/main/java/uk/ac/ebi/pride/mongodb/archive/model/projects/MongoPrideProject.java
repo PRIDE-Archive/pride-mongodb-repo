@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.archive.model;
+package uk.ac.ebi.pride.mongodb.archive.model.projects;
 
 import lombok.*;
 import org.bson.types.ObjectId;
@@ -9,6 +9,7 @@ import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
+import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
 
 import java.util.*;

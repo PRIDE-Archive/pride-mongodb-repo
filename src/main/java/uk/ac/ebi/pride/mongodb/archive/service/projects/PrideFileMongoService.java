@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.archive.service;
+package uk.ac.ebi.pride.mongodb.archive.service.projects;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
@@ -8,9 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
-import uk.ac.ebi.pride.mongodb.archive.model.MongoPrideFile;
+import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.repo.PrideFileMongoRepository;
+import uk.ac.ebi.pride.mongodb.archive.repo.projects.PrideFileMongoRepository;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
 import java.text.DecimalFormat;

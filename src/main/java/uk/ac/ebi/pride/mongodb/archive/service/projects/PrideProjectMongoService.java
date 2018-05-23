@@ -1,11 +1,11 @@
-package uk.ac.ebi.pride.mongodb.archive.service;
+package uk.ac.ebi.pride.mongodb.archive.service.projects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.ac.ebi.pride.mongodb.archive.model.MongoPrideProject;
-import uk.ac.ebi.pride.mongodb.archive.repo.PrideProjectMongoRepository;
+import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
+import uk.ac.ebi.pride.mongodb.archive.repo.projects.PrideProjectMongoRepository;
 
 /**
  * The {@link PrideProjectMongoService} is used to perform operations into Mongo Database for Pride Archive Projects.

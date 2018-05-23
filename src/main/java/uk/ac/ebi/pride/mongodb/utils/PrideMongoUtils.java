@@ -43,26 +43,28 @@ public class PrideMongoUtils {
      * This function is also replicated in other PRIDE libraries for Query purpose. The query Filter has the structure:
      * field1==value1, field2==value2, field=all=value2...
      *
-     * @param filterQuery filterQuery
+     * @param filterQueryList Lists of Queries and filters
      * @return LinkedMultiValueMap with the key and the values.
      */
-    public static List<Triple<String, String, String>> parseFilterParameters(String filterQuery){
+    public static List<Triple<String, String, String>> parseFilterParameters(String ... filterQueryList){
         List<Triple<String, String, String>> filters = new ArrayList<>();
         Pattern composite = Pattern.compile("(.*)=(.*)=(.*)");
-        if(filterQuery != null && !filterQuery.trim().isEmpty()){
-            String[] filtersString = (filterQuery + ",").split(",");
-            if(filtersString.length > 0){
-                Arrays.asList(filtersString).forEach(filter ->{
-                    String[] filterString = filter.split("==");
-                    Matcher matcher = composite.matcher(filter);
-                    if(filterString.length == 2)
-                        filters.add(new ImmutableTriple<>(filterString[0], "in",filterString[1]));
-                    else if(matcher.find()){
-                        filters.add(new ImmutableTriple<>(matcher.group(1), matcher.group(2),matcher.group(3)));
-                    } else
-                        LOGGER.debug("The filter provided is not well-formatted, please format the filter in field:value -- " + filter);
+        for(String filterQuery: filterQueryList){
+            if(filterQuery != null && !filterQuery.trim().isEmpty()){
+                String[] filtersString = (filterQuery + ",").split(",");
+                if(filtersString.length > 0){
+                    Arrays.asList(filtersString).forEach(filter ->{
+                        String[] filterString = filter.split("==");
+                        Matcher matcher = composite.matcher(filter);
+                        if(filterString.length == 2)
+                            filters.add(new ImmutableTriple<>(filterString[0], "in",filterString[1]));
+                        else if(matcher.find()){
+                            filters.add(new ImmutableTriple<>(matcher.group(1), matcher.group(2),matcher.group(3)));
+                        } else
+                            LOGGER.debug("The filter provided is not well-formatted, please format the filter in field:value -- " + filter);
 
-                });
+                    });
+                }
             }
         }
         return filters;

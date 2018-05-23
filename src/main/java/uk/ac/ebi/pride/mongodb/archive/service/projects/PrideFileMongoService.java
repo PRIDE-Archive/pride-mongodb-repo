@@ -118,5 +118,33 @@ public class PrideFileMongoService {
         return fileRepository.filterByAttributes(filters);
     }
 
+    /**
+     * Find by Project Accession the following Files.
+     * @param accession Find Files by Project Accession
+     * @return Return File List
+     */
+    public Page<MongoPrideFile> findFilesByProjectAccessionAndFiler(String accession, String filterQuery, Pageable page){
+        List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("projectAccessions=all=" + accession, filterQuery);
+        return fileRepository.filterByAttributes(filters, page);
+    }
+
+    /**
+     * Find a PRIDE File by the accession of the File
+     * @param fileAccession File accession
+     * @return Optional
+     */
+    public Optional<MongoPrideFile> findByFileAccession(String fileAccession){
+        return fileRepository.findPrideFileByAccession(fileAccession);
+    }
+
+    /**
+     * Get all the files from PRIDE Archive
+     * @param page Pageable
+     * @return Page with all the Files
+     */
+    public Page<MongoPrideFile> findAll(Pageable page){
+        return fileRepository.findAll(page);
+    }
+
 
 }

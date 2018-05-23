@@ -78,7 +78,6 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
     private Date updatedDate;
 
     @Indexed(name = ADDITIONAL_ATTRIBUTES)
-    @Getter(AccessLevel.NONE)
     List<CvParamProvider> additionalAttributes;
 
     @Override

@@ -13,7 +13,7 @@ import uk.ac.ebi.pride.archive.repo.repos.file.ProjectFile;
 import uk.ac.ebi.pride.archive.repo.repos.file.ProjectFileRepository;
 import uk.ac.ebi.pride.archive.repo.repos.project.ProjectRepository;
 import uk.ac.ebi.pride.mongodb.archive.config.ArchiveOracleConfig;
-import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectTestConfig;
+import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideFileMongoService;
 
@@ -29,7 +29,7 @@ import java.util.stream.IntStream;
  * @author ypriverol
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {PrideProjectTestConfig.class,  ArchiveOracleConfig.class})
+@SpringBootTest(classes = {PrideProjectFongoTestConfig.class,  ArchiveOracleConfig.class})
 public class PrideFileMongoServiceTest {
 
     @Autowired

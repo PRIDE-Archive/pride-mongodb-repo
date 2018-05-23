@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectTestConfig;
+import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
 import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideProjectMongoService;
 
@@ -14,7 +14,7 @@ import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideProjectMongoService
  */
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {PrideProjectTestConfig.class})
+@SpringBootTest(classes = {PrideProjectFongoTestConfig.class})
 public class PrideProjectMongoServiceTest {
 
     @Autowired

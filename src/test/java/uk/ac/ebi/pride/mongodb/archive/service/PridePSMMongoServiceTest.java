@@ -14,7 +14,7 @@ import uk.ac.ebi.pride.archive.dataprovider.data.ptm.DefaultIdentifiedModificati
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.config.ArchiveOracleConfig;
-import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectTestConfig;
+import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.psms.PrideMongoPSM;
 import uk.ac.ebi.pride.mongodb.archive.service.psms.PridePSMMongoService;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * @author ypriverol
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {PrideProjectTestConfig.class,  ArchiveOracleConfig.class})
+@SpringBootTest(classes = {PrideProjectFongoTestConfig.class,  ArchiveOracleConfig.class})
 public class PridePSMMongoServiceTest {
 
     public static final long ZERO_DOCS = 0L;

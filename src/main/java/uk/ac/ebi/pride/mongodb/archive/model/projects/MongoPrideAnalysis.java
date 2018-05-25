@@ -36,6 +36,10 @@ public class MongoPrideAnalysis implements PrideArchiveField, AnalysisProvider {
     @Indexed(unique = true, name = PrideArchiveField.ACCESSION)
     String accession;
 
+    /** Project Analysis Accession**/
+    @Indexed(unique = true, name = PrideArchiveField.PX_ACCESSION)
+    String pxAccession;
+
     /** This is a List of Project Accessions related with the Analysis **/
     @Indexed(name = PrideArchiveField.EXTERNAL_PROJECT_ACCESSIONS)
     Set<String> externalProjectAccessions;
@@ -47,8 +51,6 @@ public class MongoPrideAnalysis implements PrideArchiveField, AnalysisProvider {
      *  **/
     @Indexed(name = FILE_RELATIONS_IN_PROJECT)
     List<Triple<String, List<String>, CvParamProvider>> submittedFileRelations;
-
-
 
     /** Title of the Project **/
     @Indexed(name = PrideArchiveField.PROJECT_TILE)

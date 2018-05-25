@@ -12,6 +12,9 @@ public interface PrideArchiveField {
     /** Project Accession **/
     String ACCESSION = "accession";
 
+    /** Project Accession **/
+    String PX_ACCESSION = "pxAccession";
+
     /** Project Title **/
     String PROJECT_TILE = "title";
 

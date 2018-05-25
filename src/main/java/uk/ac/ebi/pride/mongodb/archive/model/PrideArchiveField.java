@@ -1,6 +1,8 @@
 package uk.ac.ebi.pride.mongodb.archive.model;
 
 /**
+ * All properties used by the PRIDE Mongo Project, this values are used to perform queries in each service.
+ *
  * @author ypriverol
  */
 public interface PrideArchiveField {

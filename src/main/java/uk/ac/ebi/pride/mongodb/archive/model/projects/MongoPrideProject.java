@@ -10,6 +10,7 @@ import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
+import uk.ac.ebi.pride.utilities.util.Triple;
 
 
 import java.util.*;
@@ -43,6 +44,15 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     /** PRIDE Project short description **/
     @Indexed(name = PrideArchiveField.PROJECT_DESCRIPTION)
     private String description;
+
+    /** This property defines a relation between files in the Project.
+     *  - The first value of the {@link Triple} defines the parent File Accession
+     *  - The second value of the {@link Triple} defines the List of child Files Accessions
+     *  - The third value of the {@link Triple} is a {@link CvParamProvider} that defines the relation between files
+     *  **/
+    @Indexed(name = FILE_RELATIONS_IN_PROJECT)
+    List<Triple<String, List<String>, CvParamProvider>> submittedFileRelations;
+
 
     /** Sample Processing **/
     @Indexed(name = PrideArchiveField.PROJECT_SAMPLE_PROTOCOL)

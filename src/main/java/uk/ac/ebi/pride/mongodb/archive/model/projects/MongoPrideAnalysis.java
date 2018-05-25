@@ -14,11 +14,12 @@ import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.software.SoftwareProvider;
 import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
+import uk.ac.ebi.pride.utilities.util.Triple;
 
 import java.util.*;
 
 /**
- * The analysis collection aims to provide a mechanisms to included multiple reanalysis for an specific dataset.
+ * The analysis collection aims to provide a mechanisms to included multiple reanalysis for an specific project.
  *
  * @author ypriverol
  */
@@ -38,6 +39,15 @@ public class MongoPrideAnalysis implements PrideArchiveField, AnalysisProvider {
     /** This is a List of Project Accessions related with the Analysis **/
     @Indexed(name = PrideArchiveField.EXTERNAL_PROJECT_ACCESSIONS)
     Set<String> externalProjectAccessions;
+
+    /** This property defines a relation between files in the Analysis.
+     *  - The first value of the {@link Triple} defines the parent File Accession
+     *  - The second value of the {@link Triple} defines the List of child Files Accessions
+     *  - The third value of the {@link Triple} is a {@link CvParamProvider} that defines the relation between files
+     *  **/
+    @Indexed(name = FILE_RELATIONS_IN_PROJECT)
+    List<Triple<String, List<String>, CvParamProvider>> submittedFileRelations;
+
 
 
     /** Title of the Project **/

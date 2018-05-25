@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.pride.archive.dataprovider.file.FileProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
+import uk.ac.ebi.pride.utilities.util.Triple;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -79,6 +80,14 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
 
     @Indexed(name = ADDITIONAL_ATTRIBUTES)
     List<CvParamProvider> additionalAttributes;
+
+    /** This property defines a relation between files in the Project.
+     *  - The first value of the {@link Triple} defines the parent File Accession
+     *  - The second value of the {@link Triple} defines the List of child Files Accessions
+     *  - The third value of the {@link Triple} is a {@link CvParamProvider} that defines the relation between files
+     *  **/
+    @Indexed(name = FILE_RELATIONS_IN_PROJECT)
+    List<Triple<String, List<String>, CvParamProvider>> submittedFileRelations;
 
     @Override
     public String getAccession() {

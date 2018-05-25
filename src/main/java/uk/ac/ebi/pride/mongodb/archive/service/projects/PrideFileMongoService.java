@@ -46,11 +46,9 @@ public class PrideFileMongoService {
      */
     public MongoPrideFile insert(MongoPrideFile prideFile) {
         NumberFormat formatter = new DecimalFormat("00000000000");
-        if (!fileRepository.findPrideFileByAccession(prideFile.getAccession()).isPresent()) {
-            if (prideFile.getAccession() == null) {
-                String accession = "PXF" + formatter.format(PrideMongoUtils.getNextSizedSequence(mongo, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, 1));
-                prideFile.setAccession(accession);
-            }
+        if (prideFile.getAccession() == null) {
+            String accession = "PXF" + formatter.format(PrideMongoUtils.getNextSizedSequence(mongo, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, 1));
+            prideFile.setAccession(accession);
             prideFile = fileRepository.save(prideFile);
             LOGGER.debug("A new project has been saved into MongoDB database with Accession -- " + prideFile.getAccession());
         } else
@@ -60,7 +58,7 @@ public class PrideFileMongoService {
 
 
     /**
-     * Insert is allowing using to create a Accession for the File and insert the actual File into MongoDB.
+     * Insert is allowing using to create a File Accession for the File and insert the actual File into MongoDB.
      * @param prideFiles MongoPride File List
      * @return MongoPrideFile
      */
@@ -69,10 +67,10 @@ public class PrideFileMongoService {
         List<MongoPrideFile> newFiles = new ArrayList<>();
         List<MongoPrideFile> insertedFiles = new ArrayList<>();
         prideFiles.forEach(prideFile -> {
-            if (!fileRepository.findPrideFileByAccession(prideFile.getAccession()).isPresent())
+            if (prideFile.getAccession() == null)
                 newFiles.add(prideFile);
             else
-                LOGGER.error("A File with similar accession has been found in the MongoDB database, please use update function -- " + prideFile.getAccession());
+                LOGGER.error("The current File has an Accession already, please use the update function -- " + prideFile.getAccession());
 
         });
         if(!newFiles.isEmpty()){
@@ -113,6 +111,31 @@ public class PrideFileMongoService {
             prideFile.get().setProjectAccessions(currentProjectAccesions);
             fileRepository.save(prideFile.get());
             LOGGER.info("The following MongoPrideFile -- " + prideFile.get().getAccession() + " has been updated with a new Project Accession -- " + projectAccessions);
+            return true;
+        }
+        LOGGER.error("The following  MongoPrideFile is not in the database -- " + fileAccession);
+        return false;
+    }
+
+
+    /**
+     * The current function add the following Project accession To the file Accession in the database. If the file is updated in the database
+     * the function return true, if the file can't be updated in the database.
+     *
+     * @param fileAccession File Accession
+     * @param analysisAccessions Project Archive Accession
+     * @return True if the File can be updated.
+     */
+    public boolean addAnalysisAccessions(String fileAccession, List<String> analysisAccessions){
+        Optional<MongoPrideFile> prideFile = fileRepository.findPrideFileByAccession(fileAccession);
+        if(prideFile.isPresent()) {
+            Set<String> currentAnalysisAccesions = prideFile.get().getAnalysisAccessions();
+            if (currentAnalysisAccesions == null)
+                currentAnalysisAccesions = new HashSet<>();
+            currentAnalysisAccesions.addAll(analysisAccessions);
+            prideFile.get().setProjectAccessions(currentAnalysisAccesions);
+            fileRepository.save(prideFile.get());
+            LOGGER.info("The following MongoPrideFile -- " + prideFile.get().getAccession() + " has been updated with a new Analysis Accession -- " + analysisAccessions);
             return true;
         }
         LOGGER.error("The following  MongoPrideFile is not in the database -- " + fileAccession);

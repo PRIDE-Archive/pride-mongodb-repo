@@ -15,13 +15,10 @@ import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
- * This Service allows to handle the Project Repositories.
+ * This Service allows to handle the Project File Repositories.
  *
  * @author ypriverol
  */
@@ -51,7 +48,7 @@ public class PrideFileMongoService {
         NumberFormat formatter = new DecimalFormat("00000000000");
         if (!fileRepository.findPrideFileByAccession(prideFile.getAccession()).isPresent()) {
             if (prideFile.getAccession() == null) {
-                String accession = "PXF" + formatter.format(PrideMongoUtils.getNextSequence(mongo, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME));
+                String accession = "PXF" + formatter.format(PrideMongoUtils.getNextSizedSequence(mongo, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, 1));
                 prideFile.setAccession(accession);
             }
             prideFile = fileRepository.save(prideFile);
@@ -59,6 +56,35 @@ public class PrideFileMongoService {
         } else
             LOGGER.error("A project with similar accession has been found in the MongoDB database, please use update function -- " + prideFile.getAccession());
         return prideFile;
+    }
+
+
+    /**
+     * Insert is allowing using to create a Accession for the File and insert the actual File into MongoDB.
+     * @param prideFiles MongoPride File List
+     * @return MongoPrideFile
+     */
+    public List<MongoPrideFile> insertAll(List<MongoPrideFile> prideFiles) {
+        NumberFormat formatter = new DecimalFormat("00000000000");
+        List<MongoPrideFile> newFiles = new ArrayList<>();
+        List<MongoPrideFile> insertedFiles = new ArrayList<>();
+        prideFiles.forEach(prideFile -> {
+            if (!fileRepository.findPrideFileByAccession(prideFile.getAccession()).isPresent())
+                newFiles.add(prideFile);
+            else
+                LOGGER.error("A File with similar accession has been found in the MongoDB database, please use update function -- " + prideFile.getAccession());
+
+        });
+        if(!newFiles.isEmpty()){
+            int finalNumber = PrideMongoUtils.getNextSizedSequence(mongo, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, newFiles.size()) + 1;
+            for (MongoPrideFile file: newFiles){
+                String accession = "PXF" + formatter.format(finalNumber - 1);
+                file.setAccession(accession);
+                insertedFiles.add(fileRepository.save(file));
+                LOGGER.debug("A new project has been saved into MongoDB database with Accession -- " + accession);
+            }
+        }
+        return insertedFiles;
     }
 
     /**
@@ -144,6 +170,13 @@ public class PrideFileMongoService {
      */
     public Page<MongoPrideFile> findAll(Pageable page){
         return fileRepository.findAll(page);
+    }
+
+    /**
+     * Delete all Files
+     */
+    public void deleteAll(){
+        fileRepository.deleteAll();
     }
 
 

@@ -72,7 +72,7 @@ public class MongoPsmMzTabBuilderTest {
         List<CvParamProvider> cvParams = new ArrayList<>();
         CvParamProvider cvParam = new DefaultCvParam("label", "accession", "name", "value");
         cvParams.add(cvParam);
-        psm.setBestPSMScore(new Tuple<CvParamProvider,CvParamProvider>(cvParam, null));
+        psm.setBestPSMScore(new Tuple<>(cvParam, null));
       }
     }
   }

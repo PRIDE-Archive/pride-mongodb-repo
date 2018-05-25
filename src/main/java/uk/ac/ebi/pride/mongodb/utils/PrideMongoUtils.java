@@ -29,13 +29,13 @@ public class PrideMongoUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(PrideMongoUtils.class);
 
     /**
-     * This function generates a File accession with the following structure PXF 00000000000.
+     * This function generates an accession by incremented by the parameter size
      * @param seqName The collection in the MongoDB
      * @return Incremental Accession
      */
-    public static int getNextSequence(MongoOperations mongo, String seqName) {
+    public static int getNextSizedSequence(MongoOperations mongo, String seqName, int size) {
         CounterCollection counter = mongo.findAndModify(Query.query(Criteria.where("_id").is(seqName)),
-                new Update().inc("seq",1), FindAndModifyOptions.options().returnNew(true).upsert(true), CounterCollection.class);
+                new Update().inc("seq", size), FindAndModifyOptions.options().returnNew(true).upsert(true), CounterCollection.class);
         return counter.getSeq();
     }
 

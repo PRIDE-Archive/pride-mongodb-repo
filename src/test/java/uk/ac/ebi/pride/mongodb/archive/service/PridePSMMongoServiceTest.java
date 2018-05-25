@@ -186,6 +186,6 @@ public class PridePSMMongoServiceTest {
     @Test
     public void searchWildcard(){
         Page<PrideMongoPSM> psms = mongoService.searchPSMs("reportedProteinAccession=regex=" + PARTIAL_ACCESSION_WILDCARD, PageRequest.of(0,10));
-        Assert.assertTrue(psms.getTotalElements() == 3);
+        Assert.assertEquals(3, psms.getTotalElements());
     }
 }

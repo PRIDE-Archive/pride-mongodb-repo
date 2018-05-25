@@ -39,7 +39,7 @@ public class PrideAnalysisMongoService {
     public MongoPrideAnalysis insert(MongoPrideAnalysis prideAnalysis) {
         NumberFormat formatter = new DecimalFormat("000000");
         if (prideAnalysis.getAccession() == null) {
-            String accession = "PXDA" + formatter.format(PrideMongoUtils.getNextSizedSequence(mongo, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, 1));
+            String accession = "PXDA" + formatter.format(PrideMongoUtils.getNextSizedSequence(mongo, PrideArchiveField.PRIDE_ANALYSIS_COLLECTION, 1));
             prideAnalysis.setAccession(accession);
             prideAnalysis = repository.save(prideAnalysis);
             LOGGER.debug("A new project has been saved into MongoDB database with Accession -- " + prideAnalysis.getAccession());
@@ -47,7 +47,6 @@ public class PrideAnalysisMongoService {
             LOGGER.error("A project with similar accession has been found in the MongoDB database, please use update function -- " + prideAnalysis.getAccession());
         return prideAnalysis;
     }
-
 
 
 

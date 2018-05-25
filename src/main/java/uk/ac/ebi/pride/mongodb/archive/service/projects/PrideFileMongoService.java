@@ -76,7 +76,8 @@ public class PrideFileMongoService {
         if(!newFiles.isEmpty()){
             int finalNumber = PrideMongoUtils.getNextSizedSequence(mongo, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, newFiles.size()) + 1;
             for (MongoPrideFile file: newFiles){
-                String accession = "PXF" + formatter.format(finalNumber - 1);
+                finalNumber--;
+                String accession = "PXF" + formatter.format(finalNumber);
                 file.setAccession(accession);
                 insertedFiles.add(fileRepository.save(file));
                 LOGGER.debug("A new project has been saved into MongoDB database with Accession -- " + accession);

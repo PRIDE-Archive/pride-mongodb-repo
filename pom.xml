@@ -141,6 +141,13 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>uk.ac.ebi.pride</groupId>
+            <artifactId>px-submission-core</artifactId>
+            <version>${uk.ac.ebi.pride.px-submission-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

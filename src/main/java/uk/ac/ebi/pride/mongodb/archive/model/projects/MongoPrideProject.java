@@ -47,11 +47,11 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     /** This property defines a relation between files in the Project.
      *  - The first value of the {@link Triple} defines the parent File Accession
-     *  - The second value of the {@link Triple} defines the List of child Files Accessions
+     *  - The second value of the {@link Triple} defines the child File Accession
      *  - The third value of the {@link Triple} is a {@link CvParamProvider} that defines the relation between files
      *  **/
     @Indexed(name = FILE_RELATIONS_IN_PROJECT)
-    List<Triple<String, List<String>, CvParamProvider>> submittedFileRelations;
+    List<Triple<String, String, CvParamProvider>> submittedFileRelations;
 
 
     /** Sample Processing **/

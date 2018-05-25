@@ -53,7 +53,7 @@ public class PrideProjectMongoService {
      * @param projectFileRelations Project File relations
      * @return MongoPrideProject
      */
-    public Optional<MongoPrideProject> updateFileRelations(String projectAccession, List<Triple<String, List<String>, CvParamProvider>> projectFileRelations){
+    public Optional<MongoPrideProject> updateFileRelations(String projectAccession, List<Triple<String, String, CvParamProvider>> projectFileRelations){
         Optional<MongoPrideProject> project = repository.findByAccession(projectAccession);
         if(project.isPresent()){
             project.get().setSubmittedFileRelations(projectFileRelations);

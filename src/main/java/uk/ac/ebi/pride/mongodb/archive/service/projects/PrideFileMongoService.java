@@ -12,6 +12,7 @@ import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.repo.projects.PrideFileMongoRepository;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
+import uk.ac.ebi.pride.utilities.util.Tuple;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -58,19 +59,24 @@ public class PrideFileMongoService {
 
 
     /**
-     * Insert is allowing using to create a File Accession for the File and insert the actual File into MongoDB.
+     * Insert is allowing using to create a File Accession for the File and insert the actual File into MongoDB. The method return a List of Tuples
+     * where the key is the submitted File and the value the inserted File.
+     *
      * @param prideFiles MongoPride File List
-     * @return MongoPrideFile
+     * @return List of Tuple
      */
-    public List<MongoPrideFile> insertAll(List<MongoPrideFile> prideFiles) {
+    public List<Tuple<MongoPrideFile,MongoPrideFile>> insertAll(List<MongoPrideFile> prideFiles) {
         NumberFormat formatter = new DecimalFormat("00000000000");
         List<MongoPrideFile> newFiles = new ArrayList<>();
-        List<MongoPrideFile> insertedFiles = new ArrayList<>();
+        List<Tuple<MongoPrideFile, MongoPrideFile>> insertedFiles = new ArrayList<>();
         prideFiles.forEach(prideFile -> {
             if (prideFile.getAccession() == null)
                 newFiles.add(prideFile);
-            else
+            else{
+                insertedFiles.add(new Tuple<>(prideFile, null));
                 LOGGER.error("The current File has an Accession already, please use the update function -- " + prideFile.getAccession());
+
+            }
 
         });
         if(!newFiles.isEmpty()){
@@ -79,7 +85,7 @@ public class PrideFileMongoService {
                 finalNumber--;
                 String accession = "PXF" + formatter.format(finalNumber);
                 file.setAccession(accession);
-                insertedFiles.add(fileRepository.save(file));
+                insertedFiles.add(new Tuple<>(file, fileRepository.save(file)));
                 LOGGER.debug("A new project has been saved into MongoDB database with Accession -- " + accession);
             }
         }

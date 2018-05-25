@@ -19,6 +19,7 @@ import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideFileMongoService;
 import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideProjectMongoService;
 import uk.ac.ebi.pride.mongodb.archive.utils.TestUtils;
 import uk.ac.ebi.pride.utilities.util.Triple;
+import uk.ac.ebi.pride.utilities.util.Tuple;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -47,26 +48,72 @@ public class PrideProjectMongoServiceTest {
         prideProjectService.save(project);
     }
 
+    private Submission readSubmission() throws SubmissionFileException, URISyntaxException {
+        File pxFile = new File(Objects.requireNonNull(PrideProjectMongoServiceTest.class.getClassLoader().getResource("pride-submission-three.px")).toURI());
+        return SubmissionFileParser.parse(pxFile);
+    }
+
 
     @Test
-    public void importPrideProject() throws URISyntaxException, SubmissionFileException {
-        File pxFile = new File(Objects.requireNonNull(PrideProjectMongoServiceTest.class.getClassLoader().getResource("pride-submission-three.px")).toURI());
-        Submission pxSubmission = SubmissionFileParser.parse(pxFile);
-        Optional<MongoPrideProject> project = prideProjectService.save(TestUtils.parseProject(pxSubmission));
+    public void importPrideProject() throws SubmissionFileException, URISyntaxException {
+        Optional<MongoPrideProject> project = prideProjectService.save(TestUtils.parseProject(readSubmission()));
         Assert.assertTrue(project.get().getAccession().equalsIgnoreCase("PXD000003"));
 
-        List<DataFile> dataFiles = pxSubmission.getDataFiles();
-        List<MongoPrideFile> mongoFiles = dataFiles.stream().map(dataFile ->
-                MongoPrideFile.builder()
-                        .fileName(dataFile.getFileName())
-                        .fileCategory(ProjectFileCategoryConstants.findCategory(dataFile.getFileType().getName()).getCv())
-                        .projectAccessions(Collections.singleton(project.get().getAccession()))
-                .build()
-        ).collect(Collectors.toList());
+    }
 
-        mongoFiles = prideFileMongoService.insertAll(mongoFiles);
+    @Test
+    public void importPrideProjectWithFiles() throws SubmissionFileException, URISyntaxException {
+        Submission pxSubmission = readSubmission();
+        Optional<MongoPrideProject> project = prideProjectService.save(TestUtils.parseProject(pxSubmission));
+
+        List<DataFile> dataFiles = pxSubmission.getDataFiles();
+        Optional<MongoPrideProject> finalProject = project;
+        List<MongoPrideFile> mongoFiles = dataFiles.stream().map(dataFile -> {
+            String accession = finalProject.get().getAccession();
+            return MongoPrideFile.builder()
+                    .fileName(dataFile.getFileName())
+                    .fileCategory(ProjectFileCategoryConstants.findCategory(dataFile.getFileType().getName()).getCv())
+                    .projectAccessions(Collections.singleton(accession))
+                    .build();
+        }).collect(Collectors.toList());
+
+        List<Tuple<MongoPrideFile, MongoPrideFile>> filesInserted= prideFileMongoService.insertAll(mongoFiles);
         Assert.assertTrue(mongoFiles.size() == dataFiles.size());
 
+        List<Triple<String, String, CvParamProvider>> fileRelations = new ArrayList<>();
+        for(DataFile dataFile: dataFiles){
+            for(Tuple tuple: filesInserted){
+                MongoPrideFile fileToInsert = (MongoPrideFile) tuple.getKey();
+                MongoPrideFile fileInserted = (MongoPrideFile) tuple.getValue();
+                if(dataFile.getFileName().equalsIgnoreCase(fileToInsert.getFileName())){
+                    fileRelations.addAll(returnRelation(fileInserted.getAccession(), dataFile, filesInserted, ProjectFileCategoryConstants.findCategory(dataFile.getFileType().getName())));
+                }
+            }
+        }
 
+       project = prideProjectService.updateFileRelations(project.get().getAccession(),fileRelations);
+
+        Assert.assertTrue(project.get().getSubmittedFileRelations().size() == 600);
+
+
+
+    }
+
+    private List<Triple<String, String, CvParamProvider>> returnRelation(String insertedDataFileAccession, DataFile dataFile, List<Tuple<MongoPrideFile, MongoPrideFile>> filesInserted, ProjectFileCategoryConstants category) {
+        List<Triple<String, String, CvParamProvider>> resultRelations = new ArrayList<>();
+        if(dataFile.getFileMappings() == null || dataFile.getFileMappings().isEmpty())
+            resultRelations.add(new Triple<String, String, CvParamProvider>(insertedDataFileAccession, null, category.getCv()));
+        else{
+            for(DataFile file: dataFile.getFileMappings()){
+                for(Tuple tuple: filesInserted){
+                    MongoPrideFile fileToInsert = (MongoPrideFile) tuple.getKey();
+                    MongoPrideFile fileInserted = (MongoPrideFile) tuple.getValue();
+                    if(file.getFileName().equalsIgnoreCase(fileToInsert.getFileName())){
+                        resultRelations.add(new Triple<String, String, CvParamProvider>(insertedDataFileAccession, fileInserted.getAccession(), category.getCv()));
+                    }
+                }
+            }
+        }
+        return resultRelations;
     }
 }

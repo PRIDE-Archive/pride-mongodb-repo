@@ -18,8 +18,10 @@ public interface PrideArchiveField {
     /** Project Title **/
     String PROJECT_TILE = "title";
 
-    /** REALTIONS BETWEEN FILES **/
+    /** RELATIONS BETWEEN FILES **/
     String FILE_RELATIONS_IN_PROJECT = "submittedFileRelations";
+
+    String ACCESSION_SUBMISSION_FILE = "accessionSubmissionFile";
 
     /** Additional Attributes Accessions **/
     String ADDITIONAL_ATTRIBUTES = "additionalAttributes";

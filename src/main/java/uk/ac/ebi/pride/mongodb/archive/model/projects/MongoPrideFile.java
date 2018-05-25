@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.pride.archive.dataprovider.file.FileProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
+import uk.ac.ebi.pride.utilities.util.Tuple;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -79,6 +80,9 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
 
     @Indexed(name = ADDITIONAL_ATTRIBUTES)
     List<CvParamProvider> additionalAttributes;
+
+    @Indexed(name = ACCESSION_SUBMISSION_FILE)
+    Tuple<String, String> accessionSubmissionFile;
 
     @Override
     public String getAccession() {

@@ -65,6 +65,16 @@ public class PrideProjectMongoService {
     }
 
 
+    /**
+     * This method return the Pride Mongo Project by accession of the Project PX or PRD
+     * @param accession PX accession
+     * @return Optional
+     */
+    public Optional<MongoPrideProject> findByAccession(String accession){
+        return repository.findByAccession(accession);
+    }
+
+
 
 
 

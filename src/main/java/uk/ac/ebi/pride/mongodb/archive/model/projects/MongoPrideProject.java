@@ -204,29 +204,29 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     }
 
     @Override
-    public Collection<? extends String> getExperimentalFactors() {
+    public Collection<String> getExperimentalFactors() {
         return null;
     }
 
     @Override
-    public Collection<? extends String> getCountries() {
+    public Collection<String> getCountries() {
         return this.countries;
     }
 
     @Override
-    public Collection<? extends String> getAllAffiliations() {
+    public Collection<String> getAllAffiliations() {
         Set<String> affiliations = submitters.stream().map(ContactProvider::getAffiliation).collect(Collectors.toSet());
         affiliations.addAll(headLab.stream().map(ContactProvider::getAffiliation).collect(Collectors.toList()));
         return affiliations;
     }
 
     @Override
-    public Collection<? extends String> getSampleAttributes() {
+    public Collection<String> getSampleAttributes() {
         return null;
     }
 
     @Override
-    public Collection<? extends String> getAdditionalAttributesStrings() {
+    public Collection<String> getAdditionalAttributesStrings() {
         return null;
     }
 
@@ -236,22 +236,22 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     }
 
     @Override
-    public Collection<? extends String> getHeadLab() {
+    public Collection<String> getHeadLab() {
         return headLab.stream().map(ContactProvider::getName).collect(Collectors.toList());
     }
 
     @Override
-    public Collection<? extends String> getInstruments() {
+    public Collection<String> getInstruments() {
         return instruments.stream().map(CvParamProvider::getName).collect(Collectors.toList());
     }
 
     @Override
-    public Collection<? extends String> getQuantificationMethods() {
+    public Collection<String> getQuantificationMethods() {
         return quantificationMethods.stream().map(CvParamProvider::getName).collect(Collectors.toList());
     }
 
     @Override
-    public Collection<? extends String> getReferences() {
+    public Collection<String> getReferences() {
         return references.stream().map(ReferenceProvider::getReferenceLine).collect(Collectors.toList());
     }
 }

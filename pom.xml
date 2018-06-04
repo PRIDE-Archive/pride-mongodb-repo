@@ -4,7 +4,7 @@
 
     <groupId>uk.ac.ebi.pride.archive</groupId>
     <artifactId>pride-mongodb-repo</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.2-springboot-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>PRIDE MongoDB repository</name>
 
@@ -29,7 +29,7 @@
         <uk.ac.ebi.pride.px-submission-core.version>2.0.18</uk.ac.ebi.pride.px-submission-core.version>
         <uk.ac.ebi.pride.utilities.pride-utilities.version>2.0.19-SNAPSHOT</uk.ac.ebi.pride.utilities.pride-utilities.version>
         <com.github.fakemongo.version>2.2.0-RC1</com.github.fakemongo.version>
-        <archive.repo.version>1.0.2-springboot-SNAPSHOT.yasset</archive.repo.version>
+        <archive.repo.version>1.0.2-springboot-SNAPSHOT</archive.repo.version>
         <uk.ac.ebi.pride-utilities.version>2.0.19-SNAPSHOT</uk.ac.ebi.pride-utilities.version>
         <jmztab.version>3.0.7</jmztab.version>
         <pride.mod.version>2.1.2</pride.mod.version>
@@ -172,6 +172,21 @@
             </testResource>
         </testResources>
         <plugins>
+            <!-- We are disabling by default the deploy -->
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <skipDeploy>true</skipDeploy>
+                </configuration>
+            </plugin>
+            <!-- We are disabling by default the deploy -->
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

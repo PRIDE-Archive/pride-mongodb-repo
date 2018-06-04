@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.service;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,12 @@ import java.util.stream.IntStream;
 
 
 /**
+ * All these tests are integration tests. They need to be performed using some specific configurations in PRIDE Ecosystem. This particular test class needs
+ * the following maven profiles :
+ *     - oracle-pridedb-ro-user
+ *     - oracle-pridedb-test-machine
+ *     - mongodb-pridedb-localchost-machines
+ *
  * @author ypriverol
  */
 @RunWith(SpringRunner.class)
@@ -41,11 +48,14 @@ public class PrideFileMongoServiceTest {
 
     @Test
     public void save() {
-        MongoPrideFile file = MongoPrideFile.builder().fileName("Filename.txt").build();
+        MongoPrideFile file = MongoPrideFile
+                .builder()
+                .fileName("Filename.txt").build();
         prideFileMongoService.insert(file);
     }
 
     @Test
+    @Ignore
     public void searchFilesTest(){
         insertFilesSave();
         String filterRaw = "fileCategory.value==RESULT";
@@ -85,10 +95,9 @@ public class PrideFileMongoServiceTest {
 
     }
 
-
     /**
-     * This method helps to read all the projects from PRIDE Archive Oracle Database and
-     * move then into MongoDB
+     * This method helps to read all the projects from PRIDE Archive Oracle Database and move then into MongoDB. This is
+     * an integration Test. Some maven profiles needs to be selected.
      */
     private void insertFilesSave(){
 
@@ -113,7 +122,7 @@ public class PrideFileMongoServiceTest {
        }
        );
 
-        Assert.assertEquals(401, prideFileMongoService.count());
+        Assert.assertEquals(400, prideFileMongoService.count());
 
     }
 
@@ -150,7 +159,7 @@ public class PrideFileMongoServiceTest {
             prideFileMongoService.insertAll(mongoPrideFiles);
         });
 
-        Assert.assertEquals(401, prideFileMongoService.count());
+        Assert.assertEquals(1200, prideFileMongoService.count());
 
     }
 }

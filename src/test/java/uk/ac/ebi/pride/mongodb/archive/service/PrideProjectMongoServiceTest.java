@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.service;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * {@link PrideProjectMongoService} and {@link PrideFileMongoService} Units tests.
+ *
  * @author ypriverol
  */
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {PrideProjectFongoTestConfig.class})
@@ -40,10 +44,12 @@ public class PrideProjectMongoServiceTest {
     @Autowired
     PrideFileMongoService prideFileMongoService;
 
+    /**
+     * Save Project using only an accession in the Project
+     **/
     @Test
     public void save() {
 
-        /** Save Project using only an accession in the dataset **/
         MongoPrideProject project = MongoPrideProject.builder().accession("PXD000001").build();
         prideProjectService.save(project);
     }
@@ -53,7 +59,11 @@ public class PrideProjectMongoServiceTest {
         return SubmissionFileParser.parse(pxFile);
     }
 
-
+    /**
+     * The import project from File Submission
+     * @throws SubmissionFileException
+     * @throws URISyntaxException
+     */
     @Test
     public void importPrideProject() throws SubmissionFileException, URISyntaxException {
         Optional<MongoPrideProject> project = prideProjectService.save(TestUtils.parseProject(readSubmission()));
@@ -61,7 +71,12 @@ public class PrideProjectMongoServiceTest {
 
     }
 
+    /**
+     * This method helps to read all the projects from PRIDE Archive Oracle Database and move then into MongoDB. This is
+     * an integration Test. Some maven profiles needs to be selected.
+     */
     @Test
+    @Ignore
     public void importPrideProjectWithFiles() throws SubmissionFileException, URISyntaxException {
         Submission pxSubmission = readSubmission();
         Optional<MongoPrideProject> project = prideProjectService.save(TestUtils.parseProject(pxSubmission));
@@ -99,6 +114,14 @@ public class PrideProjectMongoServiceTest {
 
     }
 
+    /**
+     * Return file realations from Submission PX
+     * @param insertedDataFileAccession inserted file
+     * @param dataFile data File in the Submission Core
+     * @param filesInserted Inserted File
+     * @param category Category of the file
+     * @return List of {@link Triple}
+     */
     private List<Triple<String, String, CvParamProvider>> returnRelation(String insertedDataFileAccession, DataFile dataFile, List<Tuple<MongoPrideFile, MongoPrideFile>> filesInserted, ProjectFileCategoryConstants category) {
         List<Triple<String, String, CvParamProvider>> resultRelations = new ArrayList<>();
         if(dataFile.getFileMappings() == null || dataFile.getFileMappings().isEmpty())

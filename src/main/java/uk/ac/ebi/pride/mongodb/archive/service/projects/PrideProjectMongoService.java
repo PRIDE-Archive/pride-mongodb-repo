@@ -3,6 +3,8 @@ package uk.ac.ebi.pride.mongodb.archive.service.projects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
@@ -72,6 +74,15 @@ public class PrideProjectMongoService {
      */
     public Optional<MongoPrideProject> findByAccession(String accession){
         return repository.findByAccession(accession);
+    }
+
+    /**
+     * Return all the Projects from the database using Pagination
+     * @param page Page
+     * @return List of Mongo Pride Projects
+     */
+    public Page<MongoPrideProject> findAll(Pageable page){
+        return repository.findAll(page);
     }
 
 

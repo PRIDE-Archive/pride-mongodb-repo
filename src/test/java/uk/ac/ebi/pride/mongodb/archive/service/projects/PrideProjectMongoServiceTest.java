@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.archive.service;
+package uk.ac.ebi.pride.mongodb.archive.service.projects;
 
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -16,8 +16,6 @@ import uk.ac.ebi.pride.data.model.Submission;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
-import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideFileMongoService;
-import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideProjectMongoService;
 import uk.ac.ebi.pride.mongodb.archive.utils.TestUtils;
 import uk.ac.ebi.pride.utilities.util.Triple;
 import uk.ac.ebi.pride.utilities.util.Tuple;

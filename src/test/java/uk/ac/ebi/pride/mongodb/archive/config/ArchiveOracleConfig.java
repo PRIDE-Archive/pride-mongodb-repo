@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = {"uk.ac.ebi.pride.archive.repo.repos"})
+@EnableJpaRepositories(basePackages = {"uk.ac.ebi.pride.archive.repo.repos"} , entityManagerFactoryRef = "oracleEntityManagerFactory", transactionManagerRef = "oracleTransactionManager")
 @ComponentScan(basePackages = "uk.ac.ebi.pride.archive.repo.services")
 @TestPropertySource(locations = "classpath:application.properties")
 public class ArchiveOracleConfig {
@@ -34,7 +34,7 @@ public class ArchiveOracleConfig {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean(name = "entityManagerFactory")
+    @Bean(name = "oracleEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("dataSourceOracle") DataSource dataSource) {
         return builder
                 .dataSource(dataSource)
@@ -42,9 +42,9 @@ public class ArchiveOracleConfig {
                 .build();
     }
 
-    @Bean(name = "transactionManager")
+    @Bean(name = "oracleTransactionManager")
     public JpaTransactionManager jpaTransactionManager(
-            @Qualifier("entityManagerFactory") EntityManagerFactory entityManagerFactory) {
+            @Qualifier("oracleEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
 

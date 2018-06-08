@@ -5,6 +5,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
@@ -38,11 +39,11 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     String accession;
 
     /** Title of the Project **/
-    @Indexed(name = PrideArchiveField.PROJECT_TILE)
+    @Field(value = PrideArchiveField.PROJECT_TILE)
     String title;
 
     /** PRIDE Project short description **/
-    @Indexed(name = PrideArchiveField.PROJECT_DESCRIPTION)
+    @Field(value = PrideArchiveField.PROJECT_DESCRIPTION)
     private String description;
 
     /** This property defines a relation between files in the Project.
@@ -55,11 +56,11 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
 
     /** Sample Processing **/
-    @Indexed(name = PrideArchiveField.PROJECT_SAMPLE_PROTOCOL)
+    @Field(value = PrideArchiveField.PROJECT_SAMPLE_PROTOCOL)
     private String sampleProcessing;
 
     /** Data Processing Protocol **/
-    @Indexed(name = PrideArchiveField.PROJECT_DATA_PROTOCOL)
+    @Field(value = PrideArchiveField.PROJECT_DATA_PROTOCOL)
     private String dataProcessing;
 
     /** This is using an abstraction of the User, in this case MongoDB only will retrieve the information related with the userContact **/
@@ -79,7 +80,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Indexed(name = PROJECT_TAGS)
     private Collection<String> projectTags;
 
-    /* This are CVparams to describe the type of the experiment */
+    /* This are CVParams to describe the type of the experiment */
     @Indexed(name = QUANTIFICATION_METHODS)
     @Getter(AccessLevel.NONE)
     private Collection<CvParamProvider> quantificationMethods;
@@ -253,5 +254,21 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Override
     public Collection<String> getReferences() {
         return references.stream().map(ReferenceProvider::getReferenceLine).collect(Collectors.toList());
+    }
+
+    @Override
+    public String toString() {
+        return "MongoPrideProject{" +
+                "id=" + id +
+                ", accession='" + accession + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", keywords=" + keywords +
+                ", projectTags=" + projectTags +
+                ", quantificationMethods=" + quantificationMethods +
+                ", submissionType='" + submissionType + '\'' +
+                ", submissionDate=" + submissionDate +
+                ", publicProject=" + publicProject +
+                '}';
     }
 }

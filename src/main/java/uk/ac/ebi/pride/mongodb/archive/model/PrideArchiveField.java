@@ -101,7 +101,8 @@ public interface PrideArchiveField {
 
     //** File Fields **/
     String FILE_CATEGORY = "fileCategory";
-    String FILE_SOURCE_FOLDER = "fileSourceType";
+    String FILE_SOURCE_TYPE = "fileSourceType";
+    String FILE_SOURCE_FOLDER = "fileSourceFolder";
     String FILE_MD5_CHECKSUM = "fileMD5Checksum";
     String FILE_PUBLIC_LOCATIONS = "filePublicLocations";
     String FILE_SIZE_MB = "fileSizeMB";

@@ -41,7 +41,7 @@ public enum PrideFieldEnum {
     EXTERNAL_PROJECT_ACCESSIONS (PrideArchiveField.EXTERNAL_PROJECT_ACCESSIONS, new String[]{PrideArchiveField.PRIDE_FILE_COLLECTION_NAME}, String.class),
     EXTERNAL_ANALYSIS_ACCESSIONS(PrideArchiveField.EXTERNAL_ANALYSIS_ACCESSIONS, new String[]{PrideArchiveField.PRIDE_FILE_COLLECTION_NAME}, String.class),
     FILE_CATEGORY(PrideArchiveField.FILE_CATEGORY, new String[]{PrideArchiveField.PRIDE_FILE_COLLECTION_NAME}, String.class),
-    FILE_SOURCE_FOLDER(PrideArchiveField.FILE_SOURCE_FOLDER, new String[]{PrideArchiveField.PRIDE_FILE_COLLECTION_NAME}, String.class),
+    FILE_SOURCE_FOLDER(PrideArchiveField.FILE_SOURCE_TYPE, new String[]{PrideArchiveField.PRIDE_FILE_COLLECTION_NAME}, String.class),
     FILE_MD5_CHECKSUM(PrideArchiveField.FILE_MD5_CHECKSUM, new String[]{PrideArchiveField.PRIDE_FILE_COLLECTION_NAME}, String.class),
     FILE_PUBLIC_LOCATIONS (PrideArchiveField.FILE_PUBLIC_LOCATIONS, new String[]{PrideArchiveField.PRIDE_FILE_COLLECTION_NAME}, String.class),
     FILE_SIZE_MB (PrideArchiveField.FILE_SIZE_MB,new String[]{PrideArchiveField.PRIDE_FILE_COLLECTION_NAME}, String.class),

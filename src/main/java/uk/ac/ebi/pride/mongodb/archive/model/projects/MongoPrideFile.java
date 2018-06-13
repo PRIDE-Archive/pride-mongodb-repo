@@ -54,7 +54,7 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
     CvParamProvider fileCategory;
 
     @Indexed(name = FILE_SOURCE_FOLDER)
-    String fileSourceFolder;
+    String fileSourceType;
 
     /** Checksum for the specific File provided by the submission tool **/
     @Indexed(name = FILE_MD5_CHECKSUM)
@@ -104,7 +104,7 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
 
     @Override
     public String getFolderSource() {
-        return fileSourceFolder;
+        return fileSourceType;
     }
 
     @Override

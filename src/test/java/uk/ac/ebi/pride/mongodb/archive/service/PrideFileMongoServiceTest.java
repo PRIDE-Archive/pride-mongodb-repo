@@ -115,7 +115,9 @@ public class PrideFileMongoServiceTest {
                     fileType = currentFileType;
                 }
             }
-            MongoPrideFile file = MongoPrideFile.builder().fileName(x.getFileName()).fileCategory(fileType.getFileType().getCv()).projectAccessions(projectAccessions)
+            MongoPrideFile file = MongoPrideFile.builder()
+                    .fileName(x.getFileName()).fileCategory(fileType.getFileType().getCv())
+                    .projectAccessions(projectAccessions)
                     .fileSourceFolder(x.getFileSource().getFolderName())
                     .publicationDate(oracleProjectRepository.findById(x.getProjectId()).get().getPublicationDate())
                     .submissionDate(oracleProjectRepository.findById(x.getProjectId()).get().getSubmissionDate())

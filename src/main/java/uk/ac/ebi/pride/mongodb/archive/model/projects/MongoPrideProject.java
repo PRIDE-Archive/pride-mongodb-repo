@@ -101,7 +101,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Indexed(name = UPDATED_DATE)
     private Date updatedDate;
 
-    /** List of PTMs for the corresponding Project, this PTMs are globallly annotated by the user, it does'nt mean that they have been found in proteins of peptides. */
+    /** List of PTMs for the corresponding Project, this PTMs are globally annotated by the user, it does'nt mean that they have been found in proteins of peptides. */
     @Indexed(name = PROJECT_IDENTIFIED_PTM)
     private Collection<CvParamProvider> ptmList;
 
@@ -125,7 +125,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     private Collection<CvParamProvider> softwareList;
 
     /** References related with the dataset in manuscript and papers **/
-    @Indexed(name = PROJECT_REFERENCES)
+    @Field(value = PROJECT_REFERENCES)
     @Getter(AccessLevel.NONE)
     private Collection<ReferenceProvider> references;
 

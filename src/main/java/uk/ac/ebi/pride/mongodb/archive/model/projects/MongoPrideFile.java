@@ -28,9 +28,6 @@ import java.util.stream.Collectors;
 @Data
 @Builder
 @Document(collection = PrideArchiveField.PRIDE_FILE_COLLECTION_NAME)
-@CompoundIndexes({
-        @CompoundIndex(name = "file_name_project", unique = true, def = "{'" + PrideArchiveField.EXTERNAL_PROJECT_ACCESSION + "' : 1, '" + PrideArchiveField.FILE_NAME + "' : 1}")
-})
 public class MongoPrideFile implements PrideArchiveField, FileProvider {
 
     @Id

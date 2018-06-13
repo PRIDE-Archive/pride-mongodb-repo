@@ -57,6 +57,7 @@ public class PrideFileMongoServiceTest {
     }
 
     @Test
+    @Ignore
     public void searchFilesTest(){
         insertFilesSave();
         String filterRaw = "fileCategory.value==RESULT";

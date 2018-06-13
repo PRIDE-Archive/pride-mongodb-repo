@@ -78,8 +78,7 @@ public class PrideProjectMongoService {
     }
 
     /**
-     * Return all the Projects from the database using Stream. It is important to know that
-     * this method is only retriving the Stream of the List returned
+     * Return al Page with all the MongoPrideProjects
      *
      * @param page Page
      * @return List of Mongo Pride Projects
@@ -88,6 +87,11 @@ public class PrideProjectMongoService {
         return repository.findAll(page);
     }
 
+    /**
+     * Return all the Projects from the database using Stream. It is important to know that
+     * this method is only retrieving the Stream of the List returned
+     * @return
+     */
     public Stream<MongoPrideProject> findAllStream(){
         return repository.findAll().stream();
     }

@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.Getter;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.pride.archive.dataprovider.file.FileProvider;
@@ -19,11 +21,16 @@ import java.util.stream.Collectors;
 /**
  * The PRIDE Archive Project File provides information around all the files provided into one PRIDE Project.
  *
+ * The combination between FileName and Project Accessions should be unique.
+ *
  * @author ypriverol
  */
 @Data
 @Builder
 @Document(collection = PrideArchiveField.PRIDE_FILE_COLLECTION_NAME)
+@CompoundIndexes({
+        @CompoundIndex(name = "file_name_project", unique = true, def = "{'" + PrideArchiveField.EXTERNAL_PROJECT_ACCESSION + "' : 1, '" + PrideArchiveField.FILE_NAME + "column-2' : 1}")
+})
 public class MongoPrideFile implements PrideArchiveField, FileProvider {
 
     @Id

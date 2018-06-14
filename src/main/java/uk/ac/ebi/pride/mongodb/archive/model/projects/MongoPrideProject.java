@@ -272,6 +272,14 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
         return submitters;
     }
 
+    /**
+     * Get the Instruments in {@link CvParamProvider}
+     * @return List of Instruments
+     */
+    public Collection<CvParamProvider> getInstrumentsCvParams(){
+        return instruments;
+    }
+
     @Override
     public String toString() {
         return "MongoPrideProject{" +

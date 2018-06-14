@@ -256,6 +256,22 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
         return references.stream().map(ReferenceProvider::getReferenceLine).collect(Collectors.toList());
     }
 
+    /**
+     * Return the Lab heads.
+     * @return ContactProvider for all Lab Heads
+     */
+    public Collection<ContactProvider> getLabHeadContacts(){
+        return headLab;
+    }
+
+    /**
+     * Return the Submitters
+     * @return ContactProvider for all Submitters
+     */
+    public Collection<ContactProvider> getSubmittersContacts(){
+        return submitters;
+    }
+
     @Override
     public String toString() {
         return "MongoPrideProject{" +

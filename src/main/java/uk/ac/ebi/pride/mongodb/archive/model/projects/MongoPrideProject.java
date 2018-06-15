@@ -6,11 +6,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
-import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
-import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
+import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
+import uk.ac.ebi.pride.mongodb.archive.model.reference.MongoReference;
+import uk.ac.ebi.pride.mongodb.archive.model.user.MongoContact;
 import uk.ac.ebi.pride.utilities.util.Triple;
 
 
@@ -49,10 +49,10 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     /** This property defines a relation between files in the Project.
      *  - The first value of the {@link Triple} defines the parent File Accession
      *  - The second value of the {@link Triple} defines the child File Accession
-     *  - The third value of the {@link Triple} is a {@link CvParamProvider} that defines the relation between files
+     *  - The third value of the {@link Triple} is a {@link MongoCvParam} that defines the relation between files
      *  **/
     @Indexed(name = FILE_RELATIONS_IN_PROJECT)
-    List<Triple<String, String, CvParamProvider>> submittedFileRelations;
+    List<Triple<String, String, MongoCvParam>> submittedFileRelations;
 
 
     /** Sample Processing **/
@@ -65,12 +65,12 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     /** This is using an abstraction of the User, in this case MongoDB only will retrieve the information related with the userContact **/
     @Indexed(name = PROJECT_SUBMITTER)
-    private Collection<ContactProvider> submitters;
+    private Collection<MongoContact> submitters;
 
     /** This returns a list of head of labs PIs ralted with the experiment **/
     @Indexed(name = PROJECT_PI_NAMES)
     @Getter(AccessLevel.NONE)
-    private Collection<ContactProvider> headLab;
+    private Collection<MongoContact> headLab;
 
     /** List of keywords added by the user **/
     @Indexed(name = PROJECT_KEYWORDS)
@@ -83,7 +83,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     /* This are CVParams to describe the type of the experiment */
     @Indexed(name = QUANTIFICATION_METHODS)
     @Getter(AccessLevel.NONE)
-    private Collection<CvParamProvider> quantificationMethods;
+    private Collection<MongoCvParam> quantificationMethods;
 
     /** Submission Type for the experiment, defaults value can be read here {@link uk.ac.ebi.pride.archive.dataprovider.utils.SubmissionTypeConstants} */
     @Indexed( name = PROJECT_SUBMISSION_TYPE)
@@ -103,35 +103,35 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     /** List of PTMs for the corresponding Project, this PTMs are globally annotated by the user, it does'nt mean that they have been found in proteins of peptides. */
     @Indexed(name = PROJECT_IDENTIFIED_PTM)
-    private Collection<CvParamProvider> ptmList;
+    private Collection<MongoCvParam> ptmList;
 
     /**
      * Samples description is a generic information about all the samples in the experiment. Import: These details do not have detail information:
      * Not specific to any Sample.
      */
     @Indexed(name = SAMPLE_ATTRIBUTES_NAMES)
-    private Map<CvParamProvider, List<CvParamProvider>> samplesDescription;
+    private Map<MongoCvParam, List<MongoCvParam>> samplesDescription;
 
     @Indexed(name = EXPERIMENTAL_FACTORS)
-    private Map<CvParamProvider, List<CvParamProvider>> experimentalFactors;
+    private Map<MongoCvParam, List<MongoCvParam>> experimentalFactors;
 
     /** General description about the instruments used in the experiment. */
     @Indexed(name = INSTRUMENTS)
     @Getter(AccessLevel.NONE)
-    private Collection<CvParamProvider> instruments;
+    private Collection<MongoCvParam> instruments;
 
     /** General software information in CVParams terms **/
     @Indexed(name = SOFTWARES)
-    private Collection<CvParamProvider> softwareList;
+    private Collection<MongoCvParam> softwareList;
 
     /** References related with the dataset in manuscript and papers **/
     @Field(value = PROJECT_REFERENCES)
     @Getter(AccessLevel.NONE)
-    private Collection<ReferenceProvider> references;
+    private Collection<MongoReference> references;
 
     /** Additional Attributes **/
     @Indexed(name = ADDITIONAL_ATTRIBUTES)
-    private Collection<CvParamProvider> attributes;
+    private Collection<MongoCvParam> attributes;
 
     /** Project DOI for complete Submissions */
     @Indexed(name = PROJECT_DOI)
@@ -171,17 +171,17 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     @Override
     public Collection<? extends String> getSubmitters() {
-        return this.submitters.stream().map(ContactProvider::getName).collect(Collectors.toList());
+        return this.submitters.stream().map(MongoContact::getName).collect(Collectors.toList());
     }
 
     @Override
     public Collection<? extends String> getPtms() {
-        return this.ptmList.stream().map(CvParamProvider::getName).collect(Collectors.toList());
+        return this.ptmList.stream().map(MongoCvParam::getName).collect(Collectors.toList());
     }
 
     @Override
     public Collection<? extends String> getSoftwares() {
-        return this.softwareList.stream().map(CvParamProvider::getName).collect(Collectors.toList());
+        return this.softwareList.stream().map(MongoCvParam::getName).collect(Collectors.toList());
     }
 
     @Override
@@ -216,8 +216,8 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     @Override
     public Collection<String> getAllAffiliations() {
-        Set<String> affiliations = submitters.stream().map(ContactProvider::getAffiliation).collect(Collectors.toSet());
-        affiliations.addAll(headLab.stream().map(ContactProvider::getAffiliation).collect(Collectors.toList()));
+        Set<String> affiliations = submitters.stream().map(MongoContact::getAffiliation).collect(Collectors.toSet());
+        affiliations.addAll(headLab.stream().map(MongoContact::getAffiliation).collect(Collectors.toList()));
         return affiliations;
     }
 
@@ -238,29 +238,29 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     @Override
     public Collection<String> getHeadLab() {
-        return headLab.stream().map(ContactProvider::getName).collect(Collectors.toList());
+        return headLab.stream().map(MongoContact::getName).collect(Collectors.toList());
     }
 
     @Override
     public Collection<String> getInstruments() {
-        return instruments.stream().map(CvParamProvider::getName).collect(Collectors.toList());
+        return instruments.stream().map(MongoCvParam::getName).collect(Collectors.toList());
     }
 
     @Override
     public Collection<String> getQuantificationMethods() {
-        return quantificationMethods.stream().map(CvParamProvider::getName).collect(Collectors.toList());
+        return quantificationMethods.stream().map(MongoCvParam::getName).collect(Collectors.toList());
     }
 
     @Override
     public Collection<String> getReferences() {
-        return references.stream().map(ReferenceProvider::getReferenceLine).collect(Collectors.toList());
+        return references.stream().map(MongoReference::getReferenceLine).collect(Collectors.toList());
     }
 
     /**
      * Return the Lab heads.
      * @return ContactProvider for all Lab Heads
      */
-    public Collection<ContactProvider> getLabHeadContacts(){
+    public Collection<MongoContact> getLabHeadContacts(){
         return headLab;
     }
 
@@ -268,15 +268,15 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
      * Return the Submitters
      * @return ContactProvider for all Submitters
      */
-    public Collection<ContactProvider> getSubmittersContacts(){
+    public Collection<MongoContact> getSubmittersContacts(){
         return submitters;
     }
 
     /**
-     * Get the Instruments in {@link CvParamProvider}
-     * @return List of Instruments
+     * Get the Instruments in {@link MongoCvParam}
+     * @return
      */
-    public Collection<CvParamProvider> getInstrumentsCvParams(){
+    public Collection<MongoCvParam> getInstrumentsCvParams(){
         return instruments;
     }
 

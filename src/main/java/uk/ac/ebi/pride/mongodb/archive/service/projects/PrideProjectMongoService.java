@@ -7,12 +7,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
+import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
 import uk.ac.ebi.pride.mongodb.archive.repo.projects.PrideProjectMongoRepository;
 import uk.ac.ebi.pride.utilities.util.Triple;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -58,8 +61,11 @@ public class PrideProjectMongoService {
      */
     public Optional<MongoPrideProject> updateFileRelations(String projectAccession, List<Triple<String, String, CvParamProvider>> projectFileRelations){
         Optional<MongoPrideProject> project = repository.findByAccession(projectAccession);
+        List projectFiles = projectFileRelations.stream().map(x-> {
+            return new Triple(x.getFirst(), x.getSecond(), new MongoCvParam(x.getThird().getCvLabel(), x.getThird().getAccession(), x.getThird().getName(), x.getThird().getValue()));
+        }).collect(Collectors.toList());
         if(project.isPresent()){
-            project.get().setSubmittedFileRelations(projectFileRelations);
+            project.get().setSubmittedFileRelations(projectFiles);
             repository.save(project.get());
             LOGGER.info("Update the current project -- " + project.get().getAccession() + " with the File relations -- " + projectFileRelations);
         }else

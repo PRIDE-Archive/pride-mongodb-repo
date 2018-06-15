@@ -4,6 +4,7 @@ import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.data.model.DataFile;
 import uk.ac.ebi.pride.data.model.ProjectMetaData;
 import uk.ac.ebi.pride.data.model.Submission;
+import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
 
 import java.util.Arrays;
@@ -34,10 +35,10 @@ public class TestUtils {
         ProjectMetaData metadata = submission.getProjectMetaData();
         return MongoPrideProject.builder()
                 .accession(metadata.getResubmissionPxAccession())
-                .instruments(metadata.getInstruments().stream().map( x-> new DefaultCvParam(x.getCvLabel(),x.getAccession(),x.getName(),x.getValue())).collect(Collectors.toList()))
+                .instruments(metadata.getInstruments().stream().map( x-> new MongoCvParam(x.getCvLabel(),x.getAccession(),x.getName(),x.getValue())).collect(Collectors.toList()))
                 .projectTags(metadata.getProjectTags())
                 .keywords(Arrays.asList(metadata.getKeywords().split(",")))
-                .ptmList(metadata.getModifications().stream().map(x -> new DefaultCvParam(x.getCvLabel(), x.getAccession(),x.getName(), x.getValue())).collect(Collectors.toList()))
+                .ptmList(metadata.getModifications().stream().map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(),x.getName(), x.getValue())).collect(Collectors.toList()))
                 .build();
     }
 }

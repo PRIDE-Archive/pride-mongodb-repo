@@ -6,7 +6,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
+import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
+import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.reference.MongoReference;
@@ -186,7 +189,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     @Override
     public Optional<String> getDoi() {
-        return Optional.of(this.doi);
+        return Optional.ofNullable(this.doi);
     }
 
     @Override
@@ -260,7 +263,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
      * Return the Lab heads.
      * @return ContactProvider for all Lab Heads
      */
-    public Collection<MongoContact> getLabHeadContacts(){
+    public Collection<? extends ContactProvider> getLabHeadContacts(){
         return headLab;
     }
 
@@ -268,7 +271,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
      * Return the Submitters
      * @return ContactProvider for all Submitters
      */
-    public Collection<MongoContact> getSubmittersContacts(){
+    public Collection<? extends ContactProvider> getSubmittersContacts(){
         return submitters;
     }
 
@@ -276,8 +279,30 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
      * Get the Instruments in {@link MongoCvParam}
      * @return
      */
-    public Collection<MongoCvParam> getInstrumentsCvParams(){
+    public Collection<? extends CvParamProvider> getInstrumentsCvParams(){
         return instruments;
+    }
+
+    /**
+     * Get quantification parameters using the Cvterms
+     * @return
+     */
+    public Collection<? extends CvParamProvider> getQuantificationParams(){ return quantificationMethods; }
+
+    /**
+     * Get complete references in Cvterms
+     * @return
+     */
+    public Collection<? extends ReferenceProvider> getCompleteReferences(){
+        return references;
+    }
+
+    /**
+     * Get te list of softwares in CvParams
+     * @return software list
+     */
+    public Collection<? extends CvParamProvider> getSoftwareParams(){
+        return softwareList;
     }
 
     @Override

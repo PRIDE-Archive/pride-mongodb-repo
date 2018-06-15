@@ -20,8 +20,6 @@ import java.io.Serializable;
  */
 public class MongoContact implements ContactProvider, Serializable {
 
-
-** Title of the Contact **/
     private TitleConstants title;
 
     /** First Name **/

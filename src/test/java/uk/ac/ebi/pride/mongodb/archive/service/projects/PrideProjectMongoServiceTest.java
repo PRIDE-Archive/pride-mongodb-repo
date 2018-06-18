@@ -14,6 +14,7 @@ import uk.ac.ebi.pride.data.io.SubmissionFileParser;
 import uk.ac.ebi.pride.data.model.DataFile;
 import uk.ac.ebi.pride.data.model.Submission;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
+import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
 import uk.ac.ebi.pride.mongodb.archive.utils.TestUtils;
@@ -85,7 +86,7 @@ public class PrideProjectMongoServiceTest {
             String accession = finalProject.get().getAccession();
             return MongoPrideFile.builder()
                     .fileName(dataFile.getFileName())
-                    .fileCategory(ProjectFileCategoryConstants.findCategory(dataFile.getFileType().getName()).getCv())
+                    .fileCategory(new MongoCvParam(ProjectFileCategoryConstants.findCategory(dataFile.getFileType().getName()).getCv()))
                     .projectAccessions(Collections.singleton(accession))
                     .build();
         }).collect(Collectors.toList());

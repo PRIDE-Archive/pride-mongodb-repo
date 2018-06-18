@@ -17,7 +17,7 @@ import java.io.Serializable;
  * <p>
  * Created by ypriverol (ypriverol@gmail.com) on 15/06/2018.
  */
-public class MongoCvParam implements CvParamProvider, Serializable {
+public class MongoCvParam implements CvParamProvider {
 
     /** CvLabel is used to name the Ontology for the Ontology Term **/
     private String CvLabel;
@@ -48,6 +48,17 @@ public class MongoCvParam implements CvParamProvider, Serializable {
         this.accession = accession;
         this.name = name;
         this.value = value;
+    }
+
+    /**
+     * Create a MongoCvParam from an interface
+     * @param cv {@link CvParamProvider}
+     */
+    public MongoCvParam(CvParamProvider cv) {
+        this.CvLabel = cv.getCvLabel();
+        this.accession = cv.getAccession();
+        this.name = cv.getName();
+        this.value = cv.getValue();
     }
 
     @Override

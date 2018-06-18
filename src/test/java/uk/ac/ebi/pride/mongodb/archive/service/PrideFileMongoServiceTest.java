@@ -17,6 +17,7 @@ import uk.ac.ebi.pride.archive.repo.repos.project.Project;
 import uk.ac.ebi.pride.archive.repo.repos.project.ProjectRepository;
 import uk.ac.ebi.pride.mongodb.archive.config.ArchiveOracleConfig;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
+import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideFileMongoService;
 
@@ -116,7 +117,7 @@ public class PrideFileMongoServiceTest {
                 }
             }
             MongoPrideFile file = MongoPrideFile.builder()
-                    .fileName(x.getFileName()).fileCategory(fileType.getFileType().getCv())
+                    .fileName(x.getFileName()).fileCategory(new MongoCvParam(fileType.getFileType().getCv()))
                     .projectAccessions(projectAccessions)
                     .fileSourceFolder(x.getFileSource().getFolderName())
                     .publicationDate(oracleProjectRepository.findById(x.getProjectId()).get().getPublicationDate())
@@ -152,7 +153,7 @@ public class PrideFileMongoServiceTest {
                 }
                 MongoPrideFile file = MongoPrideFile.builder()
                         .fileName(x.getFileName())
-                        .fileCategory(fileType.getFileType().getCv())
+                        .fileCategory(new MongoCvParam(fileType.getFileType().getCv()))
                         .projectAccessions(Collections.singleton(project.getAccession()))
                         .fileSourceFolder(x.getFileSource().getFolderName())
                         .publicationDate(project.getPublicationDate())

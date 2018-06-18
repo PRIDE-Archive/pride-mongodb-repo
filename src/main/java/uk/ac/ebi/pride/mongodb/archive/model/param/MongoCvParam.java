@@ -85,4 +85,14 @@ public class MongoCvParam implements CvParamProvider {
     public Comparable getId() {
         return accession;
     }
+
+    @Override
+    public String toString() {
+        return "MongoCvParam{" +
+                "CvLabel='" + CvLabel + '\'' +
+                ", accession='" + accession + '\'' +
+                ", name='" + name + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }

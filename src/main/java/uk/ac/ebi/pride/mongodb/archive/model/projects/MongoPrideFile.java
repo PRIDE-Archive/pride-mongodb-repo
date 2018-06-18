@@ -49,6 +49,7 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
     String accession;
 
     @Indexed(name = FILE_CATEGORY)
+    @Getter(AccessLevel.NONE)
     MongoCvParam fileCategory;
 
     @Indexed(name = FILE_SOURCE_TYPE)
@@ -149,5 +150,16 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
         if(additionalAttributes != null)
             attributes = additionalAttributes.stream().map(CvParamProvider::getName).collect(Collectors.toList());
         return attributes;
+    }
+
+    @Override
+    public String toString() {
+        return "MongoPrideFile{" +
+                "projectAccessions=" + projectAccessions +
+                ", analysisAccessions=" + analysisAccessions +
+                ", accession='" + accession + '\'' +
+                ", fileCategory=" + fileCategory +
+                ", fileName='" + fileName + '\'' +
+                '}';
     }
 }

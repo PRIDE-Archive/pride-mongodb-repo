@@ -10,6 +10,7 @@ import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
+import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.reference.MongoReference;
@@ -56,7 +57,6 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
      *  **/
     @Indexed(name = FILE_RELATIONS_IN_PROJECT)
     List<Triple<String, String, MongoCvParam>> submittedFileRelations;
-
 
     /** Sample Processing **/
     @Field(value = PrideArchiveField.PROJECT_SAMPLE_PROTOCOL)
@@ -108,15 +108,13 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Indexed(name = PROJECT_IDENTIFIED_PTM)
     private Collection<MongoCvParam> ptmList;
 
-    /**
-     * Samples description is a generic information about all the samples in the experiment. Import: These details do not have detail information:
-     * Not specific to any Sample.
-     */
-    @Indexed(name = SAMPLE_ATTRIBUTES_NAMES)
-    private Map<MongoCvParam, List<MongoCvParam>> samplesDescription;
+    /** Samples description is a generic information about all the samples in the experiment. */
+    @Field(value = SAMPLE_ATTRIBUTES_NAMES)
+    private List<Tuple<MongoCvParam, List<MongoCvParam>>> samplesDescription;
 
-    @Indexed(name = EXPERIMENTAL_FACTORS)
-    private Map<MongoCvParam, List<MongoCvParam>> experimentalFactors;
+    /** Experimental Factors **/
+    @Field(value = EXPERIMENTAL_FACTORS)
+    private List<Tuple<MongoCvParam, List<MongoCvParam>>> experimentalFactors;
 
     /** General description about the instruments used in the experiment. */
     @Indexed(name = INSTRUMENTS)

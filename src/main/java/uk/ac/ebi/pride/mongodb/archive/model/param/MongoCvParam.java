@@ -3,6 +3,7 @@ package uk.ac.ebi.pride.mongodb.archive.model.param;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -94,5 +95,21 @@ public class MongoCvParam implements CvParamProvider {
                 ", name='" + name + '\'' +
                 ", value='" + value + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MongoCvParam that = (MongoCvParam) o;
+        return Objects.equals(CvLabel, that.CvLabel) &&
+                Objects.equals(accession, that.accession) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(CvLabel, accession, name, value);
     }
 }

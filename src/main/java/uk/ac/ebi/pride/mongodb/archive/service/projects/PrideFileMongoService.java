@@ -1,8 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.service.projects;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Triple;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +23,7 @@ import java.util.*;
  * @author ypriverol
  */
 @Service
+@Slf4j
 public class PrideFileMongoService {
 
     final
@@ -31,9 +31,6 @@ public class PrideFileMongoService {
 
     @Autowired
     private MongoOperations mongo;
-
-    /** Logger use to query and filter the data **/
-    private static final Logger LOGGER = LoggerFactory.getLogger(PrideFileMongoService.class);
 
     @Autowired
     public PrideFileMongoService(PrideFileMongoRepository fileRepository) {
@@ -51,9 +48,9 @@ public class PrideFileMongoService {
             String accession = "PXF" + formatter.format(PrideMongoUtils.getNextSizedSequence(mongo, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, 1));
             prideFile.setAccession(accession);
             prideFile = fileRepository.save(prideFile);
-            LOGGER.debug("A new project has been saved into MongoDB database with Accession -- " + prideFile.getAccession());
+            log.debug("A new project has been saved into MongoDB database with Accession -- " + prideFile.getAccession());
         } else
-            LOGGER.error("A project with similar accession has been found in the MongoDB database, please use update function -- " + prideFile.getAccession());
+            log.error("A project with similar accession has been found in the MongoDB database, please use update function -- " + prideFile.getAccession());
         return prideFile;
     }
 
@@ -74,7 +71,7 @@ public class PrideFileMongoService {
                 newFiles.add(prideFile);
             else{
                 insertedFiles.add(new Tuple<>(prideFile, null));
-                LOGGER.error("The current File has an Accession already, please use the update function -- " + prideFile.getAccession());
+                log.error("The current File has an Accession already, please use the update function -- " + prideFile.getAccession());
 
             }
 
@@ -86,7 +83,7 @@ public class PrideFileMongoService {
                 String accession = "PXF" + formatter.format(finalNumber);
                 file.setAccession(accession);
                 insertedFiles.add(new Tuple<>(file, fileRepository.save(file)));
-                LOGGER.debug("A new project has been saved into MongoDB database with Accession -- " + accession);
+                log.debug("A new project has been saved into MongoDB database with Accession -- " + accession);
             }
         }
         return insertedFiles;
@@ -117,10 +114,10 @@ public class PrideFileMongoService {
             currentProjectAccesions.addAll(projectAccessions);
             prideFile.get().setProjectAccessions(currentProjectAccesions);
             fileRepository.save(prideFile.get());
-            LOGGER.info("The following MongoPrideFile -- " + prideFile.get().getAccession() + " has been updated with a new Project Accession -- " + projectAccessions);
+            log.info("The following MongoPrideFile -- " + prideFile.get().getAccession() + " has been updated with a new Project Accession -- " + projectAccessions);
             return true;
         }
-        LOGGER.error("The following  MongoPrideFile is not in the database -- " + fileAccession);
+        log.error("The following  MongoPrideFile is not in the database -- " + fileAccession);
         return false;
     }
 
@@ -142,10 +139,10 @@ public class PrideFileMongoService {
             currentAnalysisAccesions.addAll(analysisAccessions);
             prideFile.get().setProjectAccessions(currentAnalysisAccesions);
             fileRepository.save(prideFile.get());
-            LOGGER.info("The following MongoPrideFile -- " + prideFile.get().getAccession() + " has been updated with a new Analysis Accession -- " + analysisAccessions);
+            log.info("The following MongoPrideFile -- " + prideFile.get().getAccession() + " has been updated with a new Analysis Accession -- " + analysisAccessions);
             return true;
         }
-        LOGGER.error("The following  MongoPrideFile is not in the database -- " + fileAccession);
+        log.error("The following  MongoPrideFile is not in the database -- " + fileAccession);
         return false;
     }
 

@@ -1,5 +1,6 @@
 package uk.ac.ebi.pride.mongodb.archive.service.projects;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,8 @@ import java.util.stream.Stream;
  * @author ypriverol
  */
 @Service
+@Slf4j
 public class PrideProjectMongoService {
-
-    /** Logger use to query and filter the data **/
-    private static final Logger LOGGER = LoggerFactory.getLogger(PrideProjectMongoService.class);
 
     final PrideProjectMongoRepository repository;
 
@@ -45,9 +44,9 @@ public class PrideProjectMongoService {
     public Optional<MongoPrideProject> save(MongoPrideProject project){
         if(!repository.findByAccession(project.getAccession()).isPresent()){
             project = repository.save(project);
-            LOGGER.info("A new project has been saved into MongoDB database with Accession -- " + project.getAccession());
+            log.info("A new project has been saved into MongoDB database with Accession -- " + project.getAccession());
         }else
-            LOGGER.info("A project with similar accession has been found in the MongoDB database, please use update function -- " + project.getAccession());
+            log.info("A project with similar accession has been found in the MongoDB database, please use update function -- " + project.getAccession());
         return Optional.of(project);
     }
 
@@ -67,9 +66,9 @@ public class PrideProjectMongoService {
         if(project.isPresent()){
             project.get().setSubmittedFileRelations(projectFiles);
             repository.save(project.get());
-            LOGGER.info("Update the current project -- " + project.get().getAccession() + " with the File relations -- " + projectFileRelations);
+            log.info("Update the current project -- " + project.get().getAccession() + " with the File relations -- " + projectFileRelations);
         }else
-            LOGGER.info("The requested project is not in the Database -- " + project.get().getAccession());
+            log.info("The requested project is not in the Database -- " + project.get().getAccession());
         return project;
     }
 

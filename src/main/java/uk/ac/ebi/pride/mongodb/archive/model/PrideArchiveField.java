@@ -136,4 +136,8 @@ public interface PrideArchiveField {
     String PRIDE_ANALYSIS_COLLECTION = "pride_analysis_collection";
 
 
+    /** PRIDE Stats Fields*/
+    String PRIDE_STATS_COLLECTION = "pride_stats_collection";
+    String STATS_SUBMISSION_COUNTS = "pride_submission_counts";
+    String STATS_ESTIMATION_DATE = "estimationDate";
 }

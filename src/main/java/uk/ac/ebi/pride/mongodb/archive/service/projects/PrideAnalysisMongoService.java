@@ -1,9 +1,10 @@
 package uk.ac.ebi.pride.mongodb.archive.service.projects;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideAnalysis;
 import uk.ac.ebi.pride.mongodb.archive.repo.projects.PrideAnalysisMongoRepository;
@@ -16,10 +17,9 @@ import java.text.NumberFormat;
  * @author ypriverol
  *
  */
+@Service
+@Slf4j
 public class PrideAnalysisMongoService {
-
-    /** Logger use to query and filter the data **/
-    private static final Logger LOGGER = LoggerFactory.getLogger(PrideProjectMongoService.class);
 
     final PrideAnalysisMongoRepository repository;
 
@@ -42,11 +42,13 @@ public class PrideAnalysisMongoService {
             String accession = "PXDA" + formatter.format(PrideMongoUtils.getNextSizedSequence(mongo, PrideArchiveField.PRIDE_ANALYSIS_COLLECTION, 1));
             prideAnalysis.setAccession(accession);
             prideAnalysis = repository.save(prideAnalysis);
-            LOGGER.debug("A new project has been saved into MongoDB database with Accession -- " + prideAnalysis.getAccession());
+            log.debug("A new project has been saved into MongoDB database with Accession -- " + prideAnalysis.getAccession());
         } else
-            LOGGER.error("A project with similar accession has been found in the MongoDB database, please use update function -- " + prideAnalysis.getAccession());
+            log.error("A project with similar accession has been found in the MongoDB database, please use update function -- " + prideAnalysis.getAccession());
         return prideAnalysis;
     }
+
+
 
 
 

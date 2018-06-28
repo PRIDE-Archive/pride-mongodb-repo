@@ -5,11 +5,12 @@ import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.model.stats.MongoPrideStats;
+import uk.ac.ebi.pride.mongodb.archive.model.stats.PrideStatsKeysConstants;
 import uk.ac.ebi.pride.mongodb.archive.repo.stats.PrideStatsMongoRepository;
 
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -56,10 +57,45 @@ public class PrideStatsMongoService {
      * then you Update function should be used.
      *
      * @param date Date of the corresponding report
-     * @return MongoPrideProject
+     * @return MongoPrideStats
      */
     public Optional<MongoPrideStats> findStatsBydate(Date date){
         return repository.findStatsByDate(date);
+    }
+
+    /**
+     * This function update the submission count map using an specific date, a key with the name of the type of the chart that will be estimated @{@link PrideStatsKeysConstants} .
+     * @param date date of the estimation of the stats
+     * @param prideStatsKeysConstants Type of the Stats @{@link PrideStatsKeysConstants}
+     * @param submissionCount Values of the Stats
+     * @return
+     */
+    public Optional<MongoPrideStats> updateSubmissionCountStats(Date date, PrideStatsKeysConstants prideStatsKeysConstants,
+                                                                List<Tuple<String, Integer>> submissionCount){
+        Optional<MongoPrideStats> stats = findStatsBydate(date);
+        MongoPrideStats currentStats;
+
+        if(!stats.isPresent()){
+            Map<String, List<Tuple<String, Integer>>> submissionCounts = new HashMap<>();
+            submissionCounts.put(prideStatsKeysConstants.statsKey, submissionCount);
+            MongoPrideStats mongoPrideStats = MongoPrideStats.builder()
+                    .estimationDate(date)
+                    .submissionsCount(submissionCounts)
+                    .build();
+            currentStats = save(mongoPrideStats).get();
+        }else{
+            currentStats = stats.get();
+            Map<String, List<Tuple<String, Integer>>> submissionStats = currentStats.getSubmissionsCount();
+            submissionStats.put(prideStatsKeysConstants.statsKey, submissionCount);
+            currentStats.setSubmissionsCount(submissionStats);
+            currentStats = repository.save(currentStats);
+        }
+        return Optional.of(currentStats);
+    }
+
+
+    public MongoPrideStats findLastGeneratedStats(){
+        return repository.findTopByOrderByEstimationDateDesc();
     }
 
 }

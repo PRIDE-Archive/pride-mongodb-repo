@@ -2,8 +2,11 @@ package uk.ac.ebi.pride.mongodb.archive.model.stats;
 
 import lombok.Builder;
 import lombok.Data;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
@@ -25,16 +28,18 @@ import java.util.Map;
  * Created by ypriverol (ypriverol@gmail.com) on 27/06/2018.
  */
 
-@Document(collection = PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME)
+@Document(collection = PrideArchiveField.PRIDE_STATS_COLLECTION)
 @Data
 @Builder
 public class MongoPrideStats implements PrideArchiveField {
 
-    /**
-     * Submission Count
-     */
-    /** Project Accession in PRIDE**/
-    @Indexed(name = PrideArchiveField.STATS_SUBMISSION_COUNTS)
+
+    @Id
+    @Indexed(name = PrideArchiveField.ID)
+    ObjectId id;
+
+    /**Submission Counts */
+    @Field(value = PrideArchiveField.STATS_SUBMISSION_COUNTS)
     Map<String, List<Tuple<String, Integer>>> submissionsCount;
 
 

@@ -30,4 +30,6 @@ public interface PrideStatsMongoRepository extends MongoRepository<MongoPrideSta
     @Query("{'"+ PrideArchiveField.STATS_ESTIMATION_DATE + "' : ?0}")
     public Optional<MongoPrideStats> findStatsByDate(Date date);
 
+    public MongoPrideStats findTopByOrderByEstimationDateDesc();
+
 }

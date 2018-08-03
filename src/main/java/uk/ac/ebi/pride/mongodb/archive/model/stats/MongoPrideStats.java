@@ -46,4 +46,7 @@ public class MongoPrideStats implements PrideArchiveField {
     @Indexed(unique = true, name = PrideArchiveField.STATS_ESTIMATION_DATE)
     Date estimationDate;
 
+    @Field(value = PrideArchiveField.STATS_COMPLEX_COUNTS)
+    Map<String, Object> complexStats;
+
 }

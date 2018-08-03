@@ -50,7 +50,7 @@ public class PrideProjectMongoServiceTest {
     public void save() {
 
         MongoPrideProject project = MongoPrideProject.builder().accession("PXD000001").build();
-        prideProjectService.save(project);
+        prideProjectService.insert(project);
     }
 
     private Submission readSubmission() throws SubmissionFileException, URISyntaxException {
@@ -65,7 +65,7 @@ public class PrideProjectMongoServiceTest {
      */
     @Test
     public void importPrideProject() throws SubmissionFileException, URISyntaxException {
-        Optional<MongoPrideProject> project = prideProjectService.save(TestUtils.parseProject(readSubmission()));
+        Optional<MongoPrideProject> project = prideProjectService.insert(TestUtils.parseProject(readSubmission()));
         Assert.assertTrue(project.get().getAccession().equalsIgnoreCase("PXD000003"));
 
     }
@@ -78,7 +78,7 @@ public class PrideProjectMongoServiceTest {
     @Ignore
     public void importPrideProjectWithFiles() throws SubmissionFileException, URISyntaxException {
         Submission pxSubmission = readSubmission();
-        Optional<MongoPrideProject> project = prideProjectService.save(TestUtils.parseProject(pxSubmission));
+        Optional<MongoPrideProject> project = prideProjectService.insert(TestUtils.parseProject(pxSubmission));
 
         List<DataFile> dataFiles = pxSubmission.getDataFiles();
         Optional<MongoPrideProject> finalProject = project;

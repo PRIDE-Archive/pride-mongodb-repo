@@ -36,17 +36,32 @@ public class PrideProjectMongoService {
     }
 
     /**
-     * This function save a project in the Mongo Database, if the project already exist in the database, the function will skip the function.
+     * This function insert a project in the Mongo Database, if the project already exist in the database, the function will skip the function.
      *
      * @param project {@link MongoPrideProject}
      * @return MongoPrideProject
      */
-    public Optional<MongoPrideProject> save(MongoPrideProject project){
+    public Optional<MongoPrideProject> insert(MongoPrideProject project){
         if(!repository.findByAccession(project.getAccession()).isPresent()){
             project = repository.save(project);
             log.info("A new project has been saved into MongoDB database with Accession -- " + project.getAccession());
         }else
             log.info("A project with similar accession has been found in the MongoDB database, please use update function -- " + project.getAccession());
+        return Optional.of(project);
+    }
+
+    /**
+     * This function insert a project in the Mongo Database, if the project already exist in the database, the function will skip the function.
+     *
+     * @param project {@link MongoPrideProject}
+     * @return MongoPrideProject
+     */
+    public Optional<MongoPrideProject> update(MongoPrideProject project){
+        if(repository.findByAccession(project.getAccession()).isPresent()){
+            project = repository.save(project);
+            log.info("A new project has been updated in MongoDB with accession -- " + project.getAccession());
+        }else
+            log.info("The project do not exists in the database the insert function should be used -- " + project.getAccession());
         return Optional.of(project);
     }
 
@@ -60,9 +75,7 @@ public class PrideProjectMongoService {
      */
     public Optional<MongoPrideProject> updateFileRelations(String projectAccession, List<Triple<String, String, CvParamProvider>> projectFileRelations){
         Optional<MongoPrideProject> project = repository.findByAccession(projectAccession);
-        List projectFiles = projectFileRelations.stream().map(x-> {
-            return new Triple(x.getFirst(), x.getSecond(), new MongoCvParam(x.getThird().getCvLabel(), x.getThird().getAccession(), x.getThird().getName(), x.getThird().getValue()));
-        }).collect(Collectors.toList());
+        List projectFiles = projectFileRelations.stream().map(x-> new Triple(x.getFirst(), x.getSecond(), new MongoCvParam(x.getThird().getCvLabel(), x.getThird().getAccession(), x.getThird().getName(), x.getThird().getValue()))).collect(Collectors.toList());
         if(project.isPresent()){
             project.get().setSubmittedFileRelations(projectFiles);
             repository.save(project.get());

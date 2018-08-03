@@ -37,7 +37,7 @@ public class PrideStatsMongoService {
     }
 
     /**
-     * This function save a stats in the Mongo Database, if the Stats exists in the database for the same date
+     * This function insert a stats in the Mongo Database, if the Stats exists in the database for the same date
      * then you Update function should be used.
      *
      * @param stats {@link MongoPrideStats}
@@ -53,7 +53,7 @@ public class PrideStatsMongoService {
     }
 
     /**
-     * This function save a stats in the Mongo Database, if the Stats exists in the database for the same date
+     * This function insert a stats in the Mongo Database, if the Stats exists in the database for the same date
      * then you Update function should be used.
      *
      * @param date Date of the corresponding report
@@ -88,6 +88,35 @@ public class PrideStatsMongoService {
             Map<String, List<Tuple<String, Integer>>> submissionStats = currentStats.getSubmissionsCount();
             submissionStats.put(prideStatsKeysConstants.statsKey, submissionCount);
             currentStats.setSubmissionsCount(submissionStats);
+            currentStats = repository.save(currentStats);
+        }
+        return Optional.of(currentStats);
+    }
+
+    /**
+     * This function update the submission count map using an specific date, a key with the name of the type of the chart that will be estimated @{@link PrideStatsKeysConstants} .
+     * @param date date of the estimation of the stats
+     * @param prideStatsKeysConstants Type of the Stats @{@link PrideStatsKeysConstants}
+     * @param submissionCount Values of the Stats
+     * @return
+     */
+    public Optional<MongoPrideStats> updateSubmissionComplexStats(Date date, PrideStatsKeysConstants prideStatsKeysConstants, Object submissionCount){
+        Optional<MongoPrideStats> stats = findStatsBydate(date);
+        MongoPrideStats currentStats;
+
+        if(!stats.isPresent()){
+            Map<String, Object> submissionCounts = new HashMap<>();
+            submissionCounts.put(prideStatsKeysConstants.statsKey, submissionCount);
+            MongoPrideStats mongoPrideStats = MongoPrideStats.builder()
+                    .estimationDate(date)
+                    .complexStats(submissionCounts)
+                    .build();
+            currentStats = save(mongoPrideStats).get();
+        }else{
+            currentStats = stats.get();
+            Map<String, Object> submissionStats = currentStats.getComplexStats();
+            submissionStats.put(prideStatsKeysConstants.statsKey, submissionCount);
+            currentStats.setComplexStats(submissionStats);
             currentStats = repository.save(currentStats);
         }
         return Optional.of(currentStats);

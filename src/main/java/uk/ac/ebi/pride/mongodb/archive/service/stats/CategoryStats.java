@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.service.stats;
 
 import lombok.Builder;
+import lombok.Data;
 import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
 
 import java.util.*;
@@ -20,6 +21,7 @@ import java.util.*;
  */
 
 @Builder
+@Data
 public class CategoryStats {
 
     /** Category under study **/

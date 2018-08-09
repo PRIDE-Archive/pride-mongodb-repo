@@ -27,7 +27,7 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 @EnableAutoConfiguration
 @EnableJpaRepositories(basePackages = {"uk.ac.ebi.pride.archive.repo"} , entityManagerFactoryRef = "oracleEntityManagerFactory", transactionManagerRef = "oracleTransactionManager")
-@ComponentScan(basePackages = "uk.ac.ebi.pride.archive.repo.services")
+@ComponentScan(basePackages = "uk.ac.ebi.pride.archive.services")
 public class ArchiveOracleConfig {
 
     @Bean(name = "dataSourceOracle")

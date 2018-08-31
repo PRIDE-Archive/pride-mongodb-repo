@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.archive.service;
+package uk.ac.ebi.pride.mongodb.archive.service.mockito;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * @author ypriverol
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {PrideProjectFongoTestConfig.class,  ArchiveOracleConfig.class})
+@SpringBootTest(classes = {PrideProjectFongoTestConfig.class})
 public class PridePSMMongoServiceTest {
 
     public static final long ZERO_DOCS = 0L;

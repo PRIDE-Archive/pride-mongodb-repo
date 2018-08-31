@@ -49,6 +49,7 @@ public class PrideFileMongoServiceTest {
     @Autowired
     ProjectRepository oracleProjectRepository;
 
+    @Ignore
     @Test
     public void save() {
         MongoPrideFile file = MongoPrideFile

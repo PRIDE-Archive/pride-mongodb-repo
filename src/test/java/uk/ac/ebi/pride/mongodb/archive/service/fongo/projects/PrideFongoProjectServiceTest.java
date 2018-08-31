@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.service.fongo.projects;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,12 @@ public class PrideFongoProjectServiceTest {
 
     @Autowired
     PrideFileMongoService prideFileMongoService;
+
+    @Before
+    public void setUp(){
+        prideProjectService.deleteAll();
+        prideFileMongoService.deleteAll();
+    }
 
     /**
      * Save Project using only an accession in the Project
@@ -142,12 +149,14 @@ public class PrideFongoProjectServiceTest {
         Assert.assertTrue(mongoFiles.size() == dataFiles.size());
 
         for(MongoPrideFile prideFile: prideFileMongoService.findFilesByProjectAccession(project.get().getAccession())){
-            MongoPrideMSRun msRun = new MongoPrideMSRun(prideFile);
-            prideFileMongoService.updateMSRun(msRun);
+            if(prideFile.getFileCategory().getAccession().equalsIgnoreCase(ProjectFileCategoryConstants.RAW.getCv().getAccession())){
+                MongoPrideMSRun msRun = new MongoPrideMSRun(prideFile);
+                prideFileMongoService.updateMSRun(msRun);
+            }
         }
 
         List<MongoPrideMSRun> msRuns = prideFileMongoService.getMSRunsByProject(project.get().getAccession());
-        Assert.assertTrue(msRuns.size() == 100);
+        Assert.assertTrue(msRuns.size() == 150);
 
 
 

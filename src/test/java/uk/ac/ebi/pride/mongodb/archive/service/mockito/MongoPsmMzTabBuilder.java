@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.archive.service;
+package uk.ac.ebi.pride.mongodb.archive.service.mockito;
 
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;

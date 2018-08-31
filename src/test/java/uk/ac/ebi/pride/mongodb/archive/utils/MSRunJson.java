@@ -1,0 +1,35 @@
+package uk.ac.ebi.pride.mongodb.archive.utils;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+
+/**
+ * This code is licensed under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * ==Overview==
+ *
+ * @author ypriverol on 31/08/2018.
+ */
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Data
+public class MSRunJson {
+
+    @JsonProperty("FileProperties")
+    JsonCVTerm[] fileProperties;
+
+    @JsonProperty("ScanSettings")
+    JsonCVTerm[] scanSeetings;
+
+    @JsonProperty("MsData")
+    JsonCVTerm[] msData;
+
+    @JsonProperty("InstrumentProperties")
+    JsonCVTerm[] instrumentProperties;
+
+
+}

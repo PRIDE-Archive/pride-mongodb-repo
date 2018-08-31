@@ -1,6 +1,8 @@
-package uk.ac.ebi.pride.mongodb.archive.service.localhost;
+package uk.ac.ebi.pride.mongodb.archive.service.localhost.projects;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +15,18 @@ import uk.ac.ebi.pride.data.io.SubmissionFileParser;
 import uk.ac.ebi.pride.data.model.DataFile;
 import uk.ac.ebi.pride.data.model.Submission;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideMongoLocalhostConfig;
-import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
 import uk.ac.ebi.pride.mongodb.archive.service.files.PrideFileMongoService;
 import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideProjectMongoService;
+import uk.ac.ebi.pride.mongodb.archive.utils.MSRunJson;
 import uk.ac.ebi.pride.mongodb.archive.utils.TestUtils;
 import uk.ac.ebi.pride.utilities.util.Triple;
 import uk.ac.ebi.pride.utilities.util.Tuple;
 
-import java.io.File;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -38,13 +40,20 @@ import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {PrideMongoLocalhostConfig.class})
-public class PrideFongoProjectServiceTest {
+public class PrideLocalhostProjectServiceTest {
 
     @Autowired
     PrideProjectMongoService prideProjectService;
 
     @Autowired
     PrideFileMongoService prideFileMongoService;
+
+
+    @Before
+    public void setup(){
+        prideProjectService.deleteAll();
+        prideFileMongoService.deleteAll();
+    }
 
     /**
      * Save Project using only an accession in the Project
@@ -59,8 +68,17 @@ public class PrideFongoProjectServiceTest {
     }
 
     private Submission readSubmission() throws SubmissionFileException, URISyntaxException {
-        File pxFile = new File(Objects.requireNonNull(PrideFongoProjectServiceTest.class.getClassLoader().getResource("pride-submission-three.px")).toURI());
+        File pxFile = new File(Objects.requireNonNull(PrideLocalhostProjectServiceTest.class.getClassLoader().getResource("pride-submission-three.px")).toURI());
         return SubmissionFileParser.parse(pxFile);
+    }
+
+    private MSRunJson readMSrunMetadata() throws URISyntaxException, IOException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        File msRunFile = new File(Objects.requireNonNull(PrideLocalhostProjectServiceTest.class.getClassLoader().getResource("submissions/msrun/ms-run-metadata.json")).toURI());
+        InputStream fileStream = new FileInputStream(msRunFile);
+        return mapper.readValue(fileStream, MSRunJson.class);
+
     }
 
     /**
@@ -86,6 +104,7 @@ public class PrideFongoProjectServiceTest {
     public void importPrideProjectWithFiles() throws SubmissionFileException, URISyntaxException {
         Submission pxSubmission = readSubmission();
         Optional<MongoPrideProject> project = prideProjectService.insert(TestUtils.parseProject(pxSubmission));
+
 
         List<DataFile> dataFiles = pxSubmission.getDataFiles();
         Optional<MongoPrideProject> finalProject = project;
@@ -122,7 +141,7 @@ public class PrideFongoProjectServiceTest {
     }
 
     @Test
-    public void updateTypeOfRawMSRun() throws SubmissionFileException, URISyntaxException {
+    public void updateTypeOfRawMSRun() throws SubmissionFileException, URISyntaxException, IOException {
         Submission pxSubmission = readSubmission();
         Optional<MongoPrideProject> project = prideProjectService.insert(TestUtils.parseProject(pxSubmission));
 
@@ -142,9 +161,24 @@ public class PrideFongoProjectServiceTest {
         List<Tuple<MongoPrideFile, MongoPrideFile>> filesInserted= prideFileMongoService.insertAll(mongoFiles);
         Assert.assertTrue(mongoFiles.size() == dataFiles.size());
 
+        MSRunJson msRunJson = readMSrunMetadata();
+
         for(MongoPrideFile prideFile: prideFileMongoService.findFilesByProjectAccession(project.get().getAccession())){
             if(prideFile.getFileCategory().getAccession().equalsIgnoreCase(ProjectFileCategoryConstants.RAW.getCv().getAccession())){
                 MongoPrideMSRun msRun = new MongoPrideMSRun(prideFile);
+                msRun.setFileProperties(Arrays.stream(msRunJson.getFileProperties())
+                        .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
+                        .collect(Collectors.toList()));
+                msRun.setInstrumentProperties(Arrays.stream(msRunJson.getInstrumentProperties())
+                        .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
+                        .collect(Collectors.toList()));
+                msRun.setMsData(Arrays.stream(msRunJson.getMsData())
+                        .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
+                        .collect(Collectors.toList()));
+                msRun.setScanSettings(Arrays.stream(msRunJson.getScanSeetings())
+                        .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
+                        .collect(Collectors.toList()));
+
                 prideFileMongoService.updateMSRun(msRun);
             }
 
@@ -152,9 +186,6 @@ public class PrideFongoProjectServiceTest {
 
         List<MongoPrideMSRun> msRuns = prideFileMongoService.getMSRunsByProject(project.get().getAccession());
         Assert.assertTrue(msRuns.size() == 150);
-
-
-
     }
 
     /**

@@ -7,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import uk.ac.ebi.pride.mongodb.helpers.InheritanceAwareMongoRepositoryFactoryBean;
 
 /**
  * Test Configuration for Mongo PRIDE Projects using the fongo {@link Fongo} library.

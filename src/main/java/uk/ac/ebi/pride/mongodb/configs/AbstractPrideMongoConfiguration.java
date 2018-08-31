@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
-import uk.ac.ebi.pride.mongodb.helpers.InheritanceAwareMongoRepositoryFactoryBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +19,6 @@ import java.util.List;
 public abstract class AbstractPrideMongoConfiguration extends AbstractMongoConfiguration {
 
     private MongoClientOptions options;
-
-    @Autowired
-    InheritanceAwareMongoRepositoryFactoryBean factoryBean;
 
     @Bean
     @Override

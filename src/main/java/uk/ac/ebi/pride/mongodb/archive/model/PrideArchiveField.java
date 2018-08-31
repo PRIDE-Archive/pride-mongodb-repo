@@ -145,11 +145,12 @@ public interface PrideArchiveField {
     String STATS_COMPLEX_COUNTS = "pride_complex_counts";
 
     /** MSRun file Properties **/
-    String MS_RUN_FILE_PROPERTIES = "ms_run_file_properties";
-    String MS_RUN_INSTRUMENT_PROPERTIES = "ms_run_instrument_properties";
-    String MS_RUN_MS_DATA = "ms_run_ms_data";
-    String MS_RUN_SCAN_SETTINGS = "ms_run_scan_settings";
+    String MS_RUN_FILE_PROPERTIES = "fileProperties";
+    String MS_RUN_INSTRUMENT_PROPERTIES = "instrumentProperties";
+    String MS_RUN_MS_DATA = "msData";
+    String MS_RUN_SCAN_SETTINGS = "scanSettings";
 
     /** Alias **/
     String MONGO_MSRUN_ALIAS = "MongoPrideMSRun";
+
 }

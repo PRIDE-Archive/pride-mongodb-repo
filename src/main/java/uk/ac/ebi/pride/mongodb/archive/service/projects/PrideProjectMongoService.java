@@ -115,7 +115,7 @@ public class PrideProjectMongoService {
     }
 
 
-
-
-
+    public void deleteAll() {
+        repository.deleteAll();
+    }
 }

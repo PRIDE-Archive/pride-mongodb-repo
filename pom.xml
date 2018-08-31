@@ -119,6 +119,13 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson</groupId>
+            <artifactId>jackson-base</artifactId>
+            <version>2.9.5</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- jmzTab -->
         <dependency>
             <groupId>uk.ac.ebi.pride</groupId>

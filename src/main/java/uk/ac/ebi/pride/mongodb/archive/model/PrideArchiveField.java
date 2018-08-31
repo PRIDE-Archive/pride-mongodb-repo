@@ -1,5 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.model;
 
+import org.springframework.data.mongodb.core.query.Criteria;
+
 /**
  * All properties used by the PRIDE Mongo Project, this values are used to perform queries in each service.
  *
@@ -141,4 +143,13 @@ public interface PrideArchiveField {
     String STATS_SUBMISSION_COUNTS = "pride_submission_counts";
     String STATS_ESTIMATION_DATE = "estimationDate";
     String STATS_COMPLEX_COUNTS = "pride_complex_counts";
+
+    /** MSRun file Properties **/
+    String MS_RUN_FILE_PROPERTIES = "ms_run_file_properties";
+    String MS_RUN_INSTRUMENT_PROPERTIES = "ms_run_instrument_properties";
+    String MS_RUN_MS_DATA = "ms_run_ms_data";
+    String MS_RUN_SCAN_SETTINGS = "ms_run_scan_settings";
+
+    /** Alias **/
+    String MONGO_MSRUN_ALIAS = "MongoPrideMSRun";
 }

@@ -1,11 +1,13 @@
-package uk.ac.ebi.pride.mongodb.archive.model.projects;
+package uk.ac.ebi.pride.mongodb.archive.model.files;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.experimental.Tolerate;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -29,6 +31,7 @@ import java.util.stream.Collectors;
 @Data
 @Builder
 @Document(collection = PrideArchiveField.PRIDE_FILE_COLLECTION_NAME)
+@TypeAlias("MongoPrideFile")
 public class MongoPrideFile implements PrideArchiveField, FileProvider {
 
     @Id
@@ -67,25 +70,25 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
     List<MongoCvParam> publicFileLocations;
 
     @Indexed(name = FILE_SIZE_MB)
-    private long fileSizeBytes;
+    protected long fileSizeBytes;
 
     @Indexed(name =  FILE_EXTENSION)
-    String fileExtension;
+    protected  String fileExtension;
 
     @Indexed(name = FILE_NAME)
-    private String fileName;
+    protected String fileName;
 
     @Indexed(name = FILE_IS_COMPRESS)
-    private boolean compress;
+    protected boolean compress;
 
     @Indexed(name = SUBMISSION_DATE)
-    private Date submissionDate;
+    protected Date submissionDate;
 
     @Indexed(name = PUBLICATION_DATE)
-    private Date publicationDate;
+    protected Date publicationDate;
 
     @Indexed(name = UPDATED_DATE)
-    private Date updatedDate;
+    protected Date updatedDate;
 
     @Indexed(name = ADDITIONAL_ATTRIBUTES)
     List<MongoCvParam> additionalAttributes;
@@ -142,6 +145,10 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
     @Override
     public Comparable getId() {
         return id;
+    }
+
+    @Tolerate
+    public MongoPrideFile() {
     }
 
     @Override

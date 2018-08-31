@@ -3,6 +3,7 @@ package uk.ac.ebi.pride.mongodb.archive.model.projects;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 @Document(collection = PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME)
 @Data
 @Builder
+@TypeAlias("MongoPrideProject")
 public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     @Id

@@ -114,7 +114,7 @@ public class PrideStatsMongoService {
             currentStats = save(mongoPrideStats).get();
         }else{
             currentStats = stats.get();
-            Map<String, Object> submissionStats = currentStats.getComplexStats();
+            Map<String, Object> submissionStats = (currentStats.getComplexStats() != null)? currentStats.getComplexStats(): new HashMap<>() ;
             submissionStats.put(prideStatsKeysConstants.statsKey, submissionCount);
             currentStats.setComplexStats(submissionStats);
             currentStats = repository.save(currentStats);

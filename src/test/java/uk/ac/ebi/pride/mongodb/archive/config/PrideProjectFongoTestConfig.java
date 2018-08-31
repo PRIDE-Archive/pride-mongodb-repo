@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import uk.ac.ebi.pride.mongodb.helpers.InheritanceAwareMongoRepositoryFactoryBean;
 
 /**
  * Test Configuration for Mongo PRIDE Projects using the fongo {@link Fongo} library.
@@ -15,7 +16,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
  */
 
 @ComponentScan(basePackages = "uk.ac.ebi.pride.mongodb.archive.service")
-@EnableMongoRepositories(basePackages = "uk.ac.ebi.pride.mongodb.archive.repo")
+@EnableMongoRepositories(basePackages = {"uk.ac.ebi.pride.mongodb.archive.repo"})
 @Configuration
 public class PrideProjectFongoTestConfig extends AbstractMongoConfiguration{
 

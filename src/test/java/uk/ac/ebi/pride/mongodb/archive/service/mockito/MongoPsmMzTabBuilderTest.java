@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.archive.service;
+package uk.ac.ebi.pride.mongodb.archive.service.mockito;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,6 +12,7 @@ import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
 import uk.ac.ebi.pride.jmztab.model.MZTabFile;
 import uk.ac.ebi.pride.jmztab.utils.MZTabFileParser;
 import uk.ac.ebi.pride.mongodb.archive.model.psms.PrideMongoPSM;
+import uk.ac.ebi.pride.mongodb.archive.service.MongoPsmMzTabBuilder;
 
 import java.io.File;
 import java.util.*;

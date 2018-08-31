@@ -51,6 +51,7 @@ public class PrideFileMongoRepositoryImpl implements PrideFileMongoRepositoryCus
     @Override
     public List<MongoPrideMSRun> filterMSRunByProjectAccession(String projectAccession) {
         Criteria criteria = Criteria.where("_class").is(PrideArchiveField.MONGO_MSRUN_ALIAS);
+        criteria = criteria.andOperator( Criteria.where(PrideArchiveField.EXTERNAL_PROJECT_ACCESSIONS).in(projectAccession));
         Query queryMongo = new Query().addCriteria(criteria);
         return mongoTemplate.find(queryMongo, MongoPrideMSRun.class);
     }

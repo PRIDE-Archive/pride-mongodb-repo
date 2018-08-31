@@ -21,6 +21,4 @@ import java.util.List;
  */
 public interface PrideMongoRunMSRunRepository extends MongoRepository<MongoPrideMSRun, ObjectId>{
 
-//    @Query("{'"+ PrideArchiveField.EXTERNAL_PROJECT_ACCESSIONS + "' : ?0}")
-//    List<MongoPrideMSRun> filterByProjectAccession(String projectAccession);
 }

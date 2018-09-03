@@ -31,8 +31,8 @@ public class PrideFileMongoService implements IMSRunService{
     final
     PrideFileMongoRepository fileRepository;
 
-//    final
-//    PrideMongoRunMSRunRepository msRunRepository;
+    final
+    PrideMongoRunMSRunRepository msRunRepository;
 
 
     @Autowired
@@ -41,7 +41,7 @@ public class PrideFileMongoService implements IMSRunService{
     @Autowired
     public PrideFileMongoService(PrideFileMongoRepository fileRepository, PrideMongoRunMSRunRepository msRunRepository) {
         this.fileRepository = fileRepository;
-//        this.msRunRepository = msRunRepository;
+        this.msRunRepository = msRunRepository;
     }
 
     /**
@@ -222,7 +222,7 @@ public class PrideFileMongoService implements IMSRunService{
     public Optional<MongoPrideMSRun> updateMSRun( MongoPrideMSRun mongoPrideMSRun){
         Optional<MongoPrideFile> file = fileRepository.findPrideFileByAccession(mongoPrideMSRun.getAccession());
         if(file.isPresent()){
-            mongoPrideMSRun = fileRepository.save(mongoPrideMSRun);
+            mongoPrideMSRun = msRunRepository.save(mongoPrideMSRun);
         }
         return Optional.of(mongoPrideMSRun);
     }

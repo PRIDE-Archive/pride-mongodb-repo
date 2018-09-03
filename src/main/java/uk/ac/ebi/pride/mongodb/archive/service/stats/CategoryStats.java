@@ -42,4 +42,12 @@ public class CategoryStats {
     public int hashCode() {
         return Objects.hash(category.getKey());
     }
+
+    @Override
+    public String toString() {
+        return "CategoryStats{" +
+                "category=" + getCategory() +
+                ", subCategories=" + getSubCategories() +
+                '}';
+    }
 }

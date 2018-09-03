@@ -4,6 +4,7 @@ import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.user.DefaultContact;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -53,29 +54,38 @@ public enum PrideFieldEnum {
     private Class classType;
     private String[] collections;
 
-    PrideFieldEnum(java.lang.String fieldName, java.lang.String[] collections, Class classType) {
+    PrideFieldEnum(String fieldName, String[] collections, Class classType) {
         this.classType = classType;
         this.fieldName = fieldName;
         this.collections = collections;
     }
 
-    public java.lang.String getFieldName() {
+    public String getFieldName() {
         return fieldName;
     }
 
-    public void setFieldName(java.lang.String fieldName) {
+    public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
     }
 
-    public java.lang.String[] getCollections() {
+    public String[] getCollections() {
         return collections;
     }
 
-    public void setCollections(java.lang.String[] collections) {
+    public void setCollections(String[] collections) {
         this.collections = collections;
     }
 
     public Class getClassType() {
         return classType;
+    }
+
+    @Override
+    public String toString() {
+        return "PrideFieldEnum{" +
+                "fieldName='" + getFieldName() + '\'' +
+                ", classType=" + getClassType() +
+                ", collections=" + Arrays.toString(getCollections()) +
+                '}';
     }
 }

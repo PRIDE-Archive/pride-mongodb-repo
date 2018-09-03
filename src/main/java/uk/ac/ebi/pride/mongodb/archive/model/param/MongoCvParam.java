@@ -2,7 +2,6 @@ package uk.ac.ebi.pride.mongodb.archive.model.param;
 
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**

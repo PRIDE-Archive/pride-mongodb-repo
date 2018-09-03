@@ -107,7 +107,7 @@ public class PrideFongoProjectServiceTest {
         }).collect(Collectors.toList());
 
         List<Tuple<MongoPrideFile, MongoPrideFile>> filesInserted= prideFileMongoService.insertAll(mongoFiles);
-        Assert.assertTrue(mongoFiles.size() == dataFiles.size());
+        Assert.assertEquals(mongoFiles.size(), dataFiles.size());
 
         List<Triple<String, String, CvParamProvider>> fileRelations = new ArrayList<>();
         for(DataFile dataFile: dataFiles){
@@ -121,7 +121,7 @@ public class PrideFongoProjectServiceTest {
         }
 
         project = prideProjectService.updateFileRelations(project.get().getAccession(),fileRelations);
-        Assert.assertTrue(project.get().getSubmittedFileRelations().size() == 600);
+        Assert.assertEquals(600, project.get().getSubmittedFileRelations().size());
 
 
 
@@ -146,7 +146,7 @@ public class PrideFongoProjectServiceTest {
         }).collect(Collectors.toList());
 
         List<Tuple<MongoPrideFile, MongoPrideFile>> filesInserted= prideFileMongoService.insertAll(mongoFiles);
-        Assert.assertTrue(mongoFiles.size() == dataFiles.size());
+        Assert.assertEquals(mongoFiles.size(), dataFiles.size());
 
         for(MongoPrideFile prideFile: prideFileMongoService.findFilesByProjectAccession(project.get().getAccession())){
             if(prideFile.getFileCategory().getAccession().equalsIgnoreCase(ProjectFileCategoryConstants.RAW.getCv().getAccession())){
@@ -156,7 +156,7 @@ public class PrideFongoProjectServiceTest {
         }
 
         List<MongoPrideMSRun> msRuns = prideFileMongoService.getMSRunsByProject(project.get().getAccession());
-        Assert.assertTrue(msRuns.size() == 150);
+        Assert.assertEquals(150, msRuns.size());
 
 
 

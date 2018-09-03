@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.DefaultIdentifiedModification;
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
-import uk.ac.ebi.pride.mongodb.archive.config.ArchiveOracleConfig;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.psms.PrideMongoPSM;

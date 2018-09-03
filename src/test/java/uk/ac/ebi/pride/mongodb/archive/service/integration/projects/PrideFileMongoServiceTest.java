@@ -145,7 +145,7 @@ public class PrideFileMongoServiceTest {
 
             List<ProjectFile> projectFiles = oracleFileRepository.findAllByProjectId(project.getId());
             List<MongoPrideFile> mongoPrideFiles = new ArrayList<>(projectFiles.size());
-            projectFiles.stream().forEach(x -> {
+            projectFiles.forEach(x -> {
                 MSFileTypeConstants fileType = MSFileTypeConstants.OTHER;
                 for(MSFileTypeConstants currentFileType: MSFileTypeConstants.values()){
                     if(currentFileType.getFileType().getName().equalsIgnoreCase(x.getFileType().getName())){

@@ -1,26 +1,18 @@
 package uk.ac.ebi.pride.mongodb.archive.service.fongo.stats;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.stats.MongoPrideStats;
 import uk.ac.ebi.pride.mongodb.archive.model.stats.PrideStatsKeysConstants;
-import uk.ac.ebi.pride.mongodb.archive.repo.stats.PrideStatsMongoRepository;
 import uk.ac.ebi.pride.mongodb.archive.service.stats.PrideStatsMongoService;
 
 import java.util.*;
-
-import static org.junit.Assert.*;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -73,8 +65,7 @@ public class PrideStatsMongoServiceTest {
     public void findStatsBydate() {
         insertDataset();
         Optional<MongoPrideStats> findDatasets = service.findStatsBydate(date);
-        if(findDatasets.isPresent())
-            System.out.println(findDatasets.get().getEstimationDate());
+        findDatasets.ifPresent(mongoPrideStats -> System.out.println(mongoPrideStats.getEstimationDate()));
         Assert.assertTrue(findDatasets.isPresent());
 
     }
@@ -86,7 +77,7 @@ public class PrideStatsMongoServiceTest {
         service.updateSubmissionCountStats(date, PrideStatsKeysConstants.SUBMISSIONS_PER_YEAR, monthlySubmissions);
         Optional<MongoPrideStats> findDatasets = service.findStatsBydate(date);
         findDatasets.ifPresent(mongoPrideStats -> System.out.println(mongoPrideStats.getSubmissionsCount().size()));
-        Assert.assertTrue(findDatasets.get().getSubmissionsCount().get(PrideStatsKeysConstants.SUBMISSIONS_PER_YEAR.getStatsKey()).size() == 5);
+        Assert.assertEquals(5, findDatasets.get().getSubmissionsCount().get(PrideStatsKeysConstants.SUBMISSIONS_PER_YEAR.getStatsKey()).size());
     }
 
     @Test

@@ -4,8 +4,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
@@ -22,7 +20,7 @@ public class MongoReferenceTest {
     MongoReference ref;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ref = MongoReference.builder()
                 .doi("10.1021/acs.jproteome.5b00121")
                 .pubmedID(25938255)

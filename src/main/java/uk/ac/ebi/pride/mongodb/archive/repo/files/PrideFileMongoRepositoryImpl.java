@@ -2,24 +2,19 @@ package uk.ac.ebi.pride.mongodb.archive.repo.files;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.query.MongoQueryMethod;
 import org.springframework.data.repository.support.PageableExecutionUtils;
-import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
 import java.util.List;
-
-import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 /**
  * @author ypriverol

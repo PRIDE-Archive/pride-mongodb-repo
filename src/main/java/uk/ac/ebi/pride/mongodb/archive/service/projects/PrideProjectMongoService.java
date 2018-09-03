@@ -1,14 +1,11 @@
 package uk.ac.ebi.pride.mongodb.archive.service.projects;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
 import uk.ac.ebi.pride.mongodb.archive.repo.projects.PrideProjectMongoRepository;

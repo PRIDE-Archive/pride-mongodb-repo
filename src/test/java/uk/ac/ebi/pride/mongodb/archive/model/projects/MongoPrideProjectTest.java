@@ -6,8 +6,6 @@ import org.junit.Test;
 import java.util.Collection;
 import java.util.Collections;
 
-import static org.junit.Assert.*;
-
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
@@ -24,7 +22,7 @@ public class MongoPrideProjectTest {
     MongoPrideProject project;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 
         Collection<String> tags = Collections.singleton("Metaproteomics");
 

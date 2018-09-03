@@ -2,18 +2,12 @@ package uk.ac.ebi.pride.mongodb.archive.model.files;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.utils.ProjectFileCategoryConstants;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-
-import static org.junit.Assert.*;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -31,7 +25,7 @@ public class MongoPrideFileTest {
 
     MongoPrideFile file;
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 
         CvParamProvider cvCategory = ProjectFileCategoryConstants.RAW.getCv();
         Set<String> projects = new HashSet<>();

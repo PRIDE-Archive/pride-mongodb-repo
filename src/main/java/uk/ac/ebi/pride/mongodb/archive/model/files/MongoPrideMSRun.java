@@ -6,14 +6,11 @@ import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
-import uk.ac.ebi.pride.utilities.util.Tuple;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -80,4 +77,21 @@ public class MongoPrideMSRun extends MongoPrideFile implements MsRunProvider{
         super();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        MongoPrideMSRun that = (MongoPrideMSRun) o;
+        return Objects.equals(fileProperties, that.fileProperties) &&
+                Objects.equals(instrumentProperties, that.instrumentProperties) &&
+                Objects.equals(msData, that.msData) &&
+                Objects.equals(scanSettings, that.scanSettings);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(super.hashCode(), fileProperties, instrumentProperties, msData, scanSettings);
+    }
 }

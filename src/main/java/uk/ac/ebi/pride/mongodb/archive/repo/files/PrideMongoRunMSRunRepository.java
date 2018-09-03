@@ -2,11 +2,7 @@ package uk.ac.ebi.pride.mongodb.archive.repo.files;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
-import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
-
-import java.util.List;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the

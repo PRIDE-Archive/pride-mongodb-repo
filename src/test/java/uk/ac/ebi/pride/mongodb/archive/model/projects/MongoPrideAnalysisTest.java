@@ -4,8 +4,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
@@ -22,7 +20,7 @@ public class MongoPrideAnalysisTest {
     MongoPrideAnalysis project;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 
         project = MongoPrideAnalysis.builder().accession("RPX000001").build();
     }

@@ -1,5 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.model.reference;
 
+import lombok.Builder;
+import lombok.Data;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 
 import java.io.Serializable;
@@ -17,11 +19,13 @@ import java.io.Serializable;
  * <p>
  * Created by ypriverol (ypriverol@gmail.com) on 15/06/2018.
  */
+@Data
+@Builder
 public class MongoReference implements ReferenceProvider, Serializable {
 
     String referenceLine;
 
-    /** Pubmedd ID **/
+    /** Pubmed ID **/
     Integer pubmedID;
 
     /** DOI **/
@@ -58,5 +62,14 @@ public class MongoReference implements ReferenceProvider, Serializable {
     @Override
     public Comparable getId() {
         return this.pubmedID;
+    }
+
+    @Override
+    public String toString() {
+        return "MongoReference{" +
+                "referenceLine='" + getReferenceLine() + '\'' +
+                ", pubmedID=" + getPubmedId() +
+                ", doi='" + getDoi() + '\'' +
+                '}';
     }
 }

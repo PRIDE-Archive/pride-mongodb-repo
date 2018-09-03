@@ -26,7 +26,7 @@ import java.util.*;
  */
 @Service
 @Slf4j
-public class PrideFileMongoService {
+public class PrideFileMongoService implements IMSRunService{
 
     final
     PrideFileMongoRepository fileRepository;
@@ -218,6 +218,7 @@ public class PrideFileMongoService {
      * @param mongoPrideMSRun the new MongoPrideMSRun
      * @return Optional
      */
+    @Override
     public Optional<MongoPrideMSRun> updateMSRun( MongoPrideMSRun mongoPrideMSRun){
         Optional<MongoPrideFile> file = fileRepository.findPrideFileByAccession(mongoPrideMSRun.getAccession());
         if(file.isPresent()){
@@ -231,9 +232,8 @@ public class PrideFileMongoService {
      * @param projectAccession Project Accession
      * @return List of {@link MongoPrideMSRun}
      */
+    @Override
     public List<MongoPrideMSRun> getMSRunsByProject(String projectAccession){
         return fileRepository.filterMSRunByProjectAccession(projectAccession);
     }
-
-
 }

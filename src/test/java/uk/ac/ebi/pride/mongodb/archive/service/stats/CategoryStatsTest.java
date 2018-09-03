@@ -35,4 +35,9 @@ public class CategoryStatsTest {
         System.out.println(stats.toString());
         Assert.assertEquals(new Tuple<>("Number od Submissions", 30000), stats.getCategory());
     }
+
+    @Test
+    public void hashCodeTest() {
+        System.out.println(stats.hashCode());
+    }
 }

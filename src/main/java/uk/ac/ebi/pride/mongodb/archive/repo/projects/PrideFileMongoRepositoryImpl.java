@@ -28,7 +28,10 @@ public class PrideFileMongoRepositoryImpl implements PrideFileMongoRepositoryCus
     @Override
     public Page<MongoPrideFile> filterByAttributes(List<Triple<String, String, String>> filters, Pageable page) {
         Criteria queryCriteria = PrideMongoUtils.buildQuery(filters);
-        Query queryMongo = new Query().addCriteria(queryCriteria);
+        Query queryMongo = new Query();
+        if(queryCriteria!=null){
+            queryMongo.addCriteria(queryCriteria);
+        }
         queryMongo.with(page);
         List<MongoPrideFile> files =  mongoTemplate.find(queryMongo, MongoPrideFile.class);
         return PageableExecutionUtils.getPage(files, page, () -> mongoOperations.count(queryMongo, MongoPrideFile.class));

@@ -51,7 +51,7 @@ public class PrideMongoUtils {
         Pattern composite = Pattern.compile("(.*)=(.*)=(.*)");
         for(String filterQuery: filterQueryList){
             if(filterQuery != null && !filterQuery.trim().isEmpty()){
-                String[] filtersString = (filterQuery + ",").split(",");
+                String[] filtersString = (filterQuery).split(",");
                 if(filtersString.length > 0){
                     Arrays.asList(filtersString).forEach(filter ->{
                         String[] filterString = filter.split("==");
@@ -89,25 +89,25 @@ public class PrideMongoUtils {
         if(filterCriteria == null){
             if(operator.equalsIgnoreCase("in"))
                 filterCriteria = new Criteria(filterField).in(valueFilter);
-            if(operator.equalsIgnoreCase("all"))
+            else if(operator.equalsIgnoreCase("all"))
                 filterCriteria = new Criteria(filterField).all(valueFilter);
-            if(operator.equalsIgnoreCase("range")){
+            else if(operator.equalsIgnoreCase("range")){
                 Tuple<Object, Object> betweenClass = parseBetweenObjects(parseFilterBetween(valueFilter), filterField);
                 filterCriteria = Criteria.where(filterField).gte(betweenClass.getKey()).lt(betweenClass.getValue());
             }
-            if(operator.equalsIgnoreCase("regex")){
+            else if(operator.equalsIgnoreCase("regex")){
                 filterCriteria = Criteria.where(filterField).regex(valueFilter);
             }
         }else{
             if(operator.equalsIgnoreCase("in"))
                 filterCriteria = filterCriteria.andOperator(new Criteria(filterField).in(valueFilter));
-            if(operator.equalsIgnoreCase("all"))
+            else if(operator.equalsIgnoreCase("all"))
                 filterCriteria = filterCriteria.andOperator(new Criteria(filterField).all(valueFilter));
-            if(operator.equalsIgnoreCase("range")){
+            else if(operator.equalsIgnoreCase("range")){
                 Tuple<Object, Object> betweenClass = parseBetweenObjects(parseFilterBetween(valueFilter), filterField);
                 filterCriteria = Criteria.where(filterField).gte(betweenClass.getKey()).lt(betweenClass.getValue());
             }
-            if(operator.equalsIgnoreCase("regex")){
+            else if(operator.equalsIgnoreCase("regex")){
                 filterCriteria = filterCriteria.andOperator(new Criteria(filterField).regex(valueFilter));
             }
 

@@ -2,15 +2,11 @@ package uk.ac.ebi.pride.mongodb.configs;
 
 import com.mongodb.*;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +17,13 @@ import java.util.List;
  */
 public abstract class AbstractPrideMongoConfiguration extends AbstractMongoConfiguration {
 
+    private MongoClientOptions options;
+
     @Bean
     @Override
     public MongoClient mongoClient() {
         MongoCredential credential = MongoCredential.createCredential(getUser(), getAuthenticationDatabse(), getPassword().toCharArray());
-        MongoClientOptions options = MongoClientOptions.builder().build();
+        options = MongoClientOptions.builder().build();
         MongoClient mongoClient;
         if(!getMongoURI().isEmpty())
             mongoClient = configureMachineFromURI(getMongoURI());
@@ -40,7 +38,6 @@ public abstract class AbstractPrideMongoConfiguration extends AbstractMongoConfi
 
     @Bean
     public MongoTemplate mongoTemplate(){
-
         return new MongoTemplate(mongoDbFactory());
     }
 
@@ -48,6 +45,7 @@ public abstract class AbstractPrideMongoConfiguration extends AbstractMongoConfi
     public MongoDbFactory mongoDbFactory(){
         return new SimpleMongoDbFactory(mongoClient(), getDatabaseName());
     }
+
 
     /**
      * This method create a connection from an URI

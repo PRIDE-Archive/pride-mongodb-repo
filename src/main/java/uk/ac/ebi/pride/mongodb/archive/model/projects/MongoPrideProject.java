@@ -3,6 +3,7 @@ package uk.ac.ebi.pride.mongodb.archive.model.projects;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 @Document(collection = PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME)
 @Data
 @Builder
+@TypeAlias("MongoPrideProject")
 public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     @Id
@@ -172,17 +174,26 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     @Override
     public Collection<? extends String> getSubmitters() {
-        return this.submitters.stream().map(MongoContact::getName).collect(Collectors.toList());
+        Collection<String> submitters = Collections.EMPTY_LIST;
+        if(this.submitters != null && !this.submitters.isEmpty())
+            submitters = this.submitters.stream().map(MongoContact::getName).collect(Collectors.toList());
+        return submitters;
     }
 
     @Override
     public Collection<? extends String> getPtms() {
-        return this.ptmList.stream().map(MongoCvParam::getName).collect(Collectors.toList());
+        Collection<String> ptms = Collections.EMPTY_LIST;
+        if(this.ptmList != null && !this.ptmList.isEmpty())
+            ptms = this.ptmList.stream().map(MongoCvParam::getName).collect(Collectors.toList());
+        return ptms;
     }
 
     @Override
     public Collection<? extends String> getSoftwares() {
-        return this.softwareList.stream().map(MongoCvParam::getName).collect(Collectors.toList());
+        Collection<String> softList = Collections.EMPTY_LIST;
+        if(this.softwareList != null && !this.softwareList.isEmpty())
+            softList = this.softwareList.stream().map(MongoCvParam::getName).collect(Collectors.toList());
+        return softList;
     }
 
     @Override
@@ -212,13 +223,19 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     @Override
     public Collection<String> getCountries() {
-        return this.countries;
+        Collection<String> countries = Collections.EMPTY_LIST;
+        if(this.countries != null && !this.countries.isEmpty())
+            countries = this.countries;
+        return countries;
     }
 
     @Override
     public Collection<String> getAllAffiliations() {
-        Set<String> affiliations = submitters.stream().map(MongoContact::getAffiliation).collect(Collectors.toSet());
-        affiliations.addAll(headLab.stream().map(MongoContact::getAffiliation).collect(Collectors.toList()));
+        Collection<String> affiliations = Collections.EMPTY_LIST;
+        if(this.submitters != null && !this.submitters.isEmpty())
+            affiliations = this.submitters.stream().map(MongoContact::getAffiliation).collect(Collectors.toSet());
+        if(this.headLab != null && !this.headLab.isEmpty())
+            affiliations.addAll(headLab.stream().map(MongoContact::getAffiliation).collect(Collectors.toList()));
         return affiliations;
     }
 
@@ -239,22 +256,34 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     @Override
     public Collection<String> getHeadLab() {
-        return headLab.stream().map(MongoContact::getName).collect(Collectors.toList());
+        Collection<String> headLab = Collections.EMPTY_LIST;
+        if(this.headLab != null && this.headLab.isEmpty())
+            headLab =  this.headLab.stream().map(MongoContact::getName).collect(Collectors.toList());
+        return headLab;
     }
 
     @Override
     public Collection<String> getInstruments() {
-        return instruments.stream().map(MongoCvParam::getName).collect(Collectors.toList());
+        Collection<String> instruments = Collections.EMPTY_LIST;
+        if(this.instruments != null && !this.instruments.isEmpty())
+            instruments = this.instruments.stream().map(MongoCvParam::getName).collect(Collectors.toList());
+        return instruments;
     }
 
     @Override
     public Collection<String> getQuantificationMethods() {
-        return quantificationMethods.stream().map(MongoCvParam::getName).collect(Collectors.toList());
+        Collection<String> quantificationMethods = Collections.EMPTY_LIST;
+        if(this.quantificationMethods != null && !this.quantificationMethods.isEmpty())
+            quantificationMethods = this.quantificationMethods.stream().map(MongoCvParam::getName).collect(Collectors.toList());
+        return quantificationMethods;
     }
 
     @Override
     public Collection<String> getReferences() {
-        return references.stream().map(MongoReference::getReferenceLine).collect(Collectors.toList());
+        Collection<String> references = Collections.EMPTY_LIST;
+        if(this.references != null && !this.references.isEmpty())
+            references = this.references.stream().map(MongoReference::getReferenceLine).collect(Collectors.toList());
+        return references;
     }
 
     /**
@@ -306,16 +335,16 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Override
     public String toString() {
         return "MongoPrideProject{" +
-                "id=" + id +
-                ", accession='" + accession + '\'' +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", keywords=" + keywords +
-                ", projectTags=" + projectTags +
-                ", quantificationMethods=" + quantificationMethods +
-                ", submissionType='" + submissionType + '\'' +
-                ", submissionDate=" + submissionDate +
-                ", publicProject=" + publicProject +
+                "id=" + getId() +
+                ", accession='" + getAccession() + '\'' +
+                ", title='" + getTitle() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", keywords=" + getKeywords() +
+                ", projectTags=" + getProjectTags() +
+                ", quantificationMethods=" + getQuantificationMethods() +
+                ", submissionType='" + getSubmissionType() + '\'' +
+                ", submissionDate=" + getSubmissionDate() +
+                ", publicProject=" + isPublicProject() +
                 '}';
     }
 }

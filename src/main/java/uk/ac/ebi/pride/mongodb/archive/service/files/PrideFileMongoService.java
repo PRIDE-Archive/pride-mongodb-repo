@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.archive.service.projects;
+package uk.ac.ebi.pride.mongodb.archive.service.files;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Triple;
@@ -7,9 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
-import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideFile;
+import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.repo.projects.PrideFileMongoRepository;
+import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
+import uk.ac.ebi.pride.mongodb.archive.repo.files.PrideFileMongoRepository;
+import uk.ac.ebi.pride.mongodb.archive.repo.files.PrideMongoRunMSRunRepository;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 import uk.ac.ebi.pride.utilities.util.Tuple;
 
@@ -24,17 +26,22 @@ import java.util.*;
  */
 @Service
 @Slf4j
-public class PrideFileMongoService {
+public class PrideFileMongoService implements IMSRunService{
 
     final
     PrideFileMongoRepository fileRepository;
+
+    final
+    PrideMongoRunMSRunRepository msRunRepository;
+
 
     @Autowired
     private MongoOperations mongo;
 
     @Autowired
-    public PrideFileMongoService(PrideFileMongoRepository fileRepository) {
+    public PrideFileMongoService(PrideFileMongoRepository fileRepository, PrideMongoRunMSRunRepository msRunRepository) {
         this.fileRepository = fileRepository;
+        this.msRunRepository = msRunRepository;
     }
 
     /**
@@ -206,5 +213,27 @@ public class PrideFileMongoService {
         fileRepository.deleteAll();
     }
 
+    /**
+     * We can update an existing {@link MongoPrideFile} as {@link MongoPrideMSRun} .
+     * @param mongoPrideMSRun the new MongoPrideMSRun
+     * @return Optional
+     */
+    @Override
+    public Optional<MongoPrideMSRun> updateMSRun( MongoPrideMSRun mongoPrideMSRun){
+        Optional<MongoPrideFile> file = fileRepository.findPrideFileByAccession(mongoPrideMSRun.getAccession());
+        if(file.isPresent()){
+            mongoPrideMSRun = msRunRepository.save(mongoPrideMSRun);
+        }
+        return Optional.of(mongoPrideMSRun);
+    }
 
+    /**
+     * Find all the MSruns for an specific project accession
+     * @param projectAccession Project Accession
+     * @return List of {@link MongoPrideMSRun}
+     */
+    @Override
+    public List<MongoPrideMSRun> getMSRunsByProject(String projectAccession){
+        return fileRepository.filterMSRunByProjectAccession(projectAccession);
+    }
 }

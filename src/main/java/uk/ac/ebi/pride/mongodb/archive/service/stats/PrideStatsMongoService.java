@@ -1,7 +1,5 @@
 package uk.ac.ebi.pride.mongodb.archive.service.stats;
 
-import lombok.extern.log4j.Log4j;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -114,7 +112,7 @@ public class PrideStatsMongoService {
             currentStats = save(mongoPrideStats).get();
         }else{
             currentStats = stats.get();
-            Map<String, Object> submissionStats = currentStats.getComplexStats();
+            Map<String, Object> submissionStats = (currentStats.getComplexStats() != null)? currentStats.getComplexStats(): new HashMap<>() ;
             submissionStats.put(prideStatsKeysConstants.statsKey, submissionCount);
             currentStats.setComplexStats(submissionStats);
             currentStats = repository.save(currentStats);

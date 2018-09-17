@@ -1,7 +1,7 @@
-package uk.ac.ebi.pride.mongodb.archive.service.projects;
+package uk.ac.ebi.pride.mongodb.archive.service.fongo.projects;
 
 import org.junit.Assert;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,12 @@ import uk.ac.ebi.pride.data.io.SubmissionFileParser;
 import uk.ac.ebi.pride.data.model.DataFile;
 import uk.ac.ebi.pride.data.model.Submission;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
+import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
-import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideFile;
+import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
+import uk.ac.ebi.pride.mongodb.archive.service.files.PrideFileMongoService;
+import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideProjectMongoService;
 import uk.ac.ebi.pride.mongodb.archive.utils.TestUtils;
 import uk.ac.ebi.pride.utilities.util.Triple;
 import uk.ac.ebi.pride.utilities.util.Tuple;
@@ -35,7 +38,7 @@ import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {PrideProjectFongoTestConfig.class})
-public class PrideProjectMongoServiceTest {
+public class PrideFongoProjectServiceTest {
 
     @Autowired
     PrideProjectMongoService prideProjectService;
@@ -43,18 +46,26 @@ public class PrideProjectMongoServiceTest {
     @Autowired
     PrideFileMongoService prideFileMongoService;
 
+    @Before
+    public void setUp(){
+        prideProjectService.deleteAll();
+        prideFileMongoService.deleteAll();
+    }
+
     /**
      * Save Project using only an accession in the Project
      **/
     @Test
     public void save() {
 
-        MongoPrideProject project = MongoPrideProject.builder().accession("PXD000001").build();
+        MongoPrideProject project = MongoPrideProject.builder()
+                .accession("PXD000001")
+                .build();
         prideProjectService.insert(project);
     }
 
     private Submission readSubmission() throws SubmissionFileException, URISyntaxException {
-        File pxFile = new File(Objects.requireNonNull(PrideProjectMongoServiceTest.class.getClassLoader().getResource("pride-submission-three.px")).toURI());
+        File pxFile = new File(Objects.requireNonNull(PrideFongoProjectServiceTest.class.getClassLoader().getResource("pride-submission-three.px")).toURI());
         return SubmissionFileParser.parse(pxFile);
     }
 
@@ -66,16 +77,18 @@ public class PrideProjectMongoServiceTest {
     @Test
     public void importPrideProject() throws SubmissionFileException, URISyntaxException {
         Optional<MongoPrideProject> project = prideProjectService.insert(TestUtils.parseProject(readSubmission()));
-        Assert.assertTrue(project.get().getAccession().equalsIgnoreCase("PXD000003"));
+        Assert.assertTrue(project.get()
+                .getAccession().equalsIgnoreCase("PXD000003"));
 
     }
 
+
     /**
-     * This method helps to read all the projects from PRIDE Archive Oracle Database and move then into MongoDB. This is
-     * an integration Test. Some maven profiles needs to be selected.
+     * Import a {@link MongoPrideProject} and the corresponding files.
+     * @throws SubmissionFileException Submission Exception can be read.
+     * @throws URISyntaxException The file hasn't been found
      */
     @Test
-    @Ignore
     public void importPrideProjectWithFiles() throws SubmissionFileException, URISyntaxException {
         Submission pxSubmission = readSubmission();
         Optional<MongoPrideProject> project = prideProjectService.insert(TestUtils.parseProject(pxSubmission));
@@ -86,13 +99,15 @@ public class PrideProjectMongoServiceTest {
             String accession = finalProject.get().getAccession();
             return MongoPrideFile.builder()
                     .fileName(dataFile.getFileName())
-                    .fileCategory(new MongoCvParam(ProjectFileCategoryConstants.findCategory(dataFile.getFileType().getName()).getCv()))
+                    .fileCategory(new MongoCvParam(ProjectFileCategoryConstants
+                            .findCategory(dataFile.getFileType()
+                                     .getName()).getCv()))
                     .projectAccessions(Collections.singleton(accession))
                     .build();
         }).collect(Collectors.toList());
 
         List<Tuple<MongoPrideFile, MongoPrideFile>> filesInserted= prideFileMongoService.insertAll(mongoFiles);
-        Assert.assertTrue(mongoFiles.size() == dataFiles.size());
+        Assert.assertEquals(mongoFiles.size(), dataFiles.size());
 
         List<Triple<String, String, CvParamProvider>> fileRelations = new ArrayList<>();
         for(DataFile dataFile: dataFiles){
@@ -105,9 +120,43 @@ public class PrideProjectMongoServiceTest {
             }
         }
 
-       project = prideProjectService.updateFileRelations(project.get().getAccession(),fileRelations);
+        project = prideProjectService.updateFileRelations(project.get().getAccession(),fileRelations);
+        Assert.assertEquals(600, project.get().getSubmittedFileRelations().size());
 
-        Assert.assertTrue(project.get().getSubmittedFileRelations().size() == 600);
+
+
+    }
+
+    @Test
+    public void updateTypeOfRawMSRun() throws SubmissionFileException, URISyntaxException {
+        Submission pxSubmission = readSubmission();
+        Optional<MongoPrideProject> project = prideProjectService.insert(TestUtils.parseProject(pxSubmission));
+
+        List<DataFile> dataFiles = pxSubmission.getDataFiles();
+        Optional<MongoPrideProject> finalProject = project;
+        List<MongoPrideFile> mongoFiles = dataFiles.stream().map(dataFile -> {
+            String accession = finalProject.get().getAccession();
+            return MongoPrideFile.builder()
+                    .fileName(dataFile.getFileName())
+                    .fileCategory(new MongoCvParam(ProjectFileCategoryConstants
+                            .findCategory(dataFile.getFileType()
+                                    .getName()).getCv()))
+                    .projectAccessions(Collections.singleton(accession))
+                    .build();
+        }).collect(Collectors.toList());
+
+        List<Tuple<MongoPrideFile, MongoPrideFile>> filesInserted= prideFileMongoService.insertAll(mongoFiles);
+        Assert.assertEquals(mongoFiles.size(), dataFiles.size());
+
+        for(MongoPrideFile prideFile: prideFileMongoService.findFilesByProjectAccession(project.get().getAccession())){
+            if(prideFile.getFileCategory().getAccession().equalsIgnoreCase(ProjectFileCategoryConstants.RAW.getCv().getAccession())){
+                MongoPrideMSRun msRun = new MongoPrideMSRun(prideFile);
+                prideFileMongoService.updateMSRun(msRun);
+            }
+        }
+
+        List<MongoPrideMSRun> msRuns = prideFileMongoService.getMSRunsByProject(project.get().getAccession());
+        Assert.assertEquals(150, msRuns.size());
 
 
 
@@ -124,14 +173,14 @@ public class PrideProjectMongoServiceTest {
     private List<Triple<String, String, CvParamProvider>> returnRelation(String insertedDataFileAccession, DataFile dataFile, List<Tuple<MongoPrideFile, MongoPrideFile>> filesInserted, ProjectFileCategoryConstants category) {
         List<Triple<String, String, CvParamProvider>> resultRelations = new ArrayList<>();
         if(dataFile.getFileMappings() == null || dataFile.getFileMappings().isEmpty())
-            resultRelations.add(new Triple<String, String, CvParamProvider>(insertedDataFileAccession, null, category.getCv()));
+            resultRelations.add(new Triple<>(insertedDataFileAccession, null, category.getCv()));
         else{
             for(DataFile file: dataFile.getFileMappings()){
                 for(Tuple tuple: filesInserted){
                     MongoPrideFile fileToInsert = (MongoPrideFile) tuple.getKey();
                     MongoPrideFile fileInserted = (MongoPrideFile) tuple.getValue();
                     if(file.getFileName().equalsIgnoreCase(fileToInsert.getFileName())){
-                        resultRelations.add(new Triple<String, String, CvParamProvider>(insertedDataFileAccession, fileInserted.getAccession(), category.getCv()));
+                        resultRelations.add(new Triple<>(insertedDataFileAccession, fileInserted.getAccession(), category.getCv()));
                     }
                 }
             }

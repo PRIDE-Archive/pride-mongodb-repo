@@ -1,14 +1,11 @@
 package uk.ac.ebi.pride.mongodb.archive.utils;
 
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
-import uk.ac.ebi.pride.data.model.DataFile;
 import uk.ac.ebi.pride.data.model.ProjectMetaData;
 import uk.ac.ebi.pride.data.model.Submission;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**

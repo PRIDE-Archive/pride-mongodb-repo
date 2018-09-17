@@ -31,5 +31,7 @@ public enum PrideStatsKeysConstants {
         this.statsKey = statsKey;
     }
 
-
+    public String getStatsKey() {
+        return statsKey;
+    }
 }

@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.repository.support.PageableExecutionUtils;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideAnalysis;
-import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
 import java.util.List;

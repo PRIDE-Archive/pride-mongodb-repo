@@ -33,7 +33,6 @@ import java.util.Map;
 @Builder
 public class MongoPrideStats implements PrideArchiveField {
 
-
     @Id
     @Indexed(name = PrideArchiveField.ID)
     ObjectId id;

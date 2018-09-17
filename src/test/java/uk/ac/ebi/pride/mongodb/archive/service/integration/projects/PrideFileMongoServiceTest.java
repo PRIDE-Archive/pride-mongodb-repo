@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.archive.service;
+package uk.ac.ebi.pride.mongodb.archive.service.integration.projects;
 
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -18,8 +18,8 @@ import uk.ac.ebi.pride.archive.repo.repos.project.ProjectRepository;
 import uk.ac.ebi.pride.mongodb.archive.config.ArchiveOracleConfig;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
-import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideFile;
-import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideFileMongoService;
+import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
+import uk.ac.ebi.pride.mongodb.archive.service.files.PrideFileMongoService;
 
 
 import java.util.*;
@@ -49,6 +49,7 @@ public class PrideFileMongoServiceTest {
     @Autowired
     ProjectRepository oracleProjectRepository;
 
+    @Ignore
     @Test
     public void save() {
         MongoPrideFile file = MongoPrideFile
@@ -144,7 +145,7 @@ public class PrideFileMongoServiceTest {
 
             List<ProjectFile> projectFiles = oracleFileRepository.findAllByProjectId(project.getId());
             List<MongoPrideFile> mongoPrideFiles = new ArrayList<>(projectFiles.size());
-            projectFiles.stream().forEach(x -> {
+            projectFiles.forEach(x -> {
                 MSFileTypeConstants fileType = MSFileTypeConstants.OTHER;
                 for(MSFileTypeConstants currentFileType: MSFileTypeConstants.values()){
                     if(currentFileType.getFileType().getName().equalsIgnoreCase(x.getFileType().getName())){

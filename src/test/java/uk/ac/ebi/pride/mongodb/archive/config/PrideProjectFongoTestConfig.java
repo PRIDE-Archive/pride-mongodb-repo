@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
  */
 
 @ComponentScan(basePackages = "uk.ac.ebi.pride.mongodb.archive.service")
-@EnableMongoRepositories(basePackages = "uk.ac.ebi.pride.mongodb.archive.repo")
+@EnableMongoRepositories(basePackages = {"uk.ac.ebi.pride.mongodb.archive.repo"})
 @Configuration
 public class PrideProjectFongoTestConfig extends AbstractMongoConfiguration{
 

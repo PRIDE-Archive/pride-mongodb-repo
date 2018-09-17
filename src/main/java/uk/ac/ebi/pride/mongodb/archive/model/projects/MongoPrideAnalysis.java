@@ -213,4 +213,30 @@ public class MongoPrideAnalysis implements PrideArchiveField, AnalysisProvider {
     public Collection<? extends String> getAdditionalAttributesStrings() {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "MongoPrideAnalysis{" +
+                "id=" + id +
+                ", accession='" + getAccession() + '\'' +
+                ", pxAccession='" + getPxAccession() + '\'' +
+                ", externalProjectAccessions=" + getExternalProjectAccessions() +
+                ", submittedFileRelations=" + getSubmittedFileRelations() +
+                ", title='" + getTitle() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", submitters=" + getSubmitters() +
+                ", headLab=" + getHeadLab() +
+                ", keywords=" + getKeywords() +
+                ", projectTags=" + getProjectTags() +
+                ", publicationDate=" + getPublicationDate() +
+                ", submissionDate=" + getSubmissionDate() +
+                ", updatedDate=" + getUpdatedDate() +
+                ", ptmList=" + getPtmList() +
+                ", experimentalFactors=" + getExperimentalFactors() +
+                ", instruments=" + instruments +
+                ", softwareList=" + getSoftwareList() +
+                ", references=" + getReferences() +
+                ", attributes=" + getAttributes() +
+                '}';
+    }
 }

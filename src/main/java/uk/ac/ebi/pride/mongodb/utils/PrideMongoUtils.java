@@ -59,7 +59,11 @@ public class PrideMongoUtils {
                         if(filterString.length == 2)
                             filters.add(new ImmutableTriple<>(filterString[0], "in",filterString[1]));
                         else if(matcher.find()){
-                            filters.add(new ImmutableTriple<>(matcher.group(1), matcher.group(2),matcher.group(3)));
+                            if(matcher.group(2).equalsIgnoreCase("in")) {
+                                filters.add(new ImmutableTriple<>(matcher.group(1), matcher.group(2), matcher.group(3).replace("|", ",")));
+                            }else{
+                                filters.add(new ImmutableTriple<>(matcher.group(1), matcher.group(2), matcher.group(3)));
+                            }
                         } else
                             LOGGER.debug("The filter provided is not well-formatted, please format the filter in field:value -- " + filter);
 
@@ -88,7 +92,7 @@ public class PrideMongoUtils {
     private static Criteria convertStringToCriteria(Criteria filterCriteria, String filterField, String operator, String valueFilter) {
         if(filterCriteria == null){
             if(operator.equalsIgnoreCase("in"))
-                filterCriteria = new Criteria(filterField).in(valueFilter);
+                filterCriteria = new Criteria(filterField).in(valueFilter.split(","));
             else if(operator.equalsIgnoreCase("all"))
                 filterCriteria = new Criteria(filterField).all(valueFilter);
             else if(operator.equalsIgnoreCase("range")){
@@ -100,7 +104,7 @@ public class PrideMongoUtils {
             }
         }else{
             if(operator.equalsIgnoreCase("in"))
-                filterCriteria = filterCriteria.andOperator(new Criteria(filterField).in(valueFilter));
+                filterCriteria = filterCriteria.andOperator(new Criteria(filterField).in(valueFilter.split(",")));
             else if(operator.equalsIgnoreCase("all"))
                 filterCriteria = filterCriteria.andOperator(new Criteria(filterField).all(valueFilter));
             else if(operator.equalsIgnoreCase("range")){

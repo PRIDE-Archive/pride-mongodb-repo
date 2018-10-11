@@ -236,4 +236,13 @@ public class PrideFileMongoService implements IMSRunService{
     public List<MongoPrideMSRun> getMSRunsByProject(String projectAccession){
         return fileRepository.filterMSRunByProjectAccession(projectAccession);
     }
+
+    /**
+     * Get the list of Files by {@link uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject} Accessions
+     * @param accessions
+     * @return List of Files
+     */
+    public List<MongoPrideFile> findFilesByProjectAccessions(List<String> accessions) {
+        return fileRepository.findByProjectAccessions(accessions);
+    }
 }

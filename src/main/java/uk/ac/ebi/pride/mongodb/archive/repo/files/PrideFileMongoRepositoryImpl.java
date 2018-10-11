@@ -53,4 +53,11 @@ public class PrideFileMongoRepositoryImpl implements PrideFileMongoRepositoryCus
         Query queryMongo = new Query().addCriteria(criteria);
         return mongoTemplate.find(queryMongo, MongoPrideMSRun.class);
     }
+
+    @Override
+    public List<MongoPrideFile> findByProjectAccessions(List<String> accessions) {
+        Criteria criteria = new Criteria(PrideArchiveField.EXTERNAL_PROJECT_ACCESSIONS).in(accessions);
+        Query queryMongo = new Query().addCriteria(criteria);
+        return mongoTemplate.find(queryMongo, MongoPrideFile.class);
+    }
 }

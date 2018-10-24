@@ -15,6 +15,7 @@ import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author ypriverol
@@ -59,5 +60,13 @@ public class PrideFileMongoRepositoryImpl implements PrideFileMongoRepositoryCus
         Criteria criteria = new Criteria(PrideArchiveField.EXTERNAL_PROJECT_ACCESSIONS).in(accessions);
         Query queryMongo = new Query().addCriteria(criteria);
         return mongoTemplate.find(queryMongo, MongoPrideFile.class);
+    }
+
+    @Override
+    public Optional<MongoPrideMSRun> findMsRunByAccession(String accession) {
+        Criteria criteria = Criteria.where("_class").is(PrideArchiveField.MONGO_MSRUN_ALIAS);
+        criteria = criteria.andOperator( Criteria.where(PrideArchiveField.ACCESSION).in(accession));
+        Query queryMongo = new Query().addCriteria(criteria);
+        return Optional.of(mongoTemplate.findOne(queryMongo, MongoPrideMSRun.class));
     }
 }

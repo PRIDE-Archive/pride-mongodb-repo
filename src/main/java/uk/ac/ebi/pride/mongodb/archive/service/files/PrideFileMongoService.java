@@ -7,14 +7,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
+import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
+import uk.ac.ebi.pride.archive.dataprovider.utils.ProjectFileCategoryConstants;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.archive.repo.files.PrideFileMongoRepository;
 import uk.ac.ebi.pride.mongodb.archive.repo.files.PrideMongoRunMSRunRepository;
+import uk.ac.ebi.pride.mongodb.archive.transformers.MSRunTransfromer;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
+import uk.ac.ebi.pride.utilities.obo.OBOMapper;
 import uk.ac.ebi.pride.utilities.util.Tuple;
 
+import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
@@ -34,6 +39,8 @@ public class PrideFileMongoService implements IMSRunService{
     final
     PrideMongoRunMSRunRepository msRunRepository;
 
+    OBOMapper psiOBOMapper;
+
 
     @Autowired
     private MongoOperations mongo;
@@ -42,6 +49,11 @@ public class PrideFileMongoService implements IMSRunService{
     public PrideFileMongoService(PrideFileMongoRepository fileRepository, PrideMongoRunMSRunRepository msRunRepository) {
         this.fileRepository = fileRepository;
         this.msRunRepository = msRunRepository;
+        try {
+            psiOBOMapper = OBOMapper.getPSIMSInstance();
+        } catch (URISyntaxException e) {
+            log.debug("An error has occurred when creating the PSI-MS ontology");
+        }
     }
 
     /**
@@ -244,5 +256,34 @@ public class PrideFileMongoService implements IMSRunService{
      */
     public List<MongoPrideFile> findFilesByProjectAccessions(List<String> accessions) {
         return fileRepository.findByProjectAccessions(accessions);
+    }
+
+    /**
+     * Set the metadata of the MSRun
+     * @param msRunMetadata {@link MsRunProvider} msRun Metadata
+     * @param accession Accession of the {@link MongoPrideMSRun}
+     * @return Optional
+     */
+    public Optional<MongoPrideMSRun> updateMSRunMetadata(MsRunProvider msRunMetadata, String accession) {
+
+        Optional<MongoPrideMSRun> file = fileRepository.findMsRunByAccession(accession);
+        if(file.isPresent() &&
+                file.get().getFileCategory().getAccession().equalsIgnoreCase(ProjectFileCategoryConstants.RAW.getCv().getAccession())){
+
+            MongoPrideMSRun msRun = MSRunTransfromer.transformMSRun(file.get());
+            msRun = MSRunTransfromer.transformMetadata(msRun, msRunMetadata, psiOBOMapper);
+            msRun = fileRepository.save(msRun);
+            return Optional.of(msRun);
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Find a corresponding msRun by the accession.
+     * @param accession Accession of the msRuns
+     * @return Optional MSRun
+     */
+    public Optional<MongoPrideMSRun> findMSRunByAccession(String accession) {
+        return fileRepository.findMsRunByAccession(accession);
     }
 }

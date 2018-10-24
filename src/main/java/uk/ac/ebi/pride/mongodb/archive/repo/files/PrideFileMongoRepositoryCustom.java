@@ -7,6 +7,7 @@ import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Custom Repository that allows customized search on the MongoDB.
@@ -22,4 +23,6 @@ public interface PrideFileMongoRepositoryCustom {
     List<MongoPrideMSRun> filterMSRunByProjectAccession(String projectAccession);
 
     List<MongoPrideFile> findByProjectAccessions(List<String> accessions);
+
+    Optional<MongoPrideMSRun> findMsRunByAccession(String accession);
 }

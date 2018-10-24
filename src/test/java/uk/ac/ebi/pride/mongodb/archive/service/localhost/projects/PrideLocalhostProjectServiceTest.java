@@ -166,16 +166,16 @@ public class PrideLocalhostProjectServiceTest {
         for(MongoPrideFile prideFile: prideFileMongoService.findFilesByProjectAccession(project.get().getAccession())){
             if(prideFile.getFileCategory().getAccession().equalsIgnoreCase(ProjectFileCategoryConstants.RAW.getCv().getAccession())){
                 MongoPrideMSRun msRun = new MongoPrideMSRun(prideFile);
-                msRun.setFileProperties(Arrays.stream(msRunJson.getFileProperties())
+                msRun.addFileProperties(Arrays.stream(msRunJson.getFileProperties())
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toList()));
-                msRun.setInstrumentProperties(Arrays.stream(msRunJson.getInstrumentProperties())
+                msRun.addInstrumentProperties(Arrays.stream(msRunJson.getInstrumentProperties())
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toList()));
-                msRun.setMsData(Arrays.stream(msRunJson.getMsData())
+                msRun.addMsData(Arrays.stream(msRunJson.getMsData())
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toList()));
-                msRun.setScanSettings(Arrays.stream(msRunJson.getScanSeetings())
+                msRun.addScanSettings(Arrays.stream(msRunJson.getScanSeetings())
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toList()));
 

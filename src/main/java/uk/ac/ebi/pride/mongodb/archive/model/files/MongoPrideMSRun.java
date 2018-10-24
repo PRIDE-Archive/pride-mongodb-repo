@@ -1,16 +1,15 @@
 package uk.ac.ebi.pride.mongodb.archive.model.files;
 
-import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -29,21 +28,20 @@ import java.util.Objects;
  */
 
 @Document(collection = PrideArchiveField.PRIDE_FILE_COLLECTION_NAME)
-@Data
 @TypeAlias(PrideArchiveField.MONGO_MSRUN_ALIAS)
 public class MongoPrideMSRun extends MongoPrideFile implements MsRunProvider{
 
     @Field(PrideArchiveField.MS_RUN_FILE_PROPERTIES)
-    List<MongoCvParam> fileProperties;
+    Set<MongoCvParam> fileProperties = new HashSet<>();
 
     @Field(PrideArchiveField.MS_RUN_INSTRUMENT_PROPERTIES)
-    List<MongoCvParam> instrumentProperties;
+    Set<MongoCvParam> instrumentProperties = new HashSet<>();
 
     @Field(PrideArchiveField.MS_RUN_MS_DATA)
-    List<MongoCvParam> msData;
+    Set<MongoCvParam> msData = new HashSet<>();
 
     @Field(PrideArchiveField.MS_RUN_SCAN_SETTINGS)
-    List<MongoCvParam> scanSettings;
+    Set<MongoCvParam> scanSettings = new HashSet<>();
 
     /**
      * A {@link MongoPrideFile} that contains the general information of a File but without the
@@ -93,5 +91,58 @@ public class MongoPrideMSRun extends MongoPrideFile implements MsRunProvider{
     public int hashCode() {
 
         return Objects.hash(super.hashCode(), fileProperties, instrumentProperties, msData, scanSettings);
+    }
+
+    public void addFileProperties(List<MongoCvParam> fileProperties) {
+        this.fileProperties.addAll(fileProperties);
+    }
+
+    public void addInstrumentProperties(List<MongoCvParam> instrumentProperties) {
+        this.instrumentProperties.addAll(instrumentProperties);
+    }
+
+    public void addMsData(List<MongoCvParam> msData) {
+        this.msData.addAll(msData);
+    }
+
+    public void addScanSettings(List<MongoCvParam> scanSettings) {
+        this.scanSettings.addAll(scanSettings);
+    }
+
+
+    @Override
+    public Collection<? extends CvParamProvider> getFileProperties() {
+        return fileProperties;
+    }
+
+    @Override
+    public Collection<? extends CvParamProvider> getInstrumentProperties() {
+        return instrumentProperties;
+    }
+
+    @Override
+    public Collection<? extends CvParamProvider> getMsData() {
+        return msData;
+    }
+
+    @Override
+    public Collection<? extends CvParamProvider> getScanSettings() {
+        return scanSettings;
+    }
+
+    public void setFileProperties(Set<MongoCvParam> fileProperties) {
+        this.fileProperties = fileProperties;
+    }
+
+    public void setInstrumentProperties(Set<MongoCvParam> instrumentProperties) {
+        this.instrumentProperties = instrumentProperties;
+    }
+
+    public void setMsData(Set<MongoCvParam> msData) {
+        this.msData = msData;
+    }
+
+    public void setScanSettings(Set<MongoCvParam> scanSettings) {
+        this.scanSettings = scanSettings;
     }
 }

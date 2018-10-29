@@ -86,6 +86,7 @@ public interface PrideArchiveField {
 
     /** Collections Name **/
     String PRIDE_PROJECTS_COLLECTION_NAME = "pride_projects";
+    String PRIDE_EXPERIMENTAL_DESIGN_COLLECTION_NAME = "pride_experimental_design";
     String PRIDE_FILE_COLLECTION_NAME = "pride_files";
 
     String PUBLIC_PROJECT = "public_project";
@@ -150,5 +151,8 @@ public interface PrideArchiveField {
 
     /** Alias **/
     String MONGO_MSRUN_ALIAS = "MongoPrideMSRun";
+
+    String SAMPLES = "samples";
+    String SAMPLES_MSRUN = "samples_msrun";
 
 }

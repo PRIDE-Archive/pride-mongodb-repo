@@ -3,7 +3,7 @@ package uk.ac.ebi.pride.mongodb.archive.service.stats;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
+import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.model.stats.MongoPrideStats;
 import uk.ac.ebi.pride.mongodb.archive.model.stats.PrideStatsKeysConstants;
 import uk.ac.ebi.pride.mongodb.archive.repo.stats.PrideStatsMongoRepository;

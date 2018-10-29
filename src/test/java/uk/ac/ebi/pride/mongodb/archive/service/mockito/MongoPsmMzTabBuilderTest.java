@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import uk.ac.ebi.pride.archive.dataprovider.identification.ModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
-import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
+import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.jmztab.model.MZTabFile;
 import uk.ac.ebi.pride.jmztab.utils.MZTabFileParser;
 import uk.ac.ebi.pride.mongodb.archive.model.psms.PrideMongoPSM;

@@ -2,7 +2,7 @@ package uk.ac.ebi.pride.mongodb.archive.service.stats;
 
 import lombok.Builder;
 import lombok.Data;
-import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
+import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 
 import java.util.*;
 

@@ -15,6 +15,6 @@ import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
  *
  * @author ypriverol on 30/08/2018.
  */
-public interface PrideMongoRunMSRunRepository extends MongoRepository<MongoPrideMSRun, ObjectId>{
+public interface PrideMSRunMongoRepository extends MongoRepository<MongoPrideMSRun, ObjectId>{
 
 }

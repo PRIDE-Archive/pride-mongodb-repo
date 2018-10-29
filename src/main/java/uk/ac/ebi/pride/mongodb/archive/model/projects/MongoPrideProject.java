@@ -11,7 +11,7 @@ import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
-import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
+import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.reference.MongoReference;

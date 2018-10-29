@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
+import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.stats.MongoPrideStats;
 import uk.ac.ebi.pride.mongodb.archive.model.stats.PrideStatsKeysConstants;

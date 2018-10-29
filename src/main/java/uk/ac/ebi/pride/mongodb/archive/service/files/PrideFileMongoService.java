@@ -13,7 +13,7 @@ import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.archive.repo.files.PrideFileMongoRepository;
-import uk.ac.ebi.pride.mongodb.archive.repo.files.PrideMongoRunMSRunRepository;
+import uk.ac.ebi.pride.mongodb.archive.repo.files.PrideMSRunMongoRepository;
 import uk.ac.ebi.pride.mongodb.archive.transformers.MSRunTransfromer;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 import uk.ac.ebi.pride.utilities.obo.OBOMapper;
@@ -37,7 +37,7 @@ public class PrideFileMongoService implements IMSRunService{
     PrideFileMongoRepository fileRepository;
 
     final
-    PrideMongoRunMSRunRepository msRunRepository;
+    PrideMSRunMongoRepository msRunRepository;
 
     OBOMapper psiOBOMapper;
 
@@ -46,7 +46,7 @@ public class PrideFileMongoService implements IMSRunService{
     private MongoOperations mongo;
 
     @Autowired
-    public PrideFileMongoService(PrideFileMongoRepository fileRepository, PrideMongoRunMSRunRepository msRunRepository) {
+    public PrideFileMongoService(PrideFileMongoRepository fileRepository, PrideMSRunMongoRepository msRunRepository) {
         this.fileRepository = fileRepository;
         this.msRunRepository = msRunRepository;
         try {

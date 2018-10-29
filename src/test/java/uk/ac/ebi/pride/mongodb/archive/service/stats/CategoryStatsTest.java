@@ -3,7 +3,7 @@ package uk.ac.ebi.pride.mongodb.archive.service.stats;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
+import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the

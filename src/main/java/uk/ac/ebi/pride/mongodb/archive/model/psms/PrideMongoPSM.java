@@ -12,7 +12,7 @@ import uk.ac.ebi.pride.archive.dataprovider.data.database.DatabaseProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PeptideSequenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
+import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
 

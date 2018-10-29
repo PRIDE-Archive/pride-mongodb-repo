@@ -1,5 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.model.sample;
 
+import lombok.Builder;
+import lombok.Data;
 import uk.ac.ebi.pride.archive.dataprovider.common.ITuple;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
@@ -7,6 +9,7 @@ import uk.ac.ebi.pride.archive.dataprovider.sample.SampleProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -19,11 +22,13 @@ import java.util.Collection;
  *
  * @author ypriverol on 29/10/2018.
  */
+@Builder
+@Data
 public class MongoPrideSample implements SampleProvider {
 
     String accession;
 
-    Collection<ITuple<CvParamProvider, CvParamProvider>> properties;
+    Collection<Tuple<MongoCvParam, MongoCvParam>> properties;
 
     @Override
     public Comparable getAccession() {
@@ -32,6 +37,9 @@ public class MongoPrideSample implements SampleProvider {
 
     @Override
     public Collection<ITuple<CvParamProvider, CvParamProvider>> getSampleProperties() {
-        return properties;
+        return properties
+                .stream()
+                .map( x-> new Tuple<CvParamProvider, CvParamProvider>(x.getKey(), x.getValue()))
+                .collect(Collectors.toList());
     }
 }

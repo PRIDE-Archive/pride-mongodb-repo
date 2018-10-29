@@ -1,17 +1,23 @@
 package uk.ac.ebi.pride.mongodb.archive.service.samples;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.sample.SampleMSRunTuple;
+import uk.ac.ebi.pride.archive.dataprovider.sample.SampleProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.sample.MongoPrideExperimentalDesign;
 import uk.ac.ebi.pride.mongodb.archive.model.sample.MongoPrideSample;
 import uk.ac.ebi.pride.mongodb.archive.repo.samples.PrideMongoSampleRepository;
 import uk.ac.ebi.pride.mongodb.archive.service.psms.PridePSMMongoService;
+import uk.ac.ebi.pride.mongodb.archive.transformers.GeneralTransfromer;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -24,6 +30,8 @@ import java.util.List;
  *
  * @author ypriverol on 29/10/2018.
  */
+@Service
+@Slf4j
 public class PrideSampleMongoService {
 
     final PrideMongoSampleRepository sampleRepository;
@@ -63,5 +71,32 @@ public class PrideSampleMongoService {
             return experimentalDesign.getSampleMSrun();
         }
         return null;
+    }
+
+    public List<MongoPrideSample> updateSamplesByProjectAccession(String accession, List<? extends SampleProvider> samples) {
+        MongoPrideExperimentalDesign existingExp = sampleRepository.findByProjectAccession(accession);
+        if(existingExp == null)
+            existingExp = MongoPrideExperimentalDesign
+                    .builder()
+                    .samples(new ArrayList<>())
+                    .sampleMSRunTuples(new ArrayList<>())
+                    .accession(accession).build();
+        existingExp.setSamples(samples.stream().map(GeneralTransfromer::transformSample).collect(Collectors.toList()));
+        existingExp = sampleRepository.save(existingExp);
+        return existingExp.getSamples();
+
+    }
+
+    public Collection<? extends SampleMSRunTuple> updateSamplesMRunProjectAccession(String accession, List<? extends SampleMSRunTuple> samples) {
+        MongoPrideExperimentalDesign existingExp = sampleRepository.findByProjectAccession(accession);
+        if(existingExp == null){
+            existingExp = MongoPrideExperimentalDesign
+                    .builder()
+                    .samples(new ArrayList<>())
+                    .sampleMSRunTuples(new ArrayList<>())
+                    .accession(accession).build();
+        }
+        existingExp.setSampleMSRunTuples(samples.stream().map(GeneralTransfromer::transformSampleMsRun).collect(Collectors.toList()));
+        return existingExp.getSampleMSrun();
     }
 }

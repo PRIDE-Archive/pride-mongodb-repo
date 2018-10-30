@@ -3,8 +3,8 @@ package uk.ac.ebi.pride.mongodb.archive.repo.samples;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.stereotype.Repository;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.archive.model.sample.MongoPrideExperimentalDesign;
 
 /**
@@ -18,6 +18,7 @@ import uk.ac.ebi.pride.mongodb.archive.model.sample.MongoPrideExperimentalDesign
  *
  * @author ypriverol on 29/10/2018.
  */
+@Repository
 public interface PrideMongoSampleRepository extends MongoRepository<MongoPrideExperimentalDesign, ObjectId> {
 
     @Query("{'"+ PrideArchiveField.ACCESSION + "' : ?0}")

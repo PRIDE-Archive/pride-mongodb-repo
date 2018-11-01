@@ -14,7 +14,6 @@ import uk.ac.ebi.pride.archive.dataprovider.assay.AssayProvider;
 import uk.ac.ebi.pride.archive.dataprovider.assay.AssayType;
 import uk.ac.ebi.pride.archive.dataprovider.common.ITuple;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
-import uk.ac.ebi.pride.archive.dataprovider.file.FileProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
@@ -55,8 +54,8 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
     Set<String> analysisAccessions;
 
     /** The analysis accessions are related with the following File **/
-    @Indexed(name = ASSAY_FILE_ACCESSION)
-    String fileAccession;
+    @Indexed(name = ASSAY_FILE_ACCESSIONS)
+    List<String> fileAccessions;
 
     /** Accession generated for each File **/
     @Indexed(name = ACCESSION, unique = true)
@@ -79,6 +78,7 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
 
     @Field(value = SAMPLE_ATTRIBUTES_NAMES)
     List<Tuple<MongoCvParam, MongoCvParam>> sampleProperties;
+
 
     @Override
     public Collection<? extends ITuple<? extends CvParamProvider, ? extends CvParamProvider>> getSampleProperties() {

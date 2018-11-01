@@ -1,7 +1,5 @@
 package uk.ac.ebi.pride.mongodb.archive.transformers;
 
-import com.mongodb.Mongo;
-import uk.ac.ebi.pride.archive.dataprovider.common.ITuple;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.sample.SampleMSRunTuple;
@@ -36,7 +34,7 @@ public class GeneralTransfromer {
         if (originalSample != null) {
             List<Tuple<MongoCvParam, MongoCvParam>> properties = originalSample.getSampleProperties()
                     .stream()
-                    .map(x -> new Tuple<MongoCvParam, MongoCvParam>(new MongoCvParam(x.getKey()), new MongoCvParam(x.getValue())))
+                    .map(x -> new Tuple<>(new MongoCvParam(x.getKey()), new MongoCvParam(x.getValue())))
                     .collect(Collectors.toList());
             return MongoPrideSample.builder()
                     .accession(((String) originalSample.getAccession()))

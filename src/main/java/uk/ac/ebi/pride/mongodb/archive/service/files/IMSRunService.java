@@ -26,14 +26,14 @@ public interface IMSRunService {
      * @param mongoPrideMSRun the new MongoPrideMSRun
      * @return Optional
      */
-    public Optional<MongoPrideMSRun> updateMSRun(MongoPrideMSRun mongoPrideMSRun);
+    Optional<MongoPrideMSRun> updateMSRun(MongoPrideMSRun mongoPrideMSRun);
 
     /**
      * Find all the MSruns for an specific project accession
      * @param projectAccession Project Accession
      * @return List of {@link MongoPrideMSRun}
      */
-    public List<MongoPrideMSRun> getMSRunsByProject(String projectAccession);
+    List<MongoPrideMSRun> getMSRunsByProject(String projectAccession);
 
 
 

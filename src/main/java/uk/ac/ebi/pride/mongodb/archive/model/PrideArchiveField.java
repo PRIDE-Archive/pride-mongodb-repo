@@ -155,4 +155,9 @@ public interface PrideArchiveField {
     String SAMPLES = "samples";
     String SAMPLES_MSRUN = "samples_msrun";
 
+    /** ASSAY Properties **/
+    String PRIDE_ASSAY_COLLECTION_NAME = "pride_assays";
+    String ADDITIONAL_PROPERTIES = "additionalProperties";
+
+
 }

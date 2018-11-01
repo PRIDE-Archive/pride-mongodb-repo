@@ -1,13 +1,13 @@
-package uk.ac.ebi.pride.mongodb.archive.repo.stats;
+package uk.ac.ebi.pride.mongodb.archive.repo.assay;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.model.stats.MongoPrideStats;
+import uk.ac.ebi.pride.mongodb.archive.model.assay.MongoPrideAssay;
+import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 
-import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -18,17 +18,14 @@ import java.util.Optional;
  * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
  * ==Overview==
- * <p>
- * This class
- * <p>
- * Created by ypriverol (ypriverol@gmail.com) on 27/06/2018.
+ *
+ * @author ypriverol on 01/11/2018.
  */
 @Repository
-public interface PrideStatsMongoRepository extends MongoRepository<MongoPrideStats, ObjectId> {
+public interface PrideAssayMongoRepository extends MongoRepository<MongoPrideAssay, ObjectId> {
 
-    @Query("{'"+ PrideArchiveField.STATS_ESTIMATION_DATE + "' : ?0}")
-    Optional<MongoPrideStats> findStatsByDate(Date date);
+    @Query("{'"+ PrideArchiveField.ACCESSION + "' : ?0}")
+    Optional<MongoPrideAssay> findPrideAssayByAccession(String accession);
 
-    MongoPrideStats findTopByOrderByEstimationDateDesc();
 
 }

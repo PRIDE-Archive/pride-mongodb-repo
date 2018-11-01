@@ -157,6 +157,7 @@ public interface PrideArchiveField {
 
     /** ASSAY Properties **/
     String PRIDE_ASSAY_COLLECTION_NAME = "pride_assays";
+    String ASSAY_FILE_ACCESSION = "fileAccession";
     String ADDITIONAL_PROPERTIES = "additionalProperties";
 
 

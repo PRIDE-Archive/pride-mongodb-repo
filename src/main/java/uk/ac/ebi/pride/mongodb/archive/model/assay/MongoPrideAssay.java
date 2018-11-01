@@ -54,10 +54,19 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
     @Indexed(name = EXTERNAL_ANALYSIS_ACCESSIONS)
     Set<String> analysisAccessions;
 
+    /** The analysis accessions are related with the following File **/
+    @Indexed(name = ASSAY_FILE_ACCESSION)
+    String fileAccession;
+
     /** Accession generated for each File **/
     @Indexed(name = ACCESSION, unique = true)
     @Getter(AccessLevel.NONE)
     String accession;
+
+    /** Accession generated for each File **/
+    @Field(value = PROJECT_TILE)
+    @Getter(AccessLevel.NONE)
+    String title;
 
     /** Accession generated for each File **/
     @Indexed(name = ACCESSION, unique = true)
@@ -66,7 +75,7 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
 
 
     @Field(value = ADDITIONAL_ATTRIBUTES)
-    List<Tuple<MongoCvParam, MongoCvParam>> additionalProperties;
+    List<MongoCvParam> additionalProperties;
 
     @Field(value = SAMPLE_ATTRIBUTES_NAMES)
     List<Tuple<MongoCvParam, MongoCvParam>> sampleProperties;
@@ -80,7 +89,7 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
     }
 
     @Override
-    public List<Tuple<MongoCvParam, MongoCvParam>> getAdditionalProperties() {
+    public List<MongoCvParam> getAdditionalProperties() {
         return additionalProperties;
     }
 

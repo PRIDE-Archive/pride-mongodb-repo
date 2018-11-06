@@ -173,7 +173,6 @@ public class PridePSMMongoServiceTest {
                 .spectrumAccession(psmSpectrum)
                 .reportedProteinAccession(proteinAcccession)
                 .projectAccession(projectAccession)
-                .analysisAccession(assayAccession)
                 .ptmList(Arrays.asList(mod1, mod2))
         .build();
 

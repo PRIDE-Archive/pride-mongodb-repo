@@ -67,8 +67,7 @@ public class MongoPsmMzTabBuilderTest {
         logger.debug("PSM Database: " + psm.getDatabase());
         logger.debug("PSM Database version: " + psm.getDatabase().getVersion());
         logger.debug("PSM Project Accession: " + psm.getProjectAccession());
-        logger.debug("PSM Assay Accession: " + psm.getAnalysisAccession());
-        logger.debug("PSM Peptide sequence : " + psm.getPeptideSequence());
+       logger.debug("PSM Peptide sequence : " + psm.getPeptideSequence());
         List<CvParamProvider> cvParams = new ArrayList<>();
         CvParamProvider cvParam = new DefaultCvParam("label", "accession", "name", "value");
         cvParams.add(cvParam);
@@ -88,15 +87,8 @@ public class MongoPsmMzTabBuilderTest {
     Assert.assertEquals(
         "TST000121;result_1_sample_1_dat.pride.xml;spectrum=175", firstPsm.getSpectrumAccession());
     Assert.assertEquals("TST000121", firstPsm.getProjectAccession());
-    Assert.assertNull(firstPsm.getUnique());
-    Assert.assertNull(firstPsm.getRetentionTime());
-    Assert.assertNull(firstPsm.getCharge());
-    Assert.assertEquals(new Double(1183.8615), firstPsm.getExpMassToCharge());
-    Assert.assertNull(firstPsm.getCalculatedMassToCharge());
-    Assert.assertNull(firstPsm.getPreAminoAcid());
-    Assert.assertNull(firstPsm.getPostAminoAcid());
-    Assert.assertEquals((Integer) 61, firstPsm.getStartPosition());
-    Assert.assertEquals((Integer) 92, firstPsm.getEndPosition());
+
+
   }
 
   /**

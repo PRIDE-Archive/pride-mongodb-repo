@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.data.database.DatabaseProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PeptideSequenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
@@ -46,7 +47,7 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
     String accession;
 
     /** Reported File ID is the Identifier of the File mzTab in PRIDE **/
-    @Indexed(name = PrideArchiveField.REPORTED_FILE_ID)
+    @Field(value = PrideArchiveField.REPORTED_FILE_ID)
     private String reportedFileID;
 
     /** Accession in Reported File **/
@@ -57,16 +58,12 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
     @Indexed(name = EXTERNAL_PROJECT_ACCESSION)
     private String projectAccession;
 
-    /** External Analysis that contains the PSM **/
-    @Indexed(name = EXTERNAL_ANALYSIS_ACCESSION)
-    private String analysisAccession;
-
     /** Peptide Sequence **/
     @Indexed(name = PrideArchiveField.PEPTIDE_SEQUENCE)
     private String peptideSequence;
 
     /** Spectrum Accession **/
-    @Indexed(name = PrideArchiveField.SPECTRUM_ACCESSION)
+    @Field(value = PrideArchiveField.SPECTRUM_ACCESSION)
     private String spectrumAccession;
 
     /** Protein Accession **/
@@ -74,44 +71,16 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
     private String reportedProteinAccession;
 
     /** Database information used to perform the identification/quantification **/
-    @Indexed(name = IDENTIFICATION_DATABASE)
+    @Field(value = IDENTIFICATION_DATABASE)
     private DatabaseProvider database;
 
     /** PTMs Identified in the PEptide Sequence **/
-    @Indexed(name = PROJECT_IDENTIFIED_PTM)
+    @Field(value = PROJECT_IDENTIFIED_PTM)
     private List<IdentifiedModificationProvider> ptmList;
 
-    /** UNIQUE in the Analysis **/
-    @Indexed(name = PEPTIDE_UNIQUE)
-    private Boolean unique;
-
     /** Best Search engine scores **/
-    @Indexed(name = BEST_PSM_SCORE)
+    @Field(value = BEST_PSM_SCORE)
     Tuple<CvParamProvider, CvParamProvider> bestPSMScore;
-
-    @Indexed(name = RETENTION_TIME)
-    private Double retentionTime;
-
-    @Indexed(name = CHARGE)
-    private Integer charge;
-
-    @Indexed(name = EXPERIMENTAL_MASS_TO_CHARGE)
-    private Double expMassToCharge;
-
-    @Indexed(name = CALCULATED_MASS_TO_CHARGE)
-    private Double calculatedMassToCharge;
-
-    @Indexed(name = PRE_AMINO_ACID)
-    private String preAminoAcid;
-
-    @Indexed(name = POST_AMINO_ACID)
-    private String postAminoAcid;
-
-    @Indexed(name = START_POSITION)
-    private Integer startPosition;
-
-    @Indexed(name = END_POSITION)
-    private Integer endPosition;
 
     /** Additional Attributes **/
     @Indexed(name = PrideArchiveField.ADDITIONAL_ATTRIBUTES)

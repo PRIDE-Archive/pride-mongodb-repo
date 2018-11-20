@@ -168,16 +168,16 @@ public class PrideLocalhostProjectServiceTest {
                 MongoPrideMSRun msRun = new MongoPrideMSRun(prideFile);
                 msRun.addFileProperties(Arrays.stream(msRunJson.getFileProperties())
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toSet()));
                 msRun.addInstrumentProperties(Arrays.stream(msRunJson.getInstrumentProperties())
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toSet()));
                 msRun.addMsData(Arrays.stream(msRunJson.getMsData())
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toSet()));
                 msRun.addScanSettings(Arrays.stream(msRunJson.getScanSeetings())
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toSet()));
 
                 prideFileMongoService.updateMSRun(msRun);
             }

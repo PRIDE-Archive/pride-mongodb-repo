@@ -4,10 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
+import uk.ac.ebi.pride.mongodb.archive.model.files.idsettings.IdSetting;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.utilities.obo.OBOMapper;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -27,44 +30,53 @@ public class MSRunTransfromer {
     public static MongoPrideMSRun transformMetadata(MongoPrideMSRun msRunProvider, MsRunProvider metadata, OBOMapper oboMapper){
         if(metadata != null){
             if(metadata.getInstrumentProperties() != null){
-                List<MongoCvParam> mongoCvParams = metadata.getInstrumentProperties()
+                Set<MongoCvParam> mongoCvParams = metadata.getInstrumentProperties()
                         .stream()
                         .filter(x -> oboMapper.getTermByAccession(x.getAccession()) != null)
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toSet());
                 if(mongoCvParams.isEmpty())
                     log.info("Non of the CVTerms provided in Instrument Properties are supported by PRIDE Database");
                 msRunProvider.addInstrumentProperties(mongoCvParams);
             }
             if(metadata.getFileProperties() != null){
-                List<MongoCvParam> mongoCvParams = metadata.getFileProperties()
+                Set<MongoCvParam> mongoCvParams = metadata.getFileProperties()
                         .stream()
                         .filter(x -> oboMapper.getTermByAccession(x.getAccession()) != null)
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toSet());
                 if(mongoCvParams.isEmpty())
                     log.info("Non of the CVTerms provided in File Properties are supported by PRIDE Database");
                 msRunProvider.addFileProperties(mongoCvParams);
             }
             if(metadata.getMsData() != null){
-                List<MongoCvParam> mongoCvParams = metadata.getMsData()
+                Set<MongoCvParam> mongoCvParams = metadata.getMsData()
                         .stream()
                         .filter(x -> oboMapper.getTermByAccession(x.getAccession()) != null)
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toSet());
                 if(mongoCvParams.isEmpty())
                     log.info("Non of the CVTerms provided in Ms Data are supported by PRIDE Database");
                 msRunProvider.addMsData(mongoCvParams);
             }
             if(metadata.getScanSettings() != null){
-                List<MongoCvParam> mongoCvParams = metadata.getScanSettings()
+                Set<MongoCvParam> mongoCvParams = metadata.getScanSettings()
                         .stream()
                         .filter(x -> oboMapper.getTermByAccession(x.getAccession()) != null)
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toSet());
                 msRunProvider.addScanSettings(mongoCvParams);
                 if(mongoCvParams.isEmpty())
                     log.info("Non of the CVTerms provided in Scan Settings are supported by PRIDE Database");
+            }
+            if(metadata.getIdSettings() != null){
+                Set<IdSetting> idSettings = metadata.getIdSettings()
+                        .stream()
+                        .map(x -> (IdSetting)x)
+                        .collect(Collectors.toSet());
+                msRunProvider.addIdSettings(idSettings);
+                if(idSettings.isEmpty())
+                    log.info("ID Settings have not been supplied");
             }
         }
 

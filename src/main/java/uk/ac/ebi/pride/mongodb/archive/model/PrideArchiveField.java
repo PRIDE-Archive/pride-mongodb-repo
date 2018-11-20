@@ -12,6 +12,9 @@ public interface PrideArchiveField {
     /** Project Accession **/
     String ACCESSION = "accession";
 
+    /** Assay **/
+    String ASSAY = "assay";
+
     /** Project Accession **/
     String PX_ACCESSION = "pxAccession";
 
@@ -144,10 +147,20 @@ public interface PrideArchiveField {
     String STATS_COMPLEX_COUNTS = "pride_complex_counts";
 
     /** MSRun file Properties **/
-    String MS_RUN_FILE_PROPERTIES = "fileProperties";
-    String MS_RUN_INSTRUMENT_PROPERTIES = "instrumentProperties";
-    String MS_RUN_MS_DATA = "msData";
-    String MS_RUN_SCAN_SETTINGS = "scanSettings";
+    String MS_RUN_FILE_PROPERTIES = "FileProperties";
+    String MS_RUN_INSTRUMENT_PROPERTIES = "InstrumentProperties";
+    String MS_RUN_MS_DATA = "MsData";
+    String MS_RUN_SCAN_SETTINGS = "ScanSettings";
+    String MS_RUN_ID_SETTINGS = "IdSettings";
+
+    /*MSRun ID Settigns fields*/
+    String MS_RUN_ID_SETTINGS_FIXED_MODIFICATIONS = "FixedModifications";
+    String MS_RUN_ID_SETTINGS_VARIABLE_MODIFICATIONS = "VariableModifications";
+    String MS_RUN_ID_SETTINGS_ENZYMES = "Enzymes";
+    String MS_RUN_ID_SETTINGS_FRAGMENT_TOLERANCE = "FragmentTolerance";
+    String MS_RUN_ID_SETTINGS_PARENT_TOLERANCE = "ParentTolerance";
+
+
 
     /** Alias **/
     String MONGO_MSRUN_ALIAS = "MongoPrideMSRun";

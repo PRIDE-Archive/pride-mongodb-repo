@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
+import uk.ac.ebi.pride.mongodb.archive.model.files.idsettings.IdSetting;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 
 import java.util.*;
@@ -42,6 +43,9 @@ public class MongoPrideMSRun extends MongoPrideFile implements MsRunProvider{
 
     @Field(PrideArchiveField.MS_RUN_SCAN_SETTINGS)
     Set<MongoCvParam> scanSettings = new HashSet<>();
+
+    @Field(PrideArchiveField.MS_RUN_ID_SETTINGS)
+    Set<IdSetting> idSettings = new HashSet<>();
 
     /**
      * A {@link MongoPrideFile} that contains the general information of a File but without the
@@ -84,29 +88,34 @@ public class MongoPrideMSRun extends MongoPrideFile implements MsRunProvider{
         return Objects.equals(fileProperties, that.fileProperties) &&
                 Objects.equals(instrumentProperties, that.instrumentProperties) &&
                 Objects.equals(msData, that.msData) &&
-                Objects.equals(scanSettings, that.scanSettings);
+                Objects.equals(scanSettings, that.scanSettings) &&
+                Objects.equals(idSettings, that.idSettings);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(super.hashCode(), fileProperties, instrumentProperties, msData, scanSettings);
+        return Objects.hash(super.hashCode(), fileProperties, instrumentProperties, msData, scanSettings, idSettings);
     }
 
-    public void addFileProperties(List<MongoCvParam> fileProperties) {
+    public void addFileProperties(Set<MongoCvParam> fileProperties) {
         this.fileProperties.addAll(fileProperties);
     }
 
-    public void addInstrumentProperties(List<MongoCvParam> instrumentProperties) {
+    public void addInstrumentProperties(Set<MongoCvParam> instrumentProperties) {
         this.instrumentProperties.addAll(instrumentProperties);
     }
 
-    public void addMsData(List<MongoCvParam> msData) {
+    public void addMsData(Set<MongoCvParam> msData) {
         this.msData.addAll(msData);
     }
 
-    public void addScanSettings(List<MongoCvParam> scanSettings) {
+    public void addScanSettings(Set<MongoCvParam> scanSettings) {
         this.scanSettings.addAll(scanSettings);
+    }
+
+    public void addIdSettings(Set<IdSetting> idSettings) {
+        this.idSettings.addAll(idSettings);
     }
 
 
@@ -130,6 +139,10 @@ public class MongoPrideMSRun extends MongoPrideFile implements MsRunProvider{
         return scanSettings;
     }
 
+    public Set<IdSetting> getIdSettings() {
+        return idSettings;
+    }
+
     public void setFileProperties(Set<MongoCvParam> fileProperties) {
         this.fileProperties = fileProperties;
     }
@@ -144,5 +157,9 @@ public class MongoPrideMSRun extends MongoPrideFile implements MsRunProvider{
 
     public void setScanSettings(Set<MongoCvParam> scanSettings) {
         this.scanSettings = scanSettings;
+    }
+
+    public void setIdSettings(Set<IdSetting> idSettings) {
+        this.idSettings = idSettings;
     }
 }

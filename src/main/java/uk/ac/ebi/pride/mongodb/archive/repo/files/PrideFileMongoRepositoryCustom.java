@@ -4,7 +4,7 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
-import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
+import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,9 +20,5 @@ public interface PrideFileMongoRepositoryCustom {
 
     List<MongoPrideFile> filterByAttributes(List<Triple<String, String, String>> filters);
 
-    List<MongoPrideMSRun> filterMSRunByProjectAccession(String projectAccession);
-
     List<MongoPrideFile> findByProjectAccessions(List<String> accessions);
-
-    Optional<MongoPrideMSRun> findMsRunByAccession(String accession);
 }

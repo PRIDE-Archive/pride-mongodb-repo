@@ -1,8 +1,8 @@
-package uk.ac.ebi.pride.mongodb.archive.repo.files;
+package uk.ac.ebi.pride.mongodb.archive.repo.msruns;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
+import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -15,6 +15,6 @@ import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
  *
  * @author ypriverol on 30/08/2018.
  */
-public interface PrideMSRunMongoRepository extends MongoRepository<MongoPrideMSRun, ObjectId>{
+public interface PrideMSRunMongoRepository extends MongoRepository<MongoPrideMSRun, ObjectId>, PrideMSRunMongoRepositoryCustom{
 
 }

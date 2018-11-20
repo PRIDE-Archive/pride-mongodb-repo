@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.repository.support.PageableExecutionUtils;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
-import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
+import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
 import java.util.List;
@@ -48,25 +48,11 @@ public class PrideFileMongoRepositoryImpl implements PrideFileMongoRepositoryCus
     }
 
     @Override
-    public List<MongoPrideMSRun> filterMSRunByProjectAccession(String projectAccession) {
-        Criteria criteria = Criteria.where("_class").is(PrideArchiveField.MONGO_MSRUN_ALIAS);
-        criteria = criteria.andOperator( Criteria.where(PrideArchiveField.EXTERNAL_PROJECT_ACCESSIONS).in(projectAccession));
-        Query queryMongo = new Query().addCriteria(criteria);
-        return mongoTemplate.find(queryMongo, MongoPrideMSRun.class);
-    }
-
-    @Override
     public List<MongoPrideFile> findByProjectAccessions(List<String> accessions) {
         Criteria criteria = new Criteria(PrideArchiveField.EXTERNAL_PROJECT_ACCESSIONS).in(accessions);
         Query queryMongo = new Query().addCriteria(criteria);
         return mongoTemplate.find(queryMongo, MongoPrideFile.class);
     }
 
-    @Override
-    public Optional<MongoPrideMSRun> findMsRunByAccession(String accession) {
-        Criteria criteria = Criteria.where("_class").is(PrideArchiveField.MONGO_MSRUN_ALIAS);
-        criteria = criteria.andOperator( Criteria.where(PrideArchiveField.ACCESSION).in(accession));
-        Query queryMongo = new Query().addCriteria(criteria);
-        return Optional.of(mongoTemplate.findOne(queryMongo, MongoPrideMSRun.class));
-    }
+
 }

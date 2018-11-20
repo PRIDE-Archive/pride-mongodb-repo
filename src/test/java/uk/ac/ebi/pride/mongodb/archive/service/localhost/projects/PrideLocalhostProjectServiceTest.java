@@ -16,10 +16,11 @@ import uk.ac.ebi.pride.data.model.DataFile;
 import uk.ac.ebi.pride.data.model.Submission;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideMongoLocalhostConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
-import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
+import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
 import uk.ac.ebi.pride.mongodb.archive.service.files.PrideFileMongoService;
+import uk.ac.ebi.pride.mongodb.archive.service.msruns.PrideMsRunMongoService;
 import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideProjectMongoService;
 import uk.ac.ebi.pride.mongodb.archive.utils.MSRunJson;
 import uk.ac.ebi.pride.mongodb.archive.utils.TestUtils;
@@ -47,6 +48,9 @@ public class PrideLocalhostProjectServiceTest {
 
     @Autowired
     PrideFileMongoService prideFileMongoService;
+
+    @Autowired
+    PrideMsRunMongoService prideMsRunMongoService;
 
 
     @Before
@@ -179,12 +183,12 @@ public class PrideLocalhostProjectServiceTest {
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toList()));
 
-                prideFileMongoService.updateMSRun(msRun);
+                prideMsRunMongoService.updateMSRun(msRun);
             }
 
         }
 
-        List<MongoPrideMSRun> msRuns = prideFileMongoService.getMSRunsByProject(project.get().getAccession());
+        List<MongoPrideMSRun> msRuns = prideMsRunMongoService.getMSRunsByProject(project.get().getAccession());
         Assert.assertEquals(150, msRuns.size());
     }
 

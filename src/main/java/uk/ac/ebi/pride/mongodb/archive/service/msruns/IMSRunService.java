@@ -1,7 +1,7 @@
-package uk.ac.ebi.pride.mongodb.archive.service.files;
+package uk.ac.ebi.pride.mongodb.archive.service.msruns;
 
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
-import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
+import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
 
 import java.util.List;
 import java.util.Optional;

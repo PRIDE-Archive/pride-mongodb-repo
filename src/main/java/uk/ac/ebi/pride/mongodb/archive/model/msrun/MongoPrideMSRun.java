@@ -1,15 +1,23 @@
-package uk.ac.ebi.pride.mongodb.archive.model.files;
+package uk.ac.ebi.pride.mongodb.archive.model.msrun;
 
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
+import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -27,9 +35,31 @@ import java.util.*;
  * @author ypriverol on 29/08/2018.
  */
 
-@Document(collection = PrideArchiveField.PRIDE_FILE_COLLECTION_NAME)
-@TypeAlias(PrideArchiveField.MONGO_MSRUN_ALIAS)
-public class MongoPrideMSRun extends MongoPrideFile implements MsRunProvider{
+@Data
+@Builder
+@Document(collection = PrideArchiveField.PRIDE_MSRUN_COLLECTION_NAME)
+@TypeAlias(PrideArchiveField.MONGO_MSRUN_DOCUMENT_ALIAS)
+public class MongoPrideMSRun implements MsRunProvider, PrideArchiveField{
+
+    @Id
+    @Indexed(name = ID)
+    ObjectId id;
+
+    /** The project accessions are related with the following File **/
+    @Indexed(name = EXTERNAL_PROJECT_ACCESSIONS)
+    Set<String> projectAccessions;
+
+    /** The analysis accessions are releated with the following File **/
+    @Indexed(name = EXTERNAL_ANALYSIS_ACCESSIONS)
+    Set<String> analysisAccessions;
+
+    /** Accession generated for each MSRun **/
+    @Indexed(name = ACCESSION, unique = true)
+    @Getter(AccessLevel.NONE)
+    String accession;
+
+    @Indexed(name = FILE_NAME)
+    protected String fileName;
 
     @Field(PrideArchiveField.MS_RUN_FILE_PROPERTIES)
     Set<MongoCvParam> fileProperties = new HashSet<>();
@@ -43,6 +73,9 @@ public class MongoPrideMSRun extends MongoPrideFile implements MsRunProvider{
     @Field(PrideArchiveField.MS_RUN_SCAN_SETTINGS)
     Set<MongoCvParam> scanSettings = new HashSet<>();
 
+    @Field(PrideArchiveField.ADDITIONAL_ATTRIBUTES)
+    List<MongoCvParam> additionalAttributes;
+
     /**
      * A {@link MongoPrideFile} that contains the general information of a File but without the
      * MSRun information.
@@ -55,24 +88,28 @@ public class MongoPrideMSRun extends MongoPrideFile implements MsRunProvider{
         projectAccessions = prideFile.getProjectAccessions();
         analysisAccessions = prideFile.getAnalysisAccessions();
         accession = prideFile.getAccession();
-        fileCategory = (MongoCvParam) prideFile.getFileCategory();
-        fileSourceType = prideFile.getFileSourceType();
-        fileSourceFolder = prideFile.getFileSourceFolder();
-        md5Checksum = prideFile.getMd5Checksum();
-        publicFileLocations = prideFile.getPublicFileLocations();
-        fileSizeBytes = prideFile.getFileSizeBytes();
-        fileExtension = prideFile.getFileExtension();
         fileName = prideFile.getFileName();
-        compress = prideFile.isCompress();
-        submissionDate = prideFile.getSubmissionDate();
-        publicationDate = prideFile.getPublicationDate();
-        updatedDate =     prideFile.getUpdatedDate();
         additionalAttributes = prideFile.getAdditionalAttributes();
-        accessionSubmissionFile = prideFile.getAccessionSubmissionFile();
+    }
+
+    public MongoPrideMSRun(ObjectId id, Set<String> projectAccessions, Set<String> analysisAccessions, String accession, String fileName, Set<MongoCvParam> fileProperties, Set<MongoCvParam> instrumentProperties, Set<MongoCvParam> msData, Set<MongoCvParam> scanSettings, List<MongoCvParam> additionalAttributes) {
+        this.id = id;
+        this.projectAccessions = projectAccessions;
+        this.analysisAccessions = analysisAccessions;
+        this.accession = accession;
+        this.fileName = fileName;
+        this.fileProperties = fileProperties;
+        this.instrumentProperties = instrumentProperties;
+        this.msData = msData;
+        this.scanSettings = scanSettings;
+        this.additionalAttributes = additionalAttributes;
     }
 
     public MongoPrideMSRun() {
-        super();
+    }
+
+    public String getAccession() {
+        return accession;
     }
 
     @Override
@@ -144,5 +181,13 @@ public class MongoPrideMSRun extends MongoPrideFile implements MsRunProvider{
 
     public void setScanSettings(Set<MongoCvParam> scanSettings) {
         this.scanSettings = scanSettings;
+    }
+
+    @Override
+    public Collection<? extends String> getAdditionalAttributesStrings() {
+            List<String> attributes = new ArrayList<>();
+            if(additionalAttributes != null)
+                attributes = additionalAttributes.stream().map(CvParamProvider::getName).collect(Collectors.toList());
+            return attributes;
     }
 }

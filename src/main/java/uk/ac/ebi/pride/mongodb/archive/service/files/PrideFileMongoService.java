@@ -11,9 +11,9 @@ import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
 import uk.ac.ebi.pride.archive.dataprovider.utils.ProjectFileCategoryConstants;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideMSRun;
+import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.archive.repo.files.PrideFileMongoRepository;
-import uk.ac.ebi.pride.mongodb.archive.repo.files.PrideMSRunMongoRepository;
+import uk.ac.ebi.pride.mongodb.archive.repo.msruns.PrideMSRunMongoRepository;
 import uk.ac.ebi.pride.mongodb.archive.transformers.MSRunTransfromer;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 import uk.ac.ebi.pride.utilities.obo.OBOMapper;
@@ -31,29 +31,17 @@ import java.util.*;
  */
 @Service
 @Slf4j
-public class PrideFileMongoService implements IMSRunService{
+public class PrideFileMongoService {
 
     final
     PrideFileMongoRepository fileRepository;
-
-    final
-    PrideMSRunMongoRepository msRunRepository;
-
-    OBOMapper psiOBOMapper;
-
 
     @Autowired
     private MongoOperations mongo;
 
     @Autowired
-    public PrideFileMongoService(PrideFileMongoRepository fileRepository, PrideMSRunMongoRepository msRunRepository) {
+    public PrideFileMongoService(PrideFileMongoRepository fileRepository) {
         this.fileRepository = fileRepository;
-        this.msRunRepository = msRunRepository;
-        try {
-            psiOBOMapper = OBOMapper.getPSIMSInstance();
-        } catch (URISyntaxException e) {
-            log.debug("An error has occurred when creating the PSI-MS ontology");
-        }
     }
 
     /**
@@ -225,29 +213,6 @@ public class PrideFileMongoService implements IMSRunService{
         fileRepository.deleteAll();
     }
 
-    /**
-     * We can update an existing {@link MongoPrideFile} as {@link MongoPrideMSRun} .
-     * @param mongoPrideMSRun the new MongoPrideMSRun
-     * @return Optional
-     */
-    @Override
-    public Optional<MongoPrideMSRun> updateMSRun( MongoPrideMSRun mongoPrideMSRun){
-        Optional<MongoPrideFile> file = fileRepository.findPrideFileByAccession(mongoPrideMSRun.getAccession());
-        if(file.isPresent()){
-            mongoPrideMSRun = msRunRepository.save(mongoPrideMSRun);
-        }
-        return Optional.of(mongoPrideMSRun);
-    }
-
-    /**
-     * Find all the MSruns for an specific project accession
-     * @param projectAccession Project Accession
-     * @return List of {@link MongoPrideMSRun}
-     */
-    @Override
-    public List<MongoPrideMSRun> getMSRunsByProject(String projectAccession){
-        return fileRepository.filterMSRunByProjectAccession(projectAccession);
-    }
 
     /**
      * Get the list of Files by {@link uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject} Accessions
@@ -258,32 +223,5 @@ public class PrideFileMongoService implements IMSRunService{
         return fileRepository.findByProjectAccessions(accessions);
     }
 
-    /**
-     * Set the metadata of the MSRun
-     * @param msRunMetadata {@link MsRunProvider} msRun Metadata
-     * @param accession Accession of the {@link MongoPrideMSRun}
-     * @return Optional
-     */
-    public Optional<MongoPrideMSRun> updateMSRunMetadata(MsRunProvider msRunMetadata, String accession) {
 
-        Optional<MongoPrideMSRun> file = fileRepository.findMsRunByAccession(accession);
-        if(file.isPresent() &&
-                file.get().getFileCategory().getAccession().equalsIgnoreCase(ProjectFileCategoryConstants.RAW.getCv().getAccession())){
-
-            MongoPrideMSRun msRun = MSRunTransfromer.transformMSRun(file.get());
-            msRun = MSRunTransfromer.transformMetadata(msRun, msRunMetadata, psiOBOMapper);
-            msRun = fileRepository.save(msRun);
-            return Optional.of(msRun);
-        }
-        return Optional.empty();
-    }
-
-    /**
-     * Find a corresponding msRun by the accession.
-     * @param accession Accession of the msRuns
-     * @return Optional MSRun
-     */
-    public Optional<MongoPrideMSRun> findMSRunByAccession(String accession) {
-        return fileRepository.findMsRunByAccession(accession);
-    }
 }

@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Data
 @Builder
 @Document(collection = PrideArchiveField.PRIDE_FILE_COLLECTION_NAME)
-@TypeAlias("MongoPrideFile")
+@TypeAlias(PrideArchiveField.MONGO_FILE_DOCUMENT_ALIAS)
 public class MongoPrideFile implements PrideArchiveField, FileProvider {
 
     @Id

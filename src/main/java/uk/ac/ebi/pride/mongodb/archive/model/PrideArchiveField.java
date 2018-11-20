@@ -88,6 +88,7 @@ public interface PrideArchiveField {
     String PRIDE_PROJECTS_COLLECTION_NAME = "pride_projects";
     String PRIDE_EXPERIMENTAL_DESIGN_COLLECTION_NAME = "pride_experimental_design";
     String PRIDE_FILE_COLLECTION_NAME = "pride_files";
+    String PRIDE_MSRUN_COLLECTION_NAME = "pride_msruns";
 
     String PUBLIC_PROJECT = "public_project";
 
@@ -150,7 +151,8 @@ public interface PrideArchiveField {
     String MS_RUN_SCAN_SETTINGS = "scanSettings";
 
     /** Alias **/
-    String MONGO_MSRUN_ALIAS = "MongoPrideMSRun";
+    String MONGO_MSRUN_DOCUMENT_ALIAS = "MongoPrideMSRun";
+    String MONGO_FILE_DOCUMENT_ALIAS = "MongoPrideFile";
 
     String SAMPLES = "samples";
     String SAMPLES_MSRUN = "samples_msrun";

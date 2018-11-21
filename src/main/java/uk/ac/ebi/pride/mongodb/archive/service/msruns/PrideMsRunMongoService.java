@@ -6,15 +6,21 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
 import uk.ac.ebi.pride.archive.dataprovider.utils.ProjectFileCategoryConstants;
+import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
+import uk.ac.ebi.pride.mongodb.archive.model.msrun.idsettings.IdSetting;
+import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.repo.msruns.PrideMSRunMongoRepository;
 import uk.ac.ebi.pride.mongodb.archive.transformers.MSRunTransfromer;
 import uk.ac.ebi.pride.utilities.obo.OBOMapper;
 
 import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -95,6 +101,47 @@ public class PrideMsRunMongoService implements IMSRunService {
     }
 
     /**
+     * Set the metadata of the MSRun
+     * @param msRunFieldData A JSON string with part of MSRun data
+     * @param accession Accession of the {@link MongoPrideMSRun}
+     * @return Optional
+     */
+    public Optional<MongoPrideMSRun> updateMSRunMetadataParts(String fieldName, MsRunProvider msRunFieldData, String accession) {
+
+        Optional<MongoPrideMSRun> msRunOptional = msRunRepository.findMsRunByAccession(accession);
+        Set<MongoCvParam> mongoCvParams = new HashSet<>();
+        if(msRunOptional.isPresent()) {
+            MongoPrideMSRun msRun = msRunOptional.get();
+            switch (fieldName) {
+                case PrideArchiveField.MS_RUN_FILE_PROPERTIES:
+                    mongoCvParams = (Set<MongoCvParam>) msRunFieldData.getFileProperties();
+                    msRun.setFileProperties(mongoCvParams);
+                    break;
+                case PrideArchiveField.MS_RUN_INSTRUMENT_PROPERTIES:
+                    mongoCvParams = (Set<MongoCvParam>) msRunFieldData.getInstrumentProperties();
+                    msRun.setInstrumentProperties(mongoCvParams);
+                    break;
+                case PrideArchiveField.MS_RUN_MS_DATA:
+                    mongoCvParams = (Set<MongoCvParam>) msRunFieldData.getMsData();
+                    msRun.setMsData(mongoCvParams);
+                    break;
+                case PrideArchiveField.MS_RUN_SCAN_SETTINGS:
+                    mongoCvParams = (Set<MongoCvParam>) msRunFieldData.getScanSettings();
+                    msRun.setScanSettings(mongoCvParams);
+                    break;
+                case PrideArchiveField.MS_RUN_ID_SETTINGS:
+                    msRun.setIdSettings(msRunFieldData.getIdSettings()
+                            .stream().map(x -> (IdSetting)x).collect(Collectors.toSet()));
+                    break;
+            }
+            msRun = msRunRepository.save(msRun);
+            return Optional.of(msRun);
+        }
+        return Optional.empty();
+    }
+
+
+    /**
      * Find a corresponding msRun by the accession.
      * @param accession Accession of the msRuns
      * @return Optional MSRun
@@ -102,5 +149,16 @@ public class PrideMsRunMongoService implements IMSRunService {
     public Optional<MongoPrideMSRun> findMSRunByAccession(String accession) {
         return msRunRepository.findMsRunByAccession(accession);
     }
+
+
+    private List<MongoCvParam> processCVParams(Set<MongoCvParam> mongoCvParams) {
+
+        return mongoCvParams
+            .stream()
+            .filter(x -> psiOBOMapper.getTermByAccession(x.getAccession()) != null)
+            .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
+            .collect(Collectors.toList());
+    }
+
 
 }

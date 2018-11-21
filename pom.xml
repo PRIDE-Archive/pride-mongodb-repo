@@ -33,10 +33,29 @@
         <uk.ac.ebi.pride-utilities.version>2.0.19-SNAPSHOT</uk.ac.ebi.pride-utilities.version>
         <jmztab.version>3.0.7</jmztab.version>
         <pride.mod.version>2.1.2</pride.mod.version>
+        <jackson.version>2.9.5</jackson.version>
     </properties>
 
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+
         <!-- PRIDE provider API -->
         <dependency>
             <groupId>uk.ac.ebi.pride.archive</groupId>

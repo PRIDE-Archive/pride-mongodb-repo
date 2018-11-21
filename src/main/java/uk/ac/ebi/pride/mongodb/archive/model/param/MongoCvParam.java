@@ -20,7 +20,7 @@ import java.util.Objects;
 public class MongoCvParam implements CvParamProvider {
 
     /** CvLabel is used to name the Ontology for the Ontology Term **/
-    private String CvLabel;
+    private String cvLabel;
 
     /** Accession of the Ontology Term **/
     private String accession;
@@ -44,7 +44,7 @@ public class MongoCvParam implements CvParamProvider {
      * @param value Value
      */
     public MongoCvParam(String cvLabel, String accession, String name, String value) {
-        CvLabel = cvLabel;
+        this.cvLabel = cvLabel;
         this.accession = accession;
         this.name = name;
         this.value = value;
@@ -55,7 +55,7 @@ public class MongoCvParam implements CvParamProvider {
      * @param cv {@link CvParamProvider}
      */
     public MongoCvParam(CvParamProvider cv) {
-        this.CvLabel = cv.getCvLabel();
+        this.cvLabel = cv.getCvLabel();
         this.accession = cv.getAccession();
         this.name = cv.getName();
         this.value = cv.getValue();
@@ -63,7 +63,7 @@ public class MongoCvParam implements CvParamProvider {
 
     @Override
     public String getCvLabel() {
-        return CvLabel;
+        return cvLabel;
     }
 
     @Override
@@ -86,10 +86,12 @@ public class MongoCvParam implements CvParamProvider {
         return accession;
     }
 
+
+
     @Override
     public String toString() {
         return "MongoCvParam{" +
-                "CvLabel='" + CvLabel + '\'' +
+                "CvLabel='" + cvLabel + '\'' +
                 ", accession='" + accession + '\'' +
                 ", name='" + name + '\'' +
                 ", value='" + value + '\'' +
@@ -101,7 +103,7 @@ public class MongoCvParam implements CvParamProvider {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MongoCvParam that = (MongoCvParam) o;
-        return Objects.equals(CvLabel, that.CvLabel) &&
+        return Objects.equals(cvLabel, that.cvLabel) &&
                 Objects.equals(accession, that.accession) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(value, that.value);
@@ -109,6 +111,6 @@ public class MongoCvParam implements CvParamProvider {
 
     @Override
     public int hashCode() {
-        return Objects.hash(CvLabel, accession, name, value);
+        return Objects.hash(cvLabel, accession, name, value);
     }
 }

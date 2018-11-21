@@ -7,19 +7,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
-import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
-import uk.ac.ebi.pride.archive.dataprovider.utils.ProjectFileCategoryConstants;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.archive.repo.files.PrideFileMongoRepository;
-import uk.ac.ebi.pride.mongodb.archive.repo.msruns.PrideMSRunMongoRepository;
-import uk.ac.ebi.pride.mongodb.archive.transformers.MSRunTransfromer;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
-import uk.ac.ebi.pride.utilities.obo.OBOMapper;
 import uk.ac.ebi.pride.utilities.util.Tuple;
 
-import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
@@ -222,6 +215,5 @@ public class PrideFileMongoService {
     public List<MongoPrideFile> findFilesByProjectAccessions(List<String> accessions) {
         return fileRepository.findByProjectAccessions(accessions);
     }
-
 
 }

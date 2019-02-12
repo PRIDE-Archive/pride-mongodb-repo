@@ -115,4 +115,14 @@ public class PrideProjectMongoService {
     public void deleteAll() {
         repository.deleteAll();
     }
+
+    public boolean deleteByAccession(String accession){
+        Optional<MongoPrideProject> project = repository.findByAccession(accession);
+        if(project.isPresent()) {
+            repository.delete(project.get());
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -110,7 +110,7 @@ public class PrideFongoProjectServiceTest {
                     .build();
         }).collect(Collectors.toList());
 
-        List<Tuple<MongoPrideFile, MongoPrideFile>> filesInserted= prideFileMongoService.insertAll(mongoFiles);
+        List<Tuple<MongoPrideFile, MongoPrideFile>> filesInserted= prideFileMongoService.insertAllFilesAndMsRuns(mongoFiles,null);
         Assert.assertEquals(mongoFiles.size(), dataFiles.size());
 
         List<Triple<String, String, CvParamProvider>> fileRelations = new ArrayList<>();
@@ -149,7 +149,7 @@ public class PrideFongoProjectServiceTest {
                     .build();
         }).collect(Collectors.toList());
 
-        List<Tuple<MongoPrideFile, MongoPrideFile>> filesInserted= prideFileMongoService.insertAll(mongoFiles);
+        List<Tuple<MongoPrideFile, MongoPrideFile>> filesInserted= prideFileMongoService.insertAllFilesAndMsRuns(mongoFiles,null);
         Assert.assertEquals(mongoFiles.size(), dataFiles.size());
 
         for(MongoPrideFile prideFile: prideFileMongoService.findFilesByProjectAccession(project.get().getAccession())){

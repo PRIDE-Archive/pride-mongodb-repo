@@ -162,7 +162,7 @@ public class PrideFileMongoServiceTest {
                         .build();
                 mongoPrideFiles.add(file);
             });
-            prideFileMongoService.insertAll(mongoPrideFiles);
+            prideFileMongoService.insertAllFilesAndMsRuns(mongoPrideFiles,null);
         });
 
         Assert.assertEquals(1200, prideFileMongoService.count());

@@ -1,5 +1,6 @@
 package uk.ac.ebi.pride.mongodb.archive.model.msrun.idsettings;
 
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public class Modification {
     private List<String> residues = null;
     private String composition;
     private String position;
-    private MongoCvParam name;
+    private CvParamProvider name;
 
     public Double getMassDelta() {
         return massDelta;
@@ -44,7 +45,7 @@ public class Modification {
         this.position = position;
     }
 
-    public MongoCvParam getName() {
+    public CvParamProvider getName() {
         return name;
     }
 

@@ -9,7 +9,9 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
+import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.archive.repo.files.PrideFileMongoRepository;
+import uk.ac.ebi.pride.mongodb.archive.repo.msruns.PrideMSRunMongoRepository;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 import uk.ac.ebi.pride.utilities.util.Tuple;
 
@@ -29,12 +31,23 @@ public class PrideFileMongoService {
     final
     PrideFileMongoRepository fileRepository;
 
+    final PrideMSRunMongoRepository msRunMongoRepository;
+
     @Autowired
     private MongoOperations mongo;
 
     @Autowired
-    public PrideFileMongoService(PrideFileMongoRepository fileRepository) {
+    public PrideFileMongoService(PrideFileMongoRepository fileRepository,PrideMSRunMongoRepository msRunMongoRepository) {
         this.fileRepository = fileRepository;
+        this.msRunMongoRepository = msRunMongoRepository;
+    }
+
+    /*
+    * Return an accession for inserting
+    * */
+    public int getNextAccessionNumber(int size){
+        int finalNumber = PrideMongoUtils.getNextSizedSequence(mongo, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, size) + 1;
+        return finalNumber;
     }
 
     /**
@@ -60,9 +73,10 @@ public class PrideFileMongoService {
      * where the key is the submitted File and the value the inserted File.
      *
      * @param prideFiles MongoPride File List
+     * @param msRunRawFiles MongoPrideMSRun File List
      * @return List of Tuple
      */
-    public List<Tuple<MongoPrideFile,MongoPrideFile>> insertAll(List<MongoPrideFile> prideFiles) {
+    /*public List<Tuple<MongoPrideFile,MongoPrideFile>> insertAll(List<MongoPrideFile> prideFiles) {
         NumberFormat formatter = new DecimalFormat("00000000000");
         List<MongoPrideFile> newFiles = new ArrayList<>();
         List<Tuple<MongoPrideFile, MongoPrideFile>> insertedFiles = new ArrayList<>();
@@ -86,6 +100,36 @@ public class PrideFileMongoService {
                 log.debug("A new project has been saved into MongoDB database with Accession -- " + accession);
             }
         }
+        return insertedFiles;
+    }*/
+
+    /**
+     * Insert is allowing using to create a File Accession for the File and insert the actual File into MongoDB. The method return a List of Tuples
+     * where the key is the submitted File and the value the inserted File.
+     *
+     * @param prideFiles MongoPride File List
+     * @param msRunRawFiles MongoPrideMSRun File List
+     * @return List of Tuple
+     */
+    public List<Tuple<MongoPrideFile,MongoPrideFile>> insertAllFilesAndMsRuns(List<MongoPrideFile> prideFiles, List<MongoPrideMSRun> msRunRawFiles) {
+        List<Tuple<MongoPrideFile, MongoPrideFile>> insertedFiles = new ArrayList<>();
+        if(!prideFiles.isEmpty()){
+            if(msRunRawFiles != null) {
+                for (MongoPrideMSRun msRunFile : msRunRawFiles) {
+                    msRunMongoRepository.save(msRunFile);
+                    log.info("A new MSRun has been saved into MongoDB database with Accession -- " + msRunFile.getAccession());
+                }
+            }else{
+                log.info("No MSRun files available to save");
+            }
+
+
+            for (MongoPrideFile file: prideFiles){
+                insertedFiles.add(new Tuple<>(file, fileRepository.save(file)));
+                log.debug("A new project has been saved into MongoDB database with Accession -- " + file.getAccession());
+            }
+        }
+
         return insertedFiles;
     }
 
@@ -204,6 +248,19 @@ public class PrideFileMongoService {
      */
     public void deleteAll(){
         fileRepository.deleteAll();
+    }
+
+    public boolean deleteByAccession(String accession){
+        try{
+            List<MongoPrideFile> prideFilesList = fileRepository.findByProjectAccessions(Arrays.asList(accession));
+            for(MongoPrideFile prideFile : prideFilesList){
+                fileRepository.delete(prideFile);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 

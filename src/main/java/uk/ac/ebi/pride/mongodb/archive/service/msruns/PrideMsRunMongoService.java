@@ -16,10 +16,7 @@ import uk.ac.ebi.pride.mongodb.archive.transformers.MSRunTransfromer;
 import uk.ac.ebi.pride.utilities.obo.OBOMapper;
 
 import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -158,6 +155,26 @@ public class PrideMsRunMongoService implements IMSRunService {
             .filter(x -> psiOBOMapper.getTermByAccession(x.getAccession()) != null)
             .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Delete all Files
+     */
+    public void deleteAll(){
+        msRunRepository.deleteAll();
+    }
+
+    public boolean deleteByAccession(String accession){
+        try{
+            List<MongoPrideMSRun> prideMSRunFilesList = msRunRepository.findByProjectAccessions(Arrays.asList(accession));
+            for(MongoPrideMSRun prideFile : prideMSRunFilesList){
+                msRunRepository.delete(prideFile);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 

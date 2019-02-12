@@ -46,7 +46,6 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
 
     /** Accession generated for each File **/
     @Indexed(name = ACCESSION, unique = true)
-    @Getter(AccessLevel.NONE)
     String accession;
 
     @Indexed(name = FILE_CATEGORY)

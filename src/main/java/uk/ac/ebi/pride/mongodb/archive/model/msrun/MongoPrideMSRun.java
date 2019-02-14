@@ -62,6 +62,9 @@ public class MongoPrideMSRun implements MsRunProvider, PrideArchiveField{
     @Indexed(name = FILE_NAME)
     protected String fileName;
 
+    @Indexed(name = FILE_SIZE_MB)
+    protected long fileSizeBytes;
+
     @Field(PrideArchiveField.MS_RUN_FILE_PROPERTIES)
     Set<MongoCvParam> fileProperties = new HashSet<>();
 
@@ -94,6 +97,7 @@ public class MongoPrideMSRun implements MsRunProvider, PrideArchiveField{
         accession = prideFile.getAccession();
         fileName = prideFile.getFileName();
         additionalAttributes = prideFile.getAdditionalAttributes();
+        fileSizeBytes = prideFile.getFileSizeBytes();
     }
 
     public MongoPrideMSRun(ObjectId id, Set<String> projectAccessions, Set<String> analysisAccessions, String accession, String fileName, Set<MongoCvParam> fileProperties, Set<MongoCvParam> instrumentProperties, Set<MongoCvParam> msData, Set<MongoCvParam> scanSettings, List<MongoCvParam> additionalAttributes, Set<IdSetting> idSettings) {

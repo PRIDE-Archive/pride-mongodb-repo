@@ -4,7 +4,6 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import uk.ac.ebi.pride.mongodb.archive.model.assay.MongoPrideAssay;
-import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.repo.assay.PrideAssayMongoRepository;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 

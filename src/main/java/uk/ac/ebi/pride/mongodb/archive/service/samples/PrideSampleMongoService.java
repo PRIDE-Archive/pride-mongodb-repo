@@ -6,16 +6,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
-import uk.ac.ebi.pride.archive.dataprovider.sample.SampleMSRunTuple;
+import uk.ac.ebi.pride.archive.dataprovider.sample.ISampleMSRunRow;
 import uk.ac.ebi.pride.archive.dataprovider.sample.SampleProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.sample.MongoPrideExperimentalDesign;
-import uk.ac.ebi.pride.mongodb.archive.model.sample.MongoPrideSample;
-import uk.ac.ebi.pride.mongodb.archive.repo.samples.PrideMongoSampleRepository;
+import uk.ac.ebi.pride.mongodb.archive.model.sample.MongoISampleMSRunRow;
+import uk.ac.ebi.pride.mongodb.archive.model.sample.SampleMSRun;
+import uk.ac.ebi.pride.mongodb.archive.repo.samples.PrideMongoExperimentalDesign;
 import uk.ac.ebi.pride.mongodb.archive.service.psms.PridePSMMongoService;
 import uk.ac.ebi.pride.mongodb.archive.transformers.GeneralTransfromer;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PrideSampleMongoService {
 
-    final PrideMongoSampleRepository sampleRepository;
+    final PrideMongoExperimentalDesign prideMongoExperimentalDesign;
 
     @Autowired
     private MongoOperations mongo;
@@ -43,58 +44,59 @@ public class PrideSampleMongoService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PridePSMMongoService.class);
 
     @Autowired
-    public PrideSampleMongoService(PrideMongoSampleRepository sampleRepository) {
-        this.sampleRepository = sampleRepository;
+    public PrideSampleMongoService(PrideMongoExperimentalDesign prideMongoExperimentalDesign) {
+        this.prideMongoExperimentalDesign = prideMongoExperimentalDesign;
     }
 
     /**
      * Get samples by Project Accession
      * @param accession Project Accession
-     * @return List of {@link MongoPrideSample}
+     * @return List of {@link SampleMSRun}
      */
-    public List<MongoPrideSample> getSamplesByProjectAccession(String accession){
-        MongoPrideExperimentalDesign experimentalDesign = sampleRepository.findByProjectAccession(accession);
+    public Collection<? extends SampleProvider> getSamplesByProjectAccession(String accession){
+        MongoPrideExperimentalDesign experimentalDesign = prideMongoExperimentalDesign.findByProjectAccession(accession);
         if(experimentalDesign != null){
             return experimentalDesign.getSamples();
         }
-        return null;
+        return Collections.emptyList();
     }
 
     /**
      * Get samples by Project Accession
      * @param accession Project Accession
-     * @return List of {@link MongoPrideSample}
+     * @return List of {@link SampleMSRun}
      */
-    public Collection<? extends SampleMSRunTuple> getSamplesMRunProjectAccession(String accession){
-        MongoPrideExperimentalDesign experimentalDesign = sampleRepository.findByProjectAccession(accession);
+    public List<MongoISampleMSRunRow> getSamplesMRunProjectAccession(String accession){
+        MongoPrideExperimentalDesign experimentalDesign = prideMongoExperimentalDesign.findByProjectAccession(accession);
         if(experimentalDesign != null){
-            return experimentalDesign.getSampleMSrun();
+            return experimentalDesign.getSampleMSRunTuples();
         }
-        return null;
+        return Collections.emptyList();
     }
 
-    public List<MongoPrideSample> updateSamplesByProjectAccession(String accession, List<? extends SampleProvider> samples) {
-        MongoPrideExperimentalDesign existingExp = sampleRepository.findByProjectAccession(accession);
-        if(existingExp == null)
-            existingExp = MongoPrideExperimentalDesign
-                    .builder()
-                    .samples(new ArrayList<>())
-                    .sampleMSRunTuples(new ArrayList<>())
-                    .accession(accession).build();
-        existingExp.setSamples(samples.stream().map(GeneralTransfromer::transformSample).collect(Collectors.toList()));
-        existingExp = sampleRepository.save(existingExp);
-        return existingExp.getSamples();
+//    public List<SampleMSRun> updateSamplesByProjectAccession(String accession, List<? extends SampleProvider> samples) {
+//        MongoPrideExperimentalDesign existingExp = prideMongoExperimentalDesign.findByProjectAccession(accession);
+//        if(existingExp == null)
+//            existingExp = MongoPrideExperimentalDesign
+//                    .builder()
+////                    .samples(new ArrayList<>())
+//                    .sampleMSRunTuples(new ArrayList<>())
+////                    .accession(accession)
+//                    .build();
+////        existingExp.setSamples(samples.stream().map(GeneralTransfromer::transformSample).collect(Collectors.toList()));
+//        existingExp = prideMongoExperimentalDesign.save(existingExp);
+//        return existingExp.getSamples();
+//
+//    }
 
-    }
-
-    public Collection<? extends SampleMSRunTuple> updateSamplesMRunProjectAccession(String accession, List<? extends SampleMSRunTuple> samples) {
-        MongoPrideExperimentalDesign existingExp = sampleRepository.findByProjectAccession(accession);
+    public Collection<? extends ISampleMSRunRow> updateSamplesMRunProjectAccession(String accession, List<? extends ISampleMSRunRow> samples) {
+        MongoPrideExperimentalDesign existingExp = prideMongoExperimentalDesign.findByProjectAccession(accession);
         if(existingExp == null){
             existingExp = MongoPrideExperimentalDesign
                     .builder()
-                    .samples(new ArrayList<>())
-                    .sampleMSRunTuples(new ArrayList<>())
-                    .accession(accession).build();
+                    .projectAccession(accession)
+                    .build();
+            existingExp.setSampleMSRunTuples(samples);
         }
         existingExp.setSampleMSRunTuples(samples.stream().map(GeneralTransfromer::transformSampleMsRun).collect(Collectors.toList()));
         return existingExp.getSampleMSrun();

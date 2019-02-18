@@ -252,7 +252,7 @@ public class PrideFileMongoService {
 
     public boolean deleteByAccession(String accession){
         try{
-            List<MongoPrideFile> prideFilesList = fileRepository.findByProjectAccessions(Arrays.asList(accession));
+            List<MongoPrideFile> prideFilesList = fileRepository.findByProjectAccessions(Collections.singletonList(accession));
             for(MongoPrideFile prideFile : prideFilesList){
                 fileRepository.delete(prideFile);
             }

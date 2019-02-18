@@ -1,7 +1,9 @@
 package uk.ac.ebi.pride.mongodb.archive.model.sample;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Setter;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
@@ -9,11 +11,15 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.project.ExperimentalDesignProvider;
-import uk.ac.ebi.pride.archive.dataprovider.sample.SampleMSRunTuple;
+import uk.ac.ebi.pride.archive.dataprovider.sample.DefaultSample;
+import uk.ac.ebi.pride.archive.dataprovider.sample.ISampleMSRunRow;
+import uk.ac.ebi.pride.archive.dataprovider.sample.SampleProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -36,26 +42,49 @@ public class MongoPrideExperimentalDesign implements ExperimentalDesignProvider 
     @Indexed(name = PrideArchiveField.ID)
     ObjectId id;
 
+    @Indexed(name = PrideArchiveField.ACCESSION)
+    String projectAccession;
+
     /** Project Accession in PRIDE**/
-    @Indexed(unique = true, name = PrideArchiveField.ACCESSION)
-    String accession;
-
-    /** PRIDE Project short description **/
-    @Field(value = PrideArchiveField.SAMPLES)
-    public List<MongoPrideSample> samples;
-
-    /** PRIDE Project short description **/
     @Field(value = PrideArchiveField.SAMPLES_MSRUN)
-    public List<MongoSampleMSRun> sampleMSRunTuples;
+
+    @Setter(AccessLevel.PRIVATE)
+    List<MongoISampleMSRunRow> sampleMSRunTuples;
 
     @Override
-    public String getAccession() {
-        return accession;
+    public String getProjectAccession() {
+
+        if(sampleMSRunTuples != null && !sampleMSRunTuples.isEmpty()){
+            Optional<String> projectId = sampleMSRunTuples.stream().map(MongoISampleMSRunRow::getProjectAccession).findFirst();
+            if(projectId.isPresent())
+                return projectId.get();
+        }
+        return null;
+    }
+
+    @Override
+    public Collection<? extends SampleProvider> getSamples() {
+        if(sampleMSRunTuples != null && !sampleMSRunTuples.isEmpty()){
+            return sampleMSRunTuples.stream()
+                    .map(x -> new DefaultSample(x.getSampleAccession(), x.getSampleProperties()))
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    public void setSampleMSRunTuples(List<? extends ISampleMSRunRow> sampleMSRunTuples) {
+        this.sampleMSRunTuples = sampleMSRunTuples.stream().map( x-> new MongoISampleMSRunRow(x.getSampleAccession(), x.getProjectAccession(),
+                x.getMSRunAccession(), x.getFractionIdentifierCvParam(),
+                x.getSampleLabel(), x.getLabelReagent(), x.getSampleProperties(), x.getMSRunProperties()))
+                .collect(Collectors.toList());
+    }
+
+    public List<MongoISampleMSRunRow> getSampleMSRunTuples() {
+        return sampleMSRunTuples;
     }
 
 
-    @Override
-    public Collection<? extends SampleMSRunTuple> getSampleMSrun() {
-        return sampleMSRunTuples;
+    public Collection<? extends ISampleMSRunRow> getSampleMSrun() {
+        return null;
     }
 }

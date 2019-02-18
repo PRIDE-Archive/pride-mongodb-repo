@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.assay.MongoPrideAssay;
-import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 
 import java.util.Optional;
 

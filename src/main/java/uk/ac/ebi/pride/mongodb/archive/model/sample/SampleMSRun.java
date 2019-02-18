@@ -24,18 +24,23 @@ import java.util.stream.Collectors;
  */
 @Builder
 @Data
-public class MongoPrideSample implements SampleProvider {
+public class SampleMSRun {
 
-    String accession;
+    /**
+     * Fraction ID.
+     */
+    String fractionAccession;
 
+    /**
+     * {@link uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider} Accession.
+     */
+    String msRunAccession;
+
+    /**
+     * Properties of the relation between the {@link uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider} and the {@link SampleProvider}
+     */
     Collection<Tuple<MongoCvParam, MongoCvParam>> properties;
 
-    @Override
-    public Comparable getAccession() {
-        return accession;
-    }
-
-    @Override
     public Collection<ITuple<CvParamProvider, CvParamProvider>> getSampleProperties() {
         return properties
                 .stream()

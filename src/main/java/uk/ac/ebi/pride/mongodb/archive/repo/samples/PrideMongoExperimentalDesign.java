@@ -19,7 +19,7 @@ import uk.ac.ebi.pride.mongodb.archive.model.sample.MongoPrideExperimentalDesign
  * @author ypriverol on 29/10/2018.
  */
 @Repository
-public interface PrideMongoSampleRepository extends MongoRepository<MongoPrideExperimentalDesign, ObjectId> {
+public interface PrideMongoExperimentalDesign extends MongoRepository<MongoPrideExperimentalDesign, ObjectId> {
 
     @Query("{'"+ PrideArchiveField.ACCESSION + "' : ?0}")
     MongoPrideExperimentalDesign findByProjectAccession(String accession);

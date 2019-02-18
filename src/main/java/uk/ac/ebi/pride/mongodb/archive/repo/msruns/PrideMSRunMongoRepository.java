@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
 
-import javax.annotation.Resource;
 import java.util.Optional;
 
 /**

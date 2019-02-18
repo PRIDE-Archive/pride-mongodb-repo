@@ -1,7 +1,6 @@
 package uk.ac.ebi.pride.mongodb.archive.model.msrun;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import org.bson.types.ObjectId;
@@ -37,7 +36,6 @@ import java.util.stream.Collectors;
  */
 
 @Data
-@Builder
 @Document(collection = PrideArchiveField.PRIDE_MSRUN_COLLECTION_NAME)
 @TypeAlias(PrideArchiveField.MONGO_MSRUN_DOCUMENT_ALIAS)
 public class MongoPrideMSRun implements MsRunProvider, PrideArchiveField{

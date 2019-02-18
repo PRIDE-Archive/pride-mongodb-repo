@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
-import uk.ac.ebi.pride.archive.dataprovider.utils.ProjectFileCategoryConstants;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.idsettings.IdSetting;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
@@ -166,7 +164,7 @@ public class PrideMsRunMongoService implements IMSRunService {
 
     public boolean deleteByAccession(String accession){
         try{
-            List<MongoPrideMSRun> prideMSRunFilesList = msRunRepository.findByProjectAccessions(Arrays.asList(accession));
+            List<MongoPrideMSRun> prideMSRunFilesList = msRunRepository.findByProjectAccessions(Collections.singletonList(accession));
             for(MongoPrideMSRun prideFile : prideMSRunFilesList){
                 msRunRepository.delete(prideFile);
             }

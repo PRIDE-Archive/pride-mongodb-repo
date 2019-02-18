@@ -10,9 +10,7 @@ import uk.ac.ebi.pride.archive.dataprovider.sample.ISampleMSRunRow;
 import uk.ac.ebi.pride.archive.dataprovider.sample.SampleProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.sample.MongoPrideExperimentalDesign;
 import uk.ac.ebi.pride.mongodb.archive.model.sample.MongoISampleMSRunRow;
-import uk.ac.ebi.pride.mongodb.archive.model.sample.SampleMSRun;
 import uk.ac.ebi.pride.mongodb.archive.repo.samples.PrideMongoExperimentalDesign;
-import uk.ac.ebi.pride.mongodb.archive.service.psms.PridePSMMongoService;
 import uk.ac.ebi.pride.mongodb.archive.transformers.GeneralTransfromer;
 
 import java.util.Collection;
@@ -41,7 +39,7 @@ public class PrideSampleMongoService {
     private MongoOperations mongo;
 
     /** Logger use to query and filter the data **/
-    private static final Logger LOGGER = LoggerFactory.getLogger(PridePSMMongoService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PrideSampleMongoService.class);
 
     @Autowired
     public PrideSampleMongoService(PrideMongoExperimentalDesign prideMongoExperimentalDesign) {
@@ -51,7 +49,6 @@ public class PrideSampleMongoService {
     /**
      * Get samples by Project Accession
      * @param accession Project Accession
-     * @return List of {@link SampleMSRun}
      */
     public Collection<? extends SampleProvider> getSamplesByProjectAccession(String accession){
         MongoPrideExperimentalDesign experimentalDesign = prideMongoExperimentalDesign.findByProjectAccession(accession);
@@ -64,7 +61,6 @@ public class PrideSampleMongoService {
     /**
      * Get samples by Project Accession
      * @param accession Project Accession
-     * @return List of {@link SampleMSRun}
      */
     public List<MongoISampleMSRunRow> getSamplesMRunProjectAccession(String accession){
         MongoPrideExperimentalDesign experimentalDesign = prideMongoExperimentalDesign.findByProjectAccession(accession);
@@ -73,21 +69,6 @@ public class PrideSampleMongoService {
         }
         return Collections.emptyList();
     }
-
-//    public List<SampleMSRun> updateSamplesByProjectAccession(String accession, List<? extends SampleProvider> samples) {
-//        MongoPrideExperimentalDesign existingExp = prideMongoExperimentalDesign.findByProjectAccession(accession);
-//        if(existingExp == null)
-//            existingExp = MongoPrideExperimentalDesign
-//                    .builder()
-////                    .samples(new ArrayList<>())
-//                    .sampleMSRunTuples(new ArrayList<>())
-////                    .accession(accession)
-//                    .build();
-////        existingExp.setSamples(samples.stream().map(GeneralTransfromer::transformSample).collect(Collectors.toList()));
-//        existingExp = prideMongoExperimentalDesign.save(existingExp);
-//        return existingExp.getSamples();
-//
-//    }
 
     public Collection<? extends ISampleMSRunRow> updateSamplesMRunProjectAccession(String accession, List<? extends ISampleMSRunRow> samples) {
         MongoPrideExperimentalDesign existingExp = prideMongoExperimentalDesign.findByProjectAccession(accession);

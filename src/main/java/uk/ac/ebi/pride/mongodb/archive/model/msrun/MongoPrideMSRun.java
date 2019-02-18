@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.model.msrun;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import org.bson.types.ObjectId;
@@ -36,6 +37,7 @@ import java.util.stream.Collectors;
  */
 
 @Data
+@Builder
 @Document(collection = PrideArchiveField.PRIDE_MSRUN_COLLECTION_NAME)
 @TypeAlias(PrideArchiveField.MONGO_MSRUN_DOCUMENT_ALIAS)
 public class MongoPrideMSRun implements MsRunProvider, PrideArchiveField{
@@ -98,12 +100,28 @@ public class MongoPrideMSRun implements MsRunProvider, PrideArchiveField{
         fileSizeBytes = prideFile.getFileSizeBytes();
     }
 
-    public MongoPrideMSRun(ObjectId id, Set<String> projectAccessions, Set<String> analysisAccessions, String accession, String fileName, Set<MongoCvParam> fileProperties, Set<MongoCvParam> instrumentProperties, Set<MongoCvParam> msData, Set<MongoCvParam> scanSettings, List<MongoCvParam> additionalAttributes, Set<IdSetting> idSettings) {
+    /**
+     * Full constructor of the {@link MongoPrideMSRun}
+     * @param id {@link ObjectId} for mongo
+     * @param projectAccessions Project accessions
+     * @param analysisAccessions Analysis Accessions
+     * @param accession Accession of the MSRun
+     * @param fileName file name
+     * @param fileSizeBytes File size in bytes
+     * @param fileProperties file properties
+     * @param instrumentProperties instrument properties
+     * @param msData MS Data
+     * @param scanSettings Scan properties
+     * @param additionalAttributes additional properties
+     * @param idSettings idnetification Settings
+     */
+    public MongoPrideMSRun(ObjectId id, Set<String> projectAccessions, Set<String> analysisAccessions, String accession, String fileName, long fileSizeBytes, Set<MongoCvParam> fileProperties, Set<MongoCvParam> instrumentProperties, Set<MongoCvParam> msData, Set<MongoCvParam> scanSettings, List<MongoCvParam> additionalAttributes, Set<IdSetting> idSettings) {
         this.id = id;
         this.projectAccessions = projectAccessions;
         this.analysisAccessions = analysisAccessions;
         this.accession = accession;
         this.fileName = fileName;
+        this.fileSizeBytes = fileSizeBytes;
         this.fileProperties = fileProperties;
         this.instrumentProperties = instrumentProperties;
         this.msData = msData;

@@ -96,7 +96,7 @@ public class MongoISampleMSRunRow implements ISampleMSRunRow {
     }
 
     @Override
-    public Comparable getMSRunAccession() {
+    public String getMSRunAccession() {
         return msRunAccession;
     }
 

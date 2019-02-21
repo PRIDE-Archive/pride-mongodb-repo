@@ -174,4 +174,14 @@ public interface PrideArchiveField {
     String PRIDE_ASSAY_COLLECTION_NAME = "pride_assays";
     String ASSAY_FILE_ACCESSIONS = "fileAccessions";
 
+    /** Alias Protein Table **/
+    String PRIDE_PROTEIN_COLLECTION_NAME = "archive_protein_collection";
+    String PROTEIN_SEQUENCE = "ProteinSequence";
+    String UNIPROT_MAPPED_PROTEIN_ACCESSION = "UniprotMappedProteinAccession";
+    String ENSEMBL_MAPPED_PROTEIN_ACCESSION = "EnsemblMappedProteinAccession";
+    String PROTEIN_GROUP_MEMBERS = "ProteinGroupMembers";
+    String PROTEIN_DESCRIPTION = "ProteinDescription";
+    String PROTEIN_MODIFICATIONS = "ProteinPTMs";
+    String PROTEIN_DECOY = "DecoyProtein";
+
 }

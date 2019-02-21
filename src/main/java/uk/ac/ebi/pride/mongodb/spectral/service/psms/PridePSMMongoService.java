@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.archive.service.psms;
+package uk.ac.ebi.pride.mongodb.spectral.service.psms;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
@@ -10,9 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.model.psms.PrideMongoPSM;
-import uk.ac.ebi.pride.mongodb.archive.repo.psms.PridePSMMongoRepository;
+import uk.ac.ebi.pride.mongodb.spectral.model.psms.PrideMongoPSM;
+import uk.ac.ebi.pride.mongodb.spectral.repo.psms.PridePSMMongoRepository;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
 import java.util.Collection;
@@ -23,7 +24,7 @@ import java.util.List;
  * @author ypriverol
  */
 
-@Component
+@Service
 public class PridePSMMongoService {
 
     final PridePSMMongoRepository psmMongoRepository;

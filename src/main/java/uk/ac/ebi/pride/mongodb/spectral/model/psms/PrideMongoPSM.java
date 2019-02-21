@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.archive.model.psms;
+package uk.ac.ebi.pride.mongodb.spectral.model.psms;
 
 import lombok.Builder;
 import lombok.Data;

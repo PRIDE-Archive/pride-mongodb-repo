@@ -15,8 +15,8 @@ import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvi
 import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.model.psms.PrideMongoPSM;
-import uk.ac.ebi.pride.mongodb.archive.service.psms.PridePSMMongoService;
+import uk.ac.ebi.pride.mongodb.spectral.model.psms.PrideMongoPSM;
+import uk.ac.ebi.pride.mongodb.spectral.service.psms.PridePSMMongoService;
 
 
 import java.util.*;

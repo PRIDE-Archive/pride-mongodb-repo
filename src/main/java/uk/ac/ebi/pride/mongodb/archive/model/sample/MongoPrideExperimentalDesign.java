@@ -74,7 +74,7 @@ public class MongoPrideExperimentalDesign implements ExperimentalDesignProvider 
 
     public void setSampleMSRunTuples(List<? extends ISampleMSRunRow> sampleMSRunTuples) {
         this.sampleMSRunTuples = sampleMSRunTuples.stream().map( x-> new MongoISampleMSRunRow(x.getSampleAccession(), x.getProjectAccession(),
-                x.getMSRunAccession(), x.getFractionIdentifierCvParam(),
+                ((ISampleMSRunRow) x).getMsRunAccession(), x.getFractionIdentifierCvParam(),
                 x.getSampleLabel(), x.getLabelReagent(), x.getSampleProperties(), x.getMSRunProperties()))
                 .collect(Collectors.toList());
     }
@@ -85,6 +85,6 @@ public class MongoPrideExperimentalDesign implements ExperimentalDesignProvider 
 
 
     public Collection<? extends ISampleMSRunRow> getSampleMSrun() {
-        return null;
+        return sampleMSRunTuples;
     }
 }

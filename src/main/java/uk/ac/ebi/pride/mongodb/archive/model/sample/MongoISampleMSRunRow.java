@@ -9,6 +9,7 @@ import uk.ac.ebi.pride.archive.dataprovider.sample.ISampleMSRunRow;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,11 +84,11 @@ public class MongoISampleMSRunRow implements ISampleMSRunRow {
             return new Tuple<MongoCvParam, MongoCvParam>(new MongoCvParam(key.getCvLabel(), key.getAccession(), key.getName(), key.getValue()), new MongoCvParam(value.getCvLabel(), value.getAccession(), value.getName(), value.getValue()));
         }).collect(Collectors.toList());
 
-        this.msRunProperties = msRunProperties.stream().map( x -> {
+        this.msRunProperties = (msRunProperties !=null)?msRunProperties.stream().map( x -> {
             CvParamProvider key = x.getKey();
             CvParamProvider value = x.getValue();
             return new Tuple<MongoCvParam, MongoCvParam>(new MongoCvParam(key.getCvLabel(), key.getAccession(), key.getName(), key.getValue()), new MongoCvParam(value.getCvLabel(), value.getAccession(), value.getName(), value.getValue()));
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toList()): Collections.emptyList();
 
     }
 
@@ -96,7 +97,7 @@ public class MongoISampleMSRunRow implements ISampleMSRunRow {
     }
 
     @Override
-    public String getMSRunAccession() {
+    public String getMsRunAccession() {
         return msRunAccession;
     }
 

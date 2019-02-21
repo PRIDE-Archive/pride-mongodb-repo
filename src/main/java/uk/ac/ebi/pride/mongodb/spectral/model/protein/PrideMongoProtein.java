@@ -13,6 +13,7 @@ import uk.ac.ebi.pride.archive.dataprovider.data.ptm.DefaultIdentifiedModificati
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
+import uk.ac.ebi.pride.utilities.util.Tuple;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -70,6 +71,12 @@ public class PrideMongoProtein implements PrideArchiveField, ProteinDetailProvid
 
     @Field(PrideArchiveField.PROTEIN_MODIFICATIONS)
     private List<IdentifiedModificationProvider> ptms;
+
+    @Field(PrideArchiveField.BEST_SEARCH_ENGINE)
+    private CvParamProvider bestSearchEngineScore;
+
+    @Field(PrideArchiveField.MSRUN_PROPERTIES)
+    private List<Tuple<CvParamProvider, List<CvParamProvider>>> msRunProperties;
 
     @Field(PrideArchiveField.PROTEIN_DECOY)
     private boolean decoy;

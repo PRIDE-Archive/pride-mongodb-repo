@@ -76,4 +76,12 @@ public class PrideProteinMongoService {
         return proteinMongoRepository.filterByAttributes(filters, page);
 
     }
+
+    /**
+     * Find all {@link PrideMongoProtein}. This method shouldn't be executed because it returns all the data proteins (can be millions)
+     * @return List of {@link PrideMongoProtein}
+     */
+    public List<PrideMongoProtein> findAll() {
+        return proteinMongoRepository.findAll();
+    }
 }

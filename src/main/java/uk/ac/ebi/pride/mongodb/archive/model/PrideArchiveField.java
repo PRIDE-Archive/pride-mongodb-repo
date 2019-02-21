@@ -183,5 +183,7 @@ public interface PrideArchiveField {
     String PROTEIN_DESCRIPTION = "ProteinDescription";
     String PROTEIN_MODIFICATIONS = "ProteinPTMs";
     String PROTEIN_DECOY = "DecoyProtein";
+    String BEST_SEARCH_ENGINE = "BestSearchEngineScore";
+    String MSRUN_PROPERTIES = "MSRunProperties";
 
 }

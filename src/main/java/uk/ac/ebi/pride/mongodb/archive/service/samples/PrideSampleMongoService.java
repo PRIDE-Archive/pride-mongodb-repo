@@ -80,6 +80,7 @@ public class PrideSampleMongoService {
             existingExp.setSampleMSRunTuples(samples);
         }
         existingExp.setSampleMSRunTuples(samples.stream().map(GeneralTransfromer::transformSampleMsRun).collect(Collectors.toList()));
+        prideMongoExperimentalDesign.save(existingExp);
         return existingExp.getSampleMSrun();
     }
 }

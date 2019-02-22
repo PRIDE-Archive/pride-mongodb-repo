@@ -18,7 +18,7 @@ public class GeneralTransfromer {
 
     public static MongoISampleMSRunRow transformSampleMsRun(ISampleMSRunRow sampleMSRunRow) {
         if(sampleMSRunRow != null){
-            return new MongoISampleMSRunRow(sampleMSRunRow.getSampleAccession(), sampleMSRunRow.getProjectAccession(), sampleMSRunRow.getMsRunAccession(), sampleMSRunRow.getFractionIdentifierCvParam(), sampleMSRunRow.getSampleLabel(), sampleMSRunRow.getLabelReagent(), sampleMSRunRow.getSampleProperties(), sampleMSRunRow.getMSRunProperties());
+            return new MongoISampleMSRunRow(sampleMSRunRow.getSampleAccession(), sampleMSRunRow.getProjectAccession(), sampleMSRunRow.getMsRunAccession(), sampleMSRunRow.getFractionIdentifierCvParam(), sampleMSRunRow.getSampleLabel(), sampleMSRunRow.getLabelReagent(), sampleMSRunRow.getSampleProperties(), sampleMSRunRow.getMsRunProperties());
         }
         return null;
 

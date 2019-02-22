@@ -68,14 +68,17 @@ public class MongoISampleMSRunRow implements ISampleMSRunRow {
      */
     List<Tuple<MongoCvParam, MongoCvParam>> msRunProperties;
 
+    public MongoISampleMSRunRow() {
+    }
+
     public MongoISampleMSRunRow(Comparable sampleAccession, Comparable projectAccession, Comparable msRunAccession,
-                                CvParamProvider fractionIdentifier, CvParamProvider sampleLabel, CvParamProvider labelReagent,
+                                CvParamProvider fractionAccession, CvParamProvider sampleLabel, CvParamProvider labelReagent,
                                 Collection<? extends ITuple<? extends CvParamProvider, ? extends CvParamProvider>> sampleProperties,
                                 Collection<? extends ITuple<? extends CvParamProvider, ? extends CvParamProvider>> msRunProperties) {
         this.sampleAccession = sampleAccession.toString();
         this.projectAccession = projectAccession.toString();
         this.msRunAccession = msRunAccession.toString();
-        this.fractionAccession = fractionIdentifier;
+        this.fractionAccession = fractionAccession;
         this.sampleLabel = sampleLabel;
         this.sampleReagent = labelReagent;
         this.sampleProperties = sampleProperties.stream().map( x -> {
@@ -132,7 +135,7 @@ public class MongoISampleMSRunRow implements ISampleMSRunRow {
     }
 
     @Override
-    public Collection<? extends ITuple<? extends CvParamProvider, ? extends CvParamProvider>> getMSRunProperties() {
+    public Collection<? extends ITuple<? extends CvParamProvider, ? extends CvParamProvider>> getMsRunProperties() {
         return msRunProperties;
     }
 

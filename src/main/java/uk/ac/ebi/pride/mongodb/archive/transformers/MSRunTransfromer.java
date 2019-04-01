@@ -2,11 +2,13 @@ package uk.ac.ebi.pride.mongodb.archive.transformers;
 
 import lombok.extern.slf4j.Slf4j;
 import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.idsettings.IdSetting;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.utilities.obo.OBOMapper;
+import uk.ac.ebi.pride.utilities.ols.web.service.cache.OntologyCacheService;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,12 +27,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MSRunTransfromer {
 
-    public static MongoPrideMSRun transformMetadata(MongoPrideMSRun msRunProvider, MsRunProvider metadata, OBOMapper oboMapper){
+    public static MongoPrideMSRun transformMetadata(MongoPrideMSRun msRunProvider, MsRunProvider metadata, OntologyCacheService ontologyCacheService){
         if(metadata != null){
             if(metadata.getInstrumentProperties() != null){
                 Set<MongoCvParam> mongoCvParams = metadata.getInstrumentProperties()
                         .stream()
-                        .filter(x -> oboMapper.getTermByAccession(x.getAccession()) != null)
+                        .filter(x -> ontologyCacheService.isTermExisting(x.getAccession(),x.getCvLabel()))
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toSet());
                 if(mongoCvParams.isEmpty())
@@ -40,7 +42,7 @@ public class MSRunTransfromer {
             if(metadata.getFileProperties() != null){
                 Set<MongoCvParam> mongoCvParams = metadata.getFileProperties()
                         .stream()
-                        .filter(x -> oboMapper.getTermByAccession(x.getAccession()) != null)
+                        .filter(x -> ontologyCacheService.isTermExisting(x.getAccession(),x.getCvLabel()))
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toSet());
                 if(mongoCvParams.isEmpty())
@@ -50,7 +52,7 @@ public class MSRunTransfromer {
             if(metadata.getMsData() != null){
                 Set<MongoCvParam> mongoCvParams = metadata.getMsData()
                         .stream()
-                        .filter(x -> oboMapper.getTermByAccession(x.getAccession()) != null)
+                        .filter(x -> ontologyCacheService.isTermExisting(x.getAccession(),x.getCvLabel()))
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toSet());
                 if(mongoCvParams.isEmpty())
@@ -60,7 +62,7 @@ public class MSRunTransfromer {
             if(metadata.getScanSettings() != null){
                 Set<MongoCvParam> mongoCvParams = metadata.getScanSettings()
                         .stream()
-                        .filter(x -> oboMapper.getTermByAccession(x.getAccession()) != null)
+                        .filter(x -> ontologyCacheService.isTermExisting(x.getAccession(),x.getCvLabel()))
                         .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toSet());
                 msRunProvider.addScanSettings(mongoCvParams);

@@ -12,6 +12,7 @@ import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.repo.msruns.PrideMSRunMongoRepository;
 import uk.ac.ebi.pride.mongodb.archive.transformers.MSRunTransfromer;
 import uk.ac.ebi.pride.utilities.obo.OBOMapper;
+import uk.ac.ebi.pride.utilities.ols.web.service.cache.OntologyCacheService;
 
 import java.net.URISyntaxException;
 import java.util.*;
@@ -36,6 +37,9 @@ public class PrideMsRunMongoService implements IMSRunService {
     PrideMSRunMongoRepository msRunRepository;
 
     OBOMapper psiOBOMapper;
+
+    @Autowired
+    OntologyCacheService ontologyCacheService;
 
     @Autowired
     private MongoOperations mongo;
@@ -88,7 +92,7 @@ public class PrideMsRunMongoService implements IMSRunService {
         Optional<MongoPrideMSRun> msRunOptional = msRunRepository.findMsRunByAccession(accession);
 
         if(msRunOptional.isPresent()){
-            MongoPrideMSRun msRun = MSRunTransfromer.transformMetadata(msRunOptional.get(), msRunMetadata, psiOBOMapper);
+            MongoPrideMSRun msRun = MSRunTransfromer.transformMetadata(msRunOptional.get(), msRunMetadata, ontologyCacheService);
             msRun = msRunRepository.save(msRun);
             return Optional.of(msRun);
         }

@@ -14,6 +14,7 @@ import uk.ac.ebi.pride.data.exception.SubmissionFileException;
 import uk.ac.ebi.pride.data.io.SubmissionFileParser;
 import uk.ac.ebi.pride.data.model.DataFile;
 import uk.ac.ebi.pride.data.model.Submission;
+import uk.ac.ebi.pride.mongodb.archive.config.ArchiveOracleConfig;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideMongoLocalhostConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
@@ -40,7 +41,7 @@ import java.util.stream.Collectors;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {PrideMongoLocalhostConfig.class})
+@SpringBootTest(classes = {PrideMongoLocalhostConfig.class, ArchiveOracleConfig.class})
 public class PrideLocalhostProjectServiceTest {
 
     @Autowired

@@ -17,10 +17,10 @@ import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
+import uk.ac.ebi.pride.utilities.term.CvTermReference;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import javax.swing.text.html.Option;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -54,48 +54,107 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
     Set<String> analysisAccessions;
 
     /** The analysis accessions are related with the following File **/
-    @Indexed(name = ASSAY_FILE_ACCESSIONS)
-    List<String> fileAccessions;
-
-    /** Accession generated for each File **/
-    @Indexed(name = ACCESSION, unique = true)
-    @Getter(AccessLevel.NONE)
+    @Indexed(name = ASSAY_ACCESSION, unique = true)
     String accession;
 
+    @Indexed(name = ASSAY_FILE_NAME)
+    String fileAccession;
+
     /** Accession generated for each File **/
-    @Field(value = PROJECT_TILE)
+    @Field(value = ASSAY_TITLE)
     @Getter(AccessLevel.NONE)
     String title;
 
     /** Accession generated for each File **/
-    @Indexed(name = ASSAY, unique = true)
+    @Indexed(name = ASSAY)
     @Getter(AccessLevel.NONE)
     AssayType assayType;
 
+    @Field(value = ASSAY_DESCRIPTION)
+    String assayDescription;
 
-    @Field(value = ADDITIONAL_ATTRIBUTES)
-    List<MongoCvParam> additionalProperties;
+    @Field(value = ASSAY_DATA_ANALYSIS_SOFTWARE)
+    Set<MongoCvParam> dataAnalysisSoftwares;
 
-    @Field(value = SAMPLE_ATTRIBUTES_NAMES)
-    List<Tuple<MongoCvParam, MongoCvParam>> sampleProperties;
+    @Field(value = ASSAY_DATA_ANALYSIS_DATABASE)
+    MongoCvParam dataAnalysisDatabase;
 
+    @Field(value = ASSAY_DATA_ANALYSIS_RESULTS)
+    List<MongoCvParam> summaryResults;
+
+    @Field(value = ASSAY_DATA_ANALYSIS_PROTOCOL)
+    List<MongoCvParam> dataAnalysisProperties;
+
+    @Field(value = ASSAY_DATA_ANALYSIS_PTMS)
+    List<Tuple<MongoCvParam, Integer>> ptmsResults;
 
     @Override
-    public Collection<? extends ITuple<? extends CvParamProvider, ? extends CvParamProvider>> getSampleProperties() {
-        if(additionalProperties != null){
-            return sampleProperties.stream().map( x-> new Tuple<>((CvParamProvider) x.getKey(), (CvParamProvider) x.getValue())).collect(Collectors.toList());
-        }
-        return null;
-    }
-
-    @Override
-    public List<MongoCvParam> getAdditionalProperties() {
-        return additionalProperties;
+    public Collection<MongoCvParam> getAdditionalProperties() {
+        return dataAnalysisProperties;
     }
 
     @Override
     public AssayType getAssayType() {
         return assayType;
+    }
+
+    /**
+     * This method allows to retrieve the number of identified peptides in the Assay.
+     * @return Number of Identified Peptides
+     */
+    public Optional<Integer> getNumberIdentifiedPeptides(){
+        return getSummaryResultProperty(CvTermReference.PRIDE_NUMBER_ID_PEPTIDES.getAccession());
+    }
+
+    /**
+     * This method allows to retrieve the number of identified proteins in the Assay
+     * @return Number of Identified Proteins
+     */
+    public Optional<Integer> getNumberIdentifiedProteins(){
+        return getSummaryResultProperty(CvTermReference.PRIDE_NUMBER_ID_PROTEINS.getAccession());
+    }
+
+    /**
+     * This method allows to retrieve the number of identified modified peptides
+     * @return Number of Modified peptides
+     */
+    public Optional<Integer> getNumberModifiedPeptides(){
+        return getSummaryResultProperty(CvTermReference.PRIDE_NUMBER_MODIFIED_PEPTIDES.getAccession());
+    }
+
+    /**
+     * This method allows to retrieve the number of PSMs
+     * @return Number of PMSs
+     */
+    public Optional<Integer> getNumberPSMs(){
+        return getSummaryResultProperty(CvTermReference.PRIDE_NUMBER_ID_PSMS.getAccession());
+    }
+
+    private Optional<Integer> getSummaryResultProperty( String propertyAccession){
+        if(summaryResults != null ){
+            Optional<MongoCvParam> numberPeptides = summaryResults.stream()
+                    .filter(x -> x.getAccession().equalsIgnoreCase(propertyAccession))
+                    .findFirst();
+            if(numberPeptides.isPresent()){
+                return Optional.of(Integer.parseInt(numberPeptides.get().getValue()));
+            }
+        }
+        return Optional.empty();
+    }
+    /**
+     * Return the list of software that has been used for the analysis.
+     * @return
+     */
+    public Optional<? extends Collection<? extends CvParamProvider>> getAnalyzeSoftware(){
+        if(dataAnalysisSoftwares != null && dataAnalysisSoftwares.size()>0)
+            return Optional.of(dataAnalysisSoftwares);
+        return Optional.empty();
+    }
+
+    public Optional<? extends Collection<? extends Tuple<? extends CvParamProvider, Integer>>> getPTMSummaryResults(){
+        if(ptmsResults != null && ptmsResults.size() > 0)
+            return Optional.of(ptmsResults);
+        return Optional.empty();
     }
 
 }

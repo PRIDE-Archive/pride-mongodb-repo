@@ -13,7 +13,7 @@ public interface PrideArchiveField {
     String ACCESSION = "accession";
 
     /** Assay **/
-    String ASSAY = "assay";
+    String ASSAY = "assayType";
 
     /** Project Accession **/
     String PX_ACCESSION = "pxAccession";
@@ -172,7 +172,15 @@ public interface PrideArchiveField {
 
     /** ASSAY Properties **/
     String PRIDE_ASSAY_COLLECTION_NAME = "pride_assays";
-    String ASSAY_FILE_ACCESSIONS = "fileAccessions";
+    String ASSAY_ACCESSION = "accession";
+    String ASSAY_FILE_NAME = "fileName";
+    String ASSAY_TITLE = "assayTitle";
+    String ASSAY_DESCRIPTION = "assayDescription";
+    String ASSAY_DATA_ANALYSIS_SOFTWARE = "dataAnalysisSoftwares";
+    String ASSAY_DATA_ANALYSIS_DATABASE = "dataAnalysisDatabase";
+    String ASSAY_DATA_ANALYSIS_RESULTS = "summaryResults";
+    String ASSAY_DATA_ANALYSIS_PROTOCOL = "dataAnalysisProperties";
+    String ASSAY_DATA_ANALYSIS_PTMS = "ptmsResults";
 
     /** Alias Protein Table **/
     String PRIDE_PROTEIN_COLLECTION_NAME = "archive_protein_collection";

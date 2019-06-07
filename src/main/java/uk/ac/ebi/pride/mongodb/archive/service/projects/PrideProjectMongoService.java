@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
+import uk.ac.ebi.pride.mongodb.archive.model.assay.MongoPrideAssay;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
+import uk.ac.ebi.pride.mongodb.archive.repo.assay.PrideAssayMongoRepository;
 import uk.ac.ebi.pride.mongodb.archive.repo.projects.PrideProjectMongoRepository;
 import uk.ac.ebi.pride.utilities.util.Triple;
 
@@ -26,10 +28,12 @@ import java.util.stream.Stream;
 public class PrideProjectMongoService {
 
     final PrideProjectMongoRepository repository;
+    final PrideAssayMongoRepository assayMongoRepository;
 
     @Autowired
-    public PrideProjectMongoService(PrideProjectMongoRepository repository) {
+    public PrideProjectMongoService(PrideProjectMongoRepository repository, PrideAssayMongoRepository assayMongoRepository) {
         this.repository = repository;
+        this.assayMongoRepository = assayMongoRepository;
     }
 
     /**
@@ -124,5 +128,19 @@ public class PrideProjectMongoService {
         }
 
         return false;
+    }
+
+    public void saveAssays(List<MongoPrideAssay> mongoAssays) {
+        mongoAssays.stream().forEach(x -> {
+            Optional<MongoPrideAssay> currentAssay = assayMongoRepository.findPrideAssayByAccession(x.getAccession());
+            if(!currentAssay.isPresent())
+                assayMongoRepository.save(x);
+            else{
+//                assayMongoRepository.save(x);
+                log.info("The request assay is already in MongoDB, it will be updated -- " + x.getAccession());
+            }
+
+        });
+
     }
 }

@@ -23,7 +23,7 @@ import java.util.Optional;
 @Repository
 public interface PrideAssayMongoRepository extends MongoRepository<MongoPrideAssay, ObjectId>, PrideAssayMongoRepositoryCustom {
 
-    @Query("{'"+ PrideArchiveField.ACCESSION + "' : ?0}")
+    @Query("{'"+ PrideArchiveField.ASSAY_ACCESSION + "' : ?0}")
     Optional<MongoPrideAssay> findPrideAssayByAccession(String accession);
 
 

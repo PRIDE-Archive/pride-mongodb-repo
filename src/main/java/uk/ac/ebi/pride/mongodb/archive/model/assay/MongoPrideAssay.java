@@ -12,16 +12,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.assay.AssayProvider;
 import uk.ac.ebi.pride.archive.dataprovider.assay.AssayType;
-import uk.ac.ebi.pride.archive.dataprovider.common.ITuple;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.utilities.term.CvTermReference;
 
-import javax.swing.text.html.Option;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -58,7 +55,7 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
     String accession;
 
     @Indexed(name = ASSAY_FILE_NAME)
-    String fileAccession;
+    String fileName;
 
     /** Accession generated for each File **/
     @Field(value = ASSAY_TITLE)
@@ -87,6 +84,9 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
 
     @Field(value = ASSAY_DATA_ANALYSIS_PTMS)
     List<Tuple<MongoCvParam, Integer>> ptmsResults;
+
+    @Field(value = ASSAY_FILES)
+    List<MongoAssayFile> assayFiles;
 
     @Override
     public Collection<MongoCvParam> getAdditionalProperties() {
@@ -151,6 +151,10 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
         return Optional.empty();
     }
 
+    /**
+     * Get the PTM information from the Assay
+     * @return Get the files from the Assay.
+     */
     public Optional<? extends Collection<? extends Tuple<? extends CvParamProvider, Integer>>> getPTMSummaryResults(){
         if(ptmsResults != null && ptmsResults.size() > 0)
             return Optional.of(ptmsResults);

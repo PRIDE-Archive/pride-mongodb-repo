@@ -139,7 +139,6 @@ public class PrideProjectMongoService {
                 assayMongoRepository.save(updateAssay(currentAssay.get(), x));
                 log.info("The request assay is already in MongoDB, it will be updated -- " + x.getAccession());
             }
-
         });
 
     }

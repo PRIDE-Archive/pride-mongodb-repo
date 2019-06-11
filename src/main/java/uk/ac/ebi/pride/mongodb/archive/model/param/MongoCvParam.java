@@ -61,6 +61,10 @@ public class MongoCvParam implements CvParamProvider {
         this.value = cv.getValue();
     }
 
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     @Override
     public String getCvLabel() {
         return cvLabel;

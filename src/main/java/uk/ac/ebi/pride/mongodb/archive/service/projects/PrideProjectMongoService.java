@@ -136,7 +136,7 @@ public class PrideProjectMongoService {
             if(!currentAssay.isPresent())
                 assayMongoRepository.save(x);
             else{
-                assayMongoRepository.save(updateAssay(currentAssay.get(), x));
+                updateAssay(currentAssay.get(), x);
                 log.info("The request assay is already in MongoDB, it will be updated -- " + x.getAccession());
             }
         });
@@ -145,6 +145,21 @@ public class PrideProjectMongoService {
 
     public MongoPrideAssay updateAssay(MongoPrideAssay currentAssay, MongoPrideAssay newAssay){
         newAssay.setId(currentAssay.getId());
+        assayMongoRepository.save(newAssay);
         return newAssay;
+    }
+
+    public MongoPrideAssay updateAssay(MongoPrideAssay newAssay){
+        Optional<MongoPrideAssay> currentAssay = assayMongoRepository.findPrideAssayByAccession(newAssay.getAccession());
+        if(currentAssay.isPresent()){
+            updateAssay(currentAssay.get(), newAssay);
+            log.info("The request assay is already in MongoDB, it will be updated -- " + newAssay.getAccession());
+        }
+        return newAssay;
+    }
+
+
+    public Optional<MongoPrideAssay> findAssayByAccession(String assayAccession){
+        return assayMongoRepository.findPrideAssayByAccession(assayAccession);
     }
 }

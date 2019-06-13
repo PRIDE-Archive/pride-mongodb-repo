@@ -90,8 +90,8 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
     private Map<CvParamProvider, List<CvParamProvider>> searchEngineScores;
 
     @Override
-    public Collection<? extends IdentifiedModificationProvider> getPTMs() {
-        return ptmList;
+    public Collection<? extends IdentifiedModificationProvider> getModifications() {
+        return null;
     }
 
     @Override
@@ -109,6 +109,21 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
             this.ptmList.forEach(x -> sites[0] += x.getPositionMap().size());
             return sites[0];
         }
+        return 0;
+    }
+
+    @Override
+    public double getTheoreticalMass() {
+        return 0;
+    }
+
+    @Override
+    public int getMissedCleavages() {
+        return 0;
+    }
+
+    @Override
+    public double getDeltaMass() {
         return 0;
     }
 

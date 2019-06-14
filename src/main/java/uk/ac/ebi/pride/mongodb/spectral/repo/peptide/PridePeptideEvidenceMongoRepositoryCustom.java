@@ -1,10 +1,10 @@
-package uk.ac.ebi.pride.mongodb.spectral.repo.psms;
+package uk.ac.ebi.pride.mongodb.spectral.repo.peptide;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import uk.ac.ebi.pride.mongodb.spectral.model.psms.PrideMongoPSM;
+import uk.ac.ebi.pride.mongodb.spectral.model.peptide.PrideMongoPeptideEvidence;
 
 
 import java.util.Collection;
@@ -13,15 +13,15 @@ import java.util.List;
 /**
  * @author ypriverol
  */
-public interface PridePSMMongoRepositoryCustom {
+public interface PridePeptideEvidenceMongoRepositoryCustom {
 
     /**
      * Filter By Attributes
      * @param filters Attributes in {@link Triple} structure
      * @param page Pageable
-     * @return List of {@link PrideMongoPSM}
+     * @return List of {@link PrideMongoPeptideEvidence}
      */
-    Page<PrideMongoPSM> filterByAttributes(List<Triple<String, String, String>> filters, Pageable page) ;
+    Page<PrideMongoPeptideEvidence> filterByAttributes(List<Triple<String, String, String>> filters, Pageable page) ;
 
     /**
      * Find by A list of Accessions
@@ -29,5 +29,5 @@ public interface PridePSMMongoRepositoryCustom {
      * @param sort Sort to order the output
      * @return Page
      */
-    List<PrideMongoPSM> findByIdAccessions(Collection<String> accessions, Sort sort);
+    List<PrideMongoPeptideEvidence> findByIdAccessions(Collection<String> accessions, Sort sort);
 }

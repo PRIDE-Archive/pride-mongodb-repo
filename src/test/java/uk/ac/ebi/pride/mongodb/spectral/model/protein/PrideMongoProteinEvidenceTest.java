@@ -6,15 +6,13 @@ import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 
 import java.util.Collections;
 
-import static org.junit.Assert.*;
-
-public class PrideMongoProteinTest {
+public class PrideMongoProteinEvidenceTest {
 
     @Test
     public void builder() {
 
-        PrideMongoProtein protein = PrideMongoProtein.builder()
-                .accessionInReportedFile("sp|Q672I1|POLG_SVSAP")
+        PrideMongoProteinEvidence protein = PrideMongoProteinEvidence.builder()
+                .accession("sp|Q672I1|POLG_SVSAP")
                 .projectAccession("PXD000433")
                 .proteinSequence("MVSKPFKPIVLNATFEWQVFKRCYLRVAPREAFCENLSELHHYFARRVNAWLKHATRTLP\n" +
                         "DGYTFVEEGLLDMFGTKAPDSVQEGTLFRELFGVDQTEQFPLSLADLAKLQGELVDATRT\n" +
@@ -55,8 +53,8 @@ public class PrideMongoProteinTest {
                         "NYTFTSTGANTLVLWQERMLSYDGHQAILYSSQLERTAEYFQNDIVNIPENSMAVFNVET\n" +
                         "NSASFQIGIRPDGYMVTGGSIGINVPLEPETRFQYVGILPLSAALSGPSGNMGRARRVFQ")
                 .proteinDescription("Genome polyprotein OS=Sapporo virus (isolate GI/Human/Germany/pJG-Sap01) OX=291175 PE=3 SV=1")
-                .proteinGroups(Collections.singleton("sp|Q672I1|POLG_SVSAP"))
-                .decoy(true)
+                .proteinGroupMembers(Collections.singleton("sp|Q672I1|POLG_SVSAP"))
+                .isDecoy(true)
                 .build();
 
         protein.addAttribute(new DefaultCvParam("MS", "MS:1001013", "database name", "phytophtora_infestans_rnd"));

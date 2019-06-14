@@ -11,7 +11,7 @@ import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.jmztab.model.MZTabFile;
 import uk.ac.ebi.pride.jmztab.utils.MZTabFileParser;
-import uk.ac.ebi.pride.mongodb.spectral.model.psms.PrideMongoPSM;
+import uk.ac.ebi.pride.mongodb.spectral.model.peptide.PrideMongoPeptideEvidence;
 
 import java.io.File;
 import java.util.*;
@@ -53,16 +53,16 @@ public class MongoPsmMzTabBuilderTest {
   /** Tests reading PSMs from mzTab files. */
   @Test
   public void testReadPsmsFromMzTabFilesDirectory() {
-    Map<String, List<PrideMongoPSM>> psms = new HashMap<>();
+    Map<String, List<PrideMongoPeptideEvidence>> psms = new HashMap<>();
     psms.put(PROJECT_1_ANALYSIS_1, MongoPsmMzTabBuilder.readPsmsFromMzTabFile(PROJECT_1_ACCESSION, PROJECT_1_ANALYSIS_1, mzTabFileP1A1));
     psms.put(PROJECT_1_ANALYSIS_2, MongoPsmMzTabBuilder.readPsmsFromMzTabFile(PROJECT_1_ACCESSION, PROJECT_1_ANALYSIS_2, mzTabFileP1A2));
     psms.put(PROJECT_1_ANALYSIS_3,  MongoPsmMzTabBuilder.readPsmsFromMzTabFile(PROJECT_1_ACCESSION, PROJECT_1_ANALYSIS_3, mzTabFileP1A3));
     Assert.assertEquals(psms.size(), NUM_ASSAYS);
-    for (Map.Entry<String, List<PrideMongoPSM>> stringLinkedListEntry : psms.entrySet()) {
-      for (PrideMongoPSM psm : stringLinkedListEntry.getValue()) {
-        logger.debug(psm.getSpectrumAccession());
+    for (Map.Entry<String, List<PrideMongoPeptideEvidence>> stringLinkedListEntry : psms.entrySet()) {
+      for (PrideMongoPeptideEvidence psm : stringLinkedListEntry.getValue()) {
+        logger.debug(psm.getPsmAccessions().toString());
         Assert.assertTrue(
-            psm.getSpectrumAccession()
+            psm.getPsmAccessions().toString()
                 .startsWith(PROJECT_1_ACCESSION + FILE_PRE + stringLinkedListEntry.getKey() + FILE_POST));
         logger.debug("PSM Database: " + psm.getDatabase());
         logger.debug("PSM Database version: " + psm.getDatabase().getVersion());
@@ -79,13 +79,13 @@ public class MongoPsmMzTabBuilderTest {
   /** Tests reading PSMs from ab mztab file, including extra comparison checks. */
   @Test
   public void testReadPsmFromMzTabFileAndCompare() {
-    Map<String, List<PrideMongoPSM>> psms = new HashMap<>();
+    Map<String, List<PrideMongoPeptideEvidence>> psms = new HashMap<>();
     psms.put(PROJECT_2_ANALYSIS_1, MongoPsmMzTabBuilder.readPsmsFromMzTabFile(PROJECT_2_ACCESSION, PROJECT_2_ANALYSIS_1, mzTabFileP2A1));
     Assert.assertEquals(1, psms.size());
-    PrideMongoPSM firstPsm = psms.entrySet().iterator().next().getValue().get(0);
-    Assert.assertEquals("175", firstPsm.getAccessionInReportedFile());
+    PrideMongoPeptideEvidence firstPsm = psms.entrySet().iterator().next().getValue().get(0);
+    Assert.assertEquals("175", firstPsm.getAccession());
     Assert.assertEquals(
-        "TST000121;result_1_sample_1_dat.pride.xml;spectrum=175", firstPsm.getSpectrumAccession());
+        "TST000121;result_1_sample_1_dat.pride.xml;spectrum=175", firstPsm.getPsmAccessions());
     Assert.assertEquals("TST000121", firstPsm.getProjectAccession());
 
 

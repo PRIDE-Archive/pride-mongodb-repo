@@ -10,8 +10,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.repository.support.PageableExecutionUtils;
-import uk.ac.ebi.pride.mongodb.spectral.model.protein.PrideMongoProtein;
-import uk.ac.ebi.pride.mongodb.spectral.model.psms.PrideMongoPSM;
+import uk.ac.ebi.pride.mongodb.spectral.model.protein.PrideMongoProteinEvidence;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
 import java.util.Collection;
@@ -26,20 +25,20 @@ public class PrideProteinMongoRepositoryImpl implements PrideProteinMongoReposit
     MongoOperations mongoOperations;
 
     @Override
-    public Page<PrideMongoProtein> filterByAttributes(List<Triple<String, String, String>> filters, Pageable page) {
+    public Page<PrideMongoProteinEvidence> filterByAttributes(List<Triple<String, String, String>> filters, Pageable page) {
         Criteria queryCriteria = PrideMongoUtils.buildQuery(filters);
         Query queryMongo = new Query().addCriteria(queryCriteria);
         queryMongo.with(page);
-        List<PrideMongoProtein> files =  mongoTemplate.find(queryMongo, PrideMongoProtein.class);
-        return PageableExecutionUtils.getPage(files, page, () -> mongoOperations.count(queryMongo, PrideMongoProtein.class));
+        List<PrideMongoProteinEvidence> files =  mongoTemplate.find(queryMongo, PrideMongoProteinEvidence.class);
+        return PageableExecutionUtils.getPage(files, page, () -> mongoOperations.count(queryMongo, PrideMongoProteinEvidence.class));
     }
 
     @Override
-    public List<PrideMongoProtein> findByIdAccessions(Collection<String> accessions, Sort sort) {
+    public List<PrideMongoProteinEvidence> findByIdAccessions(Collection<String> accessions, Sort sort) {
         Criteria queryCriteria = PrideMongoUtils.builQueryByAccessions(accessions);
         Query queryMongo = new Query().addCriteria(queryCriteria);
         queryMongo.with(sort);
-        return mongoTemplate.find(queryMongo, PrideMongoProtein.class);
+        return mongoTemplate.find(queryMongo, PrideMongoProteinEvidence.class);
     }
 
 }

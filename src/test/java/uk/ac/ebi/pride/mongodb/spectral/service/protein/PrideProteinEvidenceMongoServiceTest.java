@@ -13,7 +13,7 @@ import uk.ac.ebi.pride.jmztab.model.MZTabFile;
 import uk.ac.ebi.pride.jmztab.utils.MZTabFileParser;
 import uk.ac.ebi.pride.mongodb.archive.service.mockito.MongoPsmMzTabBuilderTest;
 import uk.ac.ebi.pride.mongodb.spectral.config.PrideProjectFongoTestConfig;
-import uk.ac.ebi.pride.mongodb.spectral.model.protein.PrideMongoProtein;
+import uk.ac.ebi.pride.mongodb.spectral.model.protein.PrideMongoProteinEvidence;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,10 +23,10 @@ import java.util.Objects;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {PrideProjectFongoTestConfig.class})
-public class PrideProteinMongoServiceTest {
+public class PrideProteinEvidenceMongoServiceTest {
 
     @Autowired
-    PrideProteinMongoService mongoService;
+    PrideProteinEvidenceMongoService mongoService;
     private MZTabFile mzTabFileP1A1;
     private MZTabFile mzTabFileP1A2;
     private MZTabFile mzTabFileP1A3;
@@ -44,8 +44,8 @@ public class PrideProteinMongoServiceTest {
     @Test
     public void saveTest() {
 
-        PrideMongoProtein protein = PrideMongoProtein.builder()
-                .accessionInReportedFile("sp|Q672I1|POLG_SVSAP")
+        PrideMongoProteinEvidence protein = PrideMongoProteinEvidence.builder()
+                .accession("sp|Q672I1|POLG_SVSAP")
                 .projectAccession("PXD000433")
                 .proteinSequence("MVSKPFKPIVLNATFEWQVFKRCYLRVAPREAFCENLSELHHYFARRVNAWLKHATRTLP\n" +
                         "DGYTFVEEGLLDMFGTKAPDSVQEGTLFRELFGVDQTEQFPLSLADLAKLQGELVDATRT\n" +
@@ -86,8 +86,8 @@ public class PrideProteinMongoServiceTest {
                         "NYTFTSTGANTLVLWQERMLSYDGHQAILYSSQLERTAEYFQNDIVNIPENSMAVFNVET\n" +
                         "NSASFQIGIRPDGYMVTGGSIGINVPLEPETRFQYVGILPLSAALSGPSGNMGRARRVFQ")
                 .proteinDescription("Genome polyprotein OS=Sapporo virus (isolate GI/Human/Germany/pJG-Sap01) OX=291175 PE=3 SV=1")
-                .proteinGroups(Collections.singleton("sp|Q672I1|POLG_SVSAP"))
-                .decoy(true)
+                .proteinGroupMembers(Collections.singleton("sp|Q672I1|POLG_SVSAP"))
+                .isDecoy(true)
                 .build();
 
         protein.addAttribute(new DefaultCvParam("MS", "MS:1001013", "database name", "phytophtora_infestans_rnd"));
@@ -99,7 +99,7 @@ public class PrideProteinMongoServiceTest {
         System.out.println(protein.toString());
 
         mongoService.save(protein);
-        mongoService.findAll().stream().forEach(PrideMongoProtein::toString);
+        mongoService.findAll().stream().forEach(PrideMongoProteinEvidence::toString);
 
         Assert.assertTrue(mongoService.findAll().size() == 1);
 
@@ -109,8 +109,8 @@ public class PrideProteinMongoServiceTest {
     @Test
     public void saveMzTabTest() {
 
-        PrideMongoProtein protein = PrideMongoProtein.builder()
-                .accessionInReportedFile("sp|Q672I1|POLG_SVSAP")
+        PrideMongoProteinEvidence protein = PrideMongoProteinEvidence.builder()
+                .accession("sp|Q672I1|POLG_SVSAP")
                 .projectAccession("PXD000433")
                 .proteinSequence("MVSKPFKPIVLNATFEWQVFKRCYLRVAPREAFCENLSELHHYFARRVNAWLKHATRTLP\n" +
                         "DGYTFVEEGLLDMFGTKAPDSVQEGTLFRELFGVDQTEQFPLSLADLAKLQGELVDATRT\n" +
@@ -151,8 +151,8 @@ public class PrideProteinMongoServiceTest {
                         "NYTFTSTGANTLVLWQERMLSYDGHQAILYSSQLERTAEYFQNDIVNIPENSMAVFNVET\n" +
                         "NSASFQIGIRPDGYMVTGGSIGINVPLEPETRFQYVGILPLSAALSGPSGNMGRARRVFQ")
                 .proteinDescription("Genome polyprotein OS=Sapporo virus (isolate GI/Human/Germany/pJG-Sap01) OX=291175 PE=3 SV=1")
-                .proteinGroups(Collections.singleton("sp|Q672I1|POLG_SVSAP"))
-                .decoy(true)
+                .proteinGroupMembers(Collections.singleton("sp|Q672I1|POLG_SVSAP"))
+                .isDecoy(true)
                 .build();
 
         protein.addAttribute(new DefaultCvParam("MS", "MS:1001013", "database name", "phytophtora_infestans_rnd"));
@@ -164,7 +164,7 @@ public class PrideProteinMongoServiceTest {
         System.out.println(protein.toString());
 
         mongoService.save(protein);
-        mongoService.findAll().stream().forEach(PrideMongoProtein::toString);
+        mongoService.findAll().stream().forEach(PrideMongoProteinEvidence::toString);
 
         Assert.assertTrue(mongoService.findAll().size() == 1);
 

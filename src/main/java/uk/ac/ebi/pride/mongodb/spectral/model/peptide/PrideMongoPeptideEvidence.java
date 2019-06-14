@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.spectral.model.psms;
+package uk.ac.ebi.pride.mongodb.spectral.model.peptide;
 
 import lombok.Builder;
 import lombok.Data;
@@ -33,9 +33,9 @@ import java.util.stream.Collectors;
 
 @Data
 @Builder
-@Document(collection = PrideArchiveField.PRIDE_PSM_COLLECTION_NAME)
-@CompoundIndexes({@CompoundIndex(name = "compound_psm_accession", def = "{'reportedFileID' : 1, 'reportedProteinAccession': 1, 'projectAccession':1}", unique = true)})
-public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider {
+@Document(collection = PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME)
+@CompoundIndexes({@CompoundIndex(name = "compound_peptide_accession", def = "{'reportedFileID' : 1'reportedProteinAccession': 1, 'projectAccession':1}", unique = true)})
+public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequenceProvider {
 
     /** Generated accession **/
     @Id
@@ -51,8 +51,8 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
     private String reportedFileID;
 
     /** Accession in Reported File **/
-    @Indexed(name = ACCESSION_IN_REPORTED_FILE)
-    private String accessionInReportedFile;
+    @Indexed(name = PROTEIN_ASSAY_ACCESSION)
+    private String assayAccession;
 
     /** External Project that contains the PSM **/
     @Indexed(name = EXTERNAL_PROJECT_ACCESSION)
@@ -61,10 +61,6 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
     /** Peptide Sequence **/
     @Indexed(name = PrideArchiveField.PEPTIDE_SEQUENCE)
     private String peptideSequence;
-
-    /** Spectrum Accession **/
-    @Field(value = PrideArchiveField.SPECTRUM_ACCESSION)
-    private String spectrumAccession;
 
     /** Protein Accession **/
     @Indexed(name = PrideArchiveField.REPORTED_PROTEIN_ACCESSION)
@@ -86,8 +82,11 @@ public class PrideMongoPSM implements PrideArchiveField, PeptideSequenceProvider
     @Indexed(name = PrideArchiveField.ADDITIONAL_ATTRIBUTES)
     private List<CvParamProvider> additionalAttributes;
 
-    @Indexed(name = PrideArchiveField.SEARCH_ENGINE_SCORES)
+    @Field(value = PrideArchiveField.SEARCH_ENGINE_SCORES)
     private Map<CvParamProvider, List<CvParamProvider>> searchEngineScores;
+
+    @Indexed(name = PSM_SPECTRUM_ACCESSIONS)
+    private List<String> psmAccessions;
 
     @Override
     public Collection<? extends IdentifiedModificationProvider> getModifications() {

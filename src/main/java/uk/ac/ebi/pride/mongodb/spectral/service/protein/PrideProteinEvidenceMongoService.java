@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
-import uk.ac.ebi.pride.mongodb.spectral.model.protein.PrideMongoProtein;
+import uk.ac.ebi.pride.mongodb.spectral.model.protein.PrideMongoProteinEvidence;
 import uk.ac.ebi.pride.mongodb.spectral.repo.protein.PrideProteinMongoRepository;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
@@ -22,7 +22,7 @@ import java.util.List;
  */
 
 @Service
-public class PrideProteinMongoService {
+public class PrideProteinEvidenceMongoService {
 
     final PrideProteinMongoRepository proteinMongoRepository;
 
@@ -30,10 +30,10 @@ public class PrideProteinMongoService {
     private MongoOperations mongo;
 
     /** Logger use to query and filter the data **/
-    private static final Logger LOGGER = LoggerFactory.getLogger(PrideProteinMongoService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PrideProteinEvidenceMongoService.class);
 
     @Autowired
-    public PrideProteinMongoService(PrideProteinMongoRepository proteinRepository) {
+    public PrideProteinEvidenceMongoService(PrideProteinMongoRepository proteinRepository) {
         this.proteinMongoRepository = proteinRepository;
     }
 
@@ -43,18 +43,18 @@ public class PrideProteinMongoService {
      * @param page Page to be retrirve
      * @return List of PSMs
      */
-    public Page<PrideMongoProtein> findProteinsByProjectAccession(String projectAccession, Pageable page){
+    public Page<PrideMongoProteinEvidence> findProteinsByProjectAccession(String projectAccession, Pageable page){
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("projectAccession=in=" + projectAccession);
-        Page<PrideMongoProtein> proteins =  proteinMongoRepository.filterByAttributes(filters, page);
+        Page<PrideMongoProteinEvidence> proteins =  proteinMongoRepository.filterByAttributes(filters, page);
         LOGGER.debug("The number of Proteins for the Project Accession -- " + projectAccession + " -- "+ proteins.getTotalElements());
         return proteins;
     }
 
     /**
      * Save an specific Protein in MongoDB
-     * @param protein {@link PrideMongoProtein}
+     * @param protein {@link PrideMongoProteinEvidence}
      */
-    public void save(PrideMongoProtein protein){
+    public void save(PrideMongoProteinEvidence protein){
         proteinMongoRepository.save(protein);
     }
 
@@ -69,19 +69,19 @@ public class PrideProteinMongoService {
      * Search Proteins by specific properties in the filter Query.
      * @param filterQuery Query properties
      * @param page Page to be retrieved
-     * @return Page containing the {@link PrideMongoProtein}.
+     * @return Page containing the {@link PrideMongoProteinEvidence}.
      */
-    public Page<PrideMongoProtein> searchProteins(String filterQuery, Pageable page) {
+    public Page<PrideMongoProteinEvidence> searchProteins(String filterQuery, Pageable page) {
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters(filterQuery);
         return proteinMongoRepository.filterByAttributes(filters, page);
 
     }
 
     /**
-     * Find all {@link PrideMongoProtein}. This method shouldn't be executed because it returns all the data proteins (can be millions)
-     * @return List of {@link PrideMongoProtein}
+     * Find all {@link PrideMongoProteinEvidence}. This method shouldn't be executed because it returns all the data proteins (can be millions)
+     * @return List of {@link PrideMongoProteinEvidence}
      */
-    public List<PrideMongoProtein> findAll() {
+    public List<PrideMongoProteinEvidence> findAll() {
         return proteinMongoRepository.findAll();
     }
 }

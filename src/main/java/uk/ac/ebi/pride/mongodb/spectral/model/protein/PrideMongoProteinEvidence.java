@@ -9,11 +9,9 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.data.protein.ProteinDetailProvider;
-import uk.ac.ebi.pride.archive.dataprovider.data.ptm.DefaultIdentifiedModification;
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.utilities.util.Tuple;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,7 +19,7 @@ import java.util.stream.Collectors;
 @Data
 @Builder
 @Document(collection = PrideArchiveField.PRIDE_PROTEIN_COLLECTION_NAME)
-public class PrideMongoProtein implements PrideArchiveField, ProteinDetailProvider {
+public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDetailProvider {
 
     /** Generated accession **/
     @Id
@@ -29,16 +27,16 @@ public class PrideMongoProtein implements PrideArchiveField, ProteinDetailProvid
     private ObjectId id;
 
     /** Accession Provided by PRIDE Pipelines **/
-    @Indexed(name = ACCESSION, unique = true)
+    @Indexed(name = ACCESSION)
     String accession;
 
     /** Reported File ID is the Identifier of the File mzTab in PRIDE **/
-    @Field(value = PrideArchiveField.REPORTED_FILE_ID)
-    private String reportedFileID;
+    @Field(value = PrideArchiveField.PROTEIN_REPORTED_ACCESSION)
+    private String reportedAccession;
 
     /** Accession in Reported File **/
-    @Indexed(name = ACCESSION_IN_REPORTED_FILE)
-    private String accessionInReportedFile;
+    @Indexed(name = PrideArchiveField.PROTEIN_ASSAY_ACCESSION)
+    private String assayAccession;
 
     /** External Project that contains the PSM **/
     @Indexed(name = EXTERNAL_PROJECT_ACCESSION)
@@ -59,7 +57,7 @@ public class PrideMongoProtein implements PrideArchiveField, ProteinDetailProvid
 
     /** Ensembl protein identifier mapper **/
     @Field(PrideArchiveField.PROTEIN_GROUP_MEMBERS)
-    private Set<String> proteinGroups;
+    private Set<String> proteinGroupMembers;
 
     /** Ensembl protein identifier mapper **/
     @Field(PrideArchiveField.PROTEIN_DESCRIPTION)
@@ -75,11 +73,8 @@ public class PrideMongoProtein implements PrideArchiveField, ProteinDetailProvid
     @Field(PrideArchiveField.BEST_SEARCH_ENGINE)
     private CvParamProvider bestSearchEngineScore;
 
-    @Field(PrideArchiveField.MSRUN_PROPERTIES)
-    private List<Tuple<CvParamProvider, List<CvParamProvider>>> msRunProperties;
-
     @Field(PrideArchiveField.PROTEIN_DECOY)
-    private boolean decoy;
+    private boolean isDecoy;
 
     @Override
     public String getUniprotMapping() {
@@ -93,7 +88,7 @@ public class PrideMongoProtein implements PrideArchiveField, ProteinDetailProvid
 
     @Override
     public Set<String> getProteinGroupMembers() {
-        return proteinGroups;
+        return proteinGroupMembers;
     }
 
     @Override
@@ -108,7 +103,11 @@ public class PrideMongoProtein implements PrideArchiveField, ProteinDetailProvid
 
     @Override
     public String getAccession() {
-        return accessionInReportedFile;
+        return accession;
+    }
+
+    public String getAssayAccession() {
+        return assayAccession;
     }
 
     @Override
@@ -118,7 +117,7 @@ public class PrideMongoProtein implements PrideArchiveField, ProteinDetailProvid
 
     @Override
     public Comparable getId() {
-        return accessionInReportedFile;
+        return accession;
     }
 
     @Override
@@ -148,19 +147,21 @@ public class PrideMongoProtein implements PrideArchiveField, ProteinDetailProvid
 
     @Override
     public String toString() {
-        return "PrideMongoProtein{" +
+        return "PrideMongoProteinEvidence{" +
                 "id=" + id +
                 ", accession='" + accession + '\'' +
-                ", reportedFileID='" + reportedFileID + '\'' +
-                ", accessionInReportedFile='" + accessionInReportedFile + '\'' +
+                ", reportedAccession='" + reportedAccession + '\'' +
+                ", assayAccession='" + assayAccession + '\'' +
                 ", projectAccession='" + projectAccession + '\'' +
                 ", proteinSequence='" + proteinSequence + '\'' +
                 ", uniprotMappedProteinAccession='" + uniprotMappedProteinAccession + '\'' +
                 ", ensemblMappedProteinAccession='" + ensemblMappedProteinAccession + '\'' +
-                ", proteinGroups=" + proteinGroups +
+                ", proteinGroups=" + proteinGroupMembers +
                 ", proteinDescription='" + proteinDescription + '\'' +
                 ", additionalAttributes=" + additionalAttributes +
                 ", ptms=" + ptms +
+                ", bestSearchEngineScore=" + bestSearchEngineScore +
+                ", isDecoy=" + isDecoy +
                 '}';
     }
 }

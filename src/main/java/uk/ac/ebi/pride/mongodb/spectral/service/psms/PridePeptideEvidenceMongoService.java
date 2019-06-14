@@ -9,11 +9,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.spectral.model.psms.PrideMongoPSM;
-import uk.ac.ebi.pride.mongodb.spectral.repo.psms.PridePSMMongoRepository;
+import uk.ac.ebi.pride.mongodb.spectral.model.peptide.PrideMongoPeptideEvidence;
+import uk.ac.ebi.pride.mongodb.spectral.repo.peptide.PridePeptideEvidenceMongoRepository;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
 import java.util.Collection;
@@ -25,18 +24,18 @@ import java.util.List;
  */
 
 @Service
-public class PridePSMMongoService {
+public class PridePeptideEvidenceMongoService {
 
-    final PridePSMMongoRepository psmMongoRepository;
+    final PridePeptideEvidenceMongoRepository psmMongoRepository;
 
     @Autowired
     private MongoOperations mongo;
 
     /** Logger use to query and filter the data **/
-    private static final Logger LOGGER = LoggerFactory.getLogger(PridePSMMongoService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PridePeptideEvidenceMongoService.class);
 
     @Autowired
-    public PridePSMMongoService(PridePSMMongoRepository fileRepository) {
+    public PridePeptideEvidenceMongoService(PridePeptideEvidenceMongoRepository fileRepository) {
         this.psmMongoRepository = fileRepository;
     }
 
@@ -46,9 +45,9 @@ public class PridePSMMongoService {
      * @param page Page to be retrirve
      * @return List of PSMs
      */
-    public Page<PrideMongoPSM> findPSMsByProjectAccession(String projectAccession, Pageable page){
+    public Page<PrideMongoPeptideEvidence> findPSMsByProjectAccession(String projectAccession, Pageable page){
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("projectAccession=in=" + projectAccession);
-        Page<PrideMongoPSM> psms =  psmMongoRepository.filterByAttributes(filters, page);
+        Page<PrideMongoPeptideEvidence> psms =  psmMongoRepository.filterByAttributes(filters, page);
         LOGGER.debug("The number of PSMs for the Project Accession -- " + projectAccession + " -- "+ psms.getTotalElements());
         return psms;
     }
@@ -59,9 +58,9 @@ public class PridePSMMongoService {
      * @param page Page to be retrieve
      * @return List of PSMs
      */
-    public Page<PrideMongoPSM> findPSMsByAnalysisAccession(String analysisAccession, Pageable page){
+    public Page<PrideMongoPeptideEvidence> findPSMsByAnalysisAccession(String analysisAccession, Pageable page){
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("analysisAccession=in=" + analysisAccession);
-        Page<PrideMongoPSM> psms = psmMongoRepository.filterByAttributes(filters, page);
+        Page<PrideMongoPeptideEvidence> psms = psmMongoRepository.filterByAttributes(filters, page);
         LOGGER.debug("The number of PSMs for the Analysis Accession -- " + analysisAccession + " -- "+ psms.getTotalElements());
         return psms;
     }
@@ -72,7 +71,7 @@ public class PridePSMMongoService {
      * @param accession Accession
      * @return a PSM corresponding to the provided ID.
      */
-    public PrideMongoPSM findByAccession(String accession) {
+    public PrideMongoPeptideEvidence findByAccession(String accession) {
         return psmMongoRepository.findByAccession(accession).orElse(null);
     }
 
@@ -82,7 +81,7 @@ public class PridePSMMongoService {
      * @param accessions a collection of ID to search for
      * @return a list of PSMs corresponding to the provided IDs.
      */
-    public List<PrideMongoPSM> findByIdIn(Collection<String> accessions) {
+    public List<PrideMongoPeptideEvidence> findByIdIn(Collection<String> accessions) {
         return psmMongoRepository.findByIdAccessions(accessions, new Sort(Sort.Direction.DESC, PrideArchiveField.PEPTIDE_SEQUENCE));
     }
 
@@ -93,7 +92,7 @@ public class PridePSMMongoService {
      * @param sort how the result should be sorted
      * @return a list of PSMs corresponding to the provided IDs.
      */
-    public List<PrideMongoPSM> findByIdIn(Collection<String> ids, Sort sort) {
+    public List<PrideMongoPeptideEvidence> findByIdIn(Collection<String> ids, Sort sort) {
         return psmMongoRepository.findByIdAccessions(ids, sort);
     }
 
@@ -120,9 +119,9 @@ public class PridePSMMongoService {
 
     /**
      * Save an specific PSM in MongoDB
-     * @param psm {@link PrideMongoPSM}
+     * @param psm {@link PrideMongoPeptideEvidence}
      */
-    public void save(PrideMongoPSM psm){
+    public void save(PrideMongoPeptideEvidence psm){
         psmMongoRepository.save(psm);
     }
 
@@ -133,7 +132,7 @@ public class PridePSMMongoService {
         psmMongoRepository.deleteAll();
     }
 
-    public Page<PrideMongoPSM> searchPSMs(String filterQuery, Pageable page) {
+    public Page<PrideMongoPeptideEvidence> searchPSMs(String filterQuery, Pageable page) {
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters(filterQuery);
         return psmMongoRepository.filterByAttributes(filters, page);
 

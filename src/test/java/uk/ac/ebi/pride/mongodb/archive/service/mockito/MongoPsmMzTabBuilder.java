@@ -8,9 +8,10 @@ import uk.ac.ebi.pride.archive.dataprovider.data.database.DefaultDatabase;
 import uk.ac.ebi.pride.archive.utils.spectrum.SpectrumIDGenerator;
 import uk.ac.ebi.pride.archive.utils.spectrum.SpectrumIdGeneratorPrideArchive;
 import uk.ac.ebi.pride.jmztab.model.*;
-import uk.ac.ebi.pride.mongodb.spectral.model.psms.PrideMongoPSM;
+import uk.ac.ebi.pride.mongodb.spectral.model.peptide.PrideMongoPeptideEvidence;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,11 +25,11 @@ public class MongoPsmMzTabBuilder {
    *
    * @return A map of assay accessions to PSMs
    */
-  public static List<PrideMongoPSM> readPsmsFromMzTabFile(String projectAccession, String assayAccession, MZTabFile mzTabFile) {
-    List<PrideMongoPSM> result = new LinkedList<>();
+  public static List<PrideMongoPeptideEvidence> readPsmsFromMzTabFile(String projectAccession, String assayAccession, MZTabFile mzTabFile) {
+    List<PrideMongoPeptideEvidence> result = new LinkedList<>();
     if (mzTabFile != null) {
       result = convertFromMzTabPsmsToPrideArchivePsms(mzTabFile.getPSMs(), mzTabFile.getMetadata(), projectAccession, assayAccession);
-      logger.debug("Found " + result.size() + " psms for Assay " + assayAccession + " in file " + mzTabFile);
+      logger.debug("Found " + result.size() + " peptide for Assay " + assayAccession + " in file " + mzTabFile);
     }
     return result;
   }
@@ -42,17 +43,17 @@ public class MongoPsmMzTabBuilder {
    * @param assayAccession the Archive assay accession number
    * @return list of Archive-compatible PSMs.
    */
-  private static LinkedList<PrideMongoPSM> convertFromMzTabPsmsToPrideArchivePsms(
+  private static LinkedList<PrideMongoPeptideEvidence> convertFromMzTabPsmsToPrideArchivePsms(
       Collection<PSM> mzTabPsms,
       Metadata metadata,
       String projectAccession,
       String assayAccession) {
-    LinkedList<PrideMongoPSM> result = new LinkedList<>();
+    LinkedList<PrideMongoPeptideEvidence> result = new LinkedList<>();
     for (PSM mzTabPsm : mzTabPsms) {
-      PrideMongoPSM newPsm = PrideMongoPSM.builder()
-              .accessionInReportedFile(mzTabPsm.getPSM_ID())
+      PrideMongoPeptideEvidence newPsm = PrideMongoPeptideEvidence.builder()
+              .accession(mzTabPsm.getPSM_ID())
               .reportedFileID(metadata.getMZTabID())
-              .spectrumAccession(createSpectrumId(mzTabPsm, projectAccession))
+              .psmAccessions(Collections.singletonList(createSpectrumId(mzTabPsm, projectAccession)))
               .peptideSequence(mzTabPsm.getSequence())
               .projectAccession(projectAccession)
               .database(new DefaultDatabase(mzTabPsm.getDatabase(), mzTabPsm.getDatabaseVersion()))

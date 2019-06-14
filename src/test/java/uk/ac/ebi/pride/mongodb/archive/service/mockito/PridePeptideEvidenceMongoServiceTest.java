@@ -15,8 +15,8 @@ import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvi
 import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.spectral.model.psms.PrideMongoPSM;
-import uk.ac.ebi.pride.mongodb.spectral.service.psms.PridePSMMongoService;
+import uk.ac.ebi.pride.mongodb.spectral.model.peptide.PrideMongoPeptideEvidence;
+import uk.ac.ebi.pride.mongodb.spectral.service.psms.PridePeptideEvidenceMongoService;
 
 
 import java.util.*;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {PrideProjectFongoTestConfig.class})
-public class PridePSMMongoServiceTest {
+public class PridePeptideEvidenceMongoServiceTest {
 
     public static final long ZERO_DOCS = 0L;
     public static final long SINGLE_DOC = 1L;
@@ -69,10 +69,10 @@ public class PridePSMMongoServiceTest {
     private static final String NEUTRAL_LOSS_NAME = "fragment neutral loss";
     private static final String NEUTRAL_LOSS_VAL = "63.998283";
 
-    private List<PrideMongoPSM> mongoPsms = new ArrayList<>();
+    private List<PrideMongoPeptideEvidence> mongoPsms = new ArrayList<>();
 
     @Autowired
-    private PridePSMMongoService mongoService;
+    private PridePeptideEvidenceMongoService mongoService;
 
     /** Ensures all existing data are deleted, and inserts test data. */
     @Before
@@ -112,27 +112,27 @@ public class PridePSMMongoServiceTest {
     /** Tests searching by ID. */
     @Test
     public void testSearchById() {
-        PrideMongoPSM psm1 = mongoService.findByAccession(PSM_1_ID);
+        PrideMongoPeptideEvidence psm1 = mongoService.findByAccession(PSM_1_ID);
         Assert.assertNotNull(psm1);
         Assert.assertEquals(PSM_1_ID, psm1.getAccession());
 
-        PrideMongoPSM psm2 = mongoService.findByAccession(PSM_2_ID);
+        PrideMongoPeptideEvidence psm2 = mongoService.findByAccession(PSM_2_ID);
         Assert.assertNotNull(psm2);
         Assert.assertEquals(PSM_2_ID, psm2.getAccession());
 
-        PrideMongoPSM psm3 = mongoService.findByAccession(PSM_3_ID);
+        PrideMongoPeptideEvidence psm3 = mongoService.findByAccession(PSM_3_ID);
         Assert.assertNotNull(psm3);
         Assert.assertEquals(PSM_3_ID, psm3.getAccession());
 
         Assert.assertEquals(
                 3,
                 mongoService
-                        .findByIdIn(mongoPsms.stream().map(PrideMongoPSM::getAccession).collect(Collectors.toList()))
+                        .findByIdIn(mongoPsms.stream().map(PrideMongoPeptideEvidence::getAccession).collect(Collectors.toList()))
                         .size());
         Assert.assertEquals(
                 3,
                 mongoService
-                        .findByIdIn(mongoPsms.stream().map(PrideMongoPSM::getAccession).collect(Collectors.toList()), new Sort(Sort.Direction.DESC, PrideArchiveField.ACCESSION))
+                        .findByIdIn(mongoPsms.stream().map(PrideMongoPeptideEvidence::getAccession).collect(Collectors.toList()), new Sort(Sort.Direction.DESC, PrideArchiveField.ACCESSION))
                         .size());
     }
 
@@ -168,9 +168,8 @@ public class PridePSMMongoServiceTest {
         IdentifiedModificationProvider mod1 = new DefaultIdentifiedModification(new DefaultCvParam(MOD_1_ACCESSION, MOD_1_NAME), new DefaultCvParam("MS",NEUTRAL_LOSS_ACC, NEUTRAL_LOSS_NAME,NEUTRAL_LOSS_VAL), Collections.singletonList(MOD_1_POS));
         IdentifiedModificationProvider mod2 = new DefaultIdentifiedModification(new DefaultCvParam(MOD_2_ACCESSION, MOD_2_NAME), Collections.singletonList(MOD_2_POS));
 
-        PrideMongoPSM psm = PrideMongoPSM.builder().accession(psmId).reportedFileID(psmReportedId)
+        PrideMongoPeptideEvidence psm = PrideMongoPeptideEvidence.builder().accession(psmId).reportedFileID(psmReportedId)
                 .peptideSequence(psmSequence)
-                .spectrumAccession(psmSpectrum)
                 .reportedProteinAccession(proteinAcccession)
                 .projectAccession(projectAccession)
                 .ptmList(Arrays.asList(mod1, mod2))
@@ -183,7 +182,7 @@ public class PridePSMMongoServiceTest {
 
     @Test
     public void searchWildcard(){
-        Page<PrideMongoPSM> psms = mongoService.searchPSMs("reportedProteinAccession=regex=" + PARTIAL_ACCESSION_WILDCARD, PageRequest.of(0,10));
+        Page<PrideMongoPeptideEvidence> psms = mongoService.searchPSMs("reportedProteinAccession=regex=" + PARTIAL_ACCESSION_WILDCARD, PageRequest.of(0,10));
         Assert.assertEquals(3, psms.getTotalElements());
     }
 }

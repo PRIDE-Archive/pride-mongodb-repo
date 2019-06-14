@@ -116,14 +116,14 @@ public interface PrideArchiveField {
     String FILE_IS_COMPRESS = "fileCompress";
 
     /** PSM Collections **/
-    String PRIDE_PSM_COLLECTION_NAME = "pride_psms";
-    String SPECTRUM_ACCESSION = "spectrumAccession";
+    String PRIDE_PEPTIDE_COLLECTION_NAME = "pride_peptide_evidences";
+    String PSM_SPECTRUM_ACCESSIONS = "psmAccessions";
     String PEPTIDE_SEQUENCE = "peptideSequence";
     String REPORTED_PROTEIN_ACCESSION = "reportedProteinAccession";
     String REPORTED_FILE_ID = "reportedFileID";
     String EXTERNAL_PROJECT_ACCESSION = "projectAccession";
     String EXTERNAL_ANALYSIS_ACCESSION = "analysisAccession";
-    String ACCESSION_IN_REPORTED_FILE = "accessionInReportedFile";
+    String PROTEIN_ASSAY_ACCESSION = "assayAccession";
     String IDENTIFICATION_DATABASE = "database";
     String PEPTIDE_UNIQUE = "peptideUnique";
     String BEST_PSM_SCORE = "bestPSMScore";
@@ -185,14 +185,16 @@ public interface PrideArchiveField {
 
     /** Alias Protein Table **/
     String PRIDE_PROTEIN_COLLECTION_NAME = "archive_protein_collection";
-    String PROTEIN_SEQUENCE = "ProteinSequence";
-    String UNIPROT_MAPPED_PROTEIN_ACCESSION = "UniprotMappedProteinAccession";
-    String ENSEMBL_MAPPED_PROTEIN_ACCESSION = "EnsemblMappedProteinAccession";
-    String PROTEIN_GROUP_MEMBERS = "ProteinGroupMembers";
-    String PROTEIN_DESCRIPTION = "ProteinDescription";
-    String PROTEIN_MODIFICATIONS = "ProteinPTMs";
-    String PROTEIN_DECOY = "DecoyProtein";
-    String BEST_SEARCH_ENGINE = "BestSearchEngineScore";
+    String PROTEIN_SEQUENCE = "proteinSequence";
+    String UNIPROT_MAPPED_PROTEIN_ACCESSION = "uniprotMappedProteinAccession";
+    String ENSEMBL_MAPPED_PROTEIN_ACCESSION = "ensemblMappedProteinAccession";
+    String PROTEIN_GROUP_MEMBERS = "proteinGroupMembers";
+    String PROTEIN_DESCRIPTION = "proteinDescription";
+    String PROTEIN_MODIFICATIONS = "ptms";
+    String PROTEIN_DECOY = "isDecoy";
+    String BEST_SEARCH_ENGINE = "bestSearchEngineScore";
+    String PROTEIN_REPORTED_ACCESSION = "reportedAccession";
+
     String MSRUN_PROPERTIES = "MSRunProperties";
 
 }

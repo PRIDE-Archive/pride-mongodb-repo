@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.spectral.service.protein;
+package uk.ac.ebi.pride.mongodb.molecules.service.protein;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,8 +12,8 @@ import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.jmztab.model.MZTabFile;
 import uk.ac.ebi.pride.jmztab.utils.MZTabFileParser;
 import uk.ac.ebi.pride.mongodb.archive.service.mockito.MongoPsmMzTabBuilderTest;
-import uk.ac.ebi.pride.mongodb.spectral.config.PrideProjectFongoTestConfig;
-import uk.ac.ebi.pride.mongodb.spectral.model.protein.PrideMongoProteinEvidence;
+import uk.ac.ebi.pride.mongodb.molecules.config.PrideProjectFongoTestConfig;
+import uk.ac.ebi.pride.mongodb.molecules.model.protein.PrideMongoProteinEvidence;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +45,7 @@ public class PrideProteinEvidenceMongoServiceTest {
     public void saveTest() {
 
         PrideMongoProteinEvidence protein = PrideMongoProteinEvidence.builder()
-                .accession("sp|Q672I1|POLG_SVSAP")
+                .reportedAccession("sp|Q672I1|POLG_SVSAP")
                 .projectAccession("PXD000433")
                 .proteinSequence("MVSKPFKPIVLNATFEWQVFKRCYLRVAPREAFCENLSELHHYFARRVNAWLKHATRTLP\n" +
                         "DGYTFVEEGLLDMFGTKAPDSVQEGTLFRELFGVDQTEQFPLSLADLAKLQGELVDATRT\n" +
@@ -93,7 +93,7 @@ public class PrideProteinEvidenceMongoServiceTest {
         protein.addAttribute(new DefaultCvParam("MS", "MS:1001013", "database name", "phytophtora_infestans_rnd"));
         protein.addAttribute(new DefaultCvParam("MS", "MS:1001016", "database version", "20100422.fasta"));
 
-        DefaultIdentifiedModification mod = new DefaultIdentifiedModification(new DefaultCvParam("UNIMOD", "UNIMOD:35", "Oxidation", "15.994915"), Collections.singletonList(5));
+        DefaultIdentifiedModification mod = new DefaultIdentifiedModification(new DefaultCvParam("UNIMOD", "UNIMOD:35", "Oxidation", "15.994915"), null, null, null);
         protein.addIdentifiedModification(mod);
 
         System.out.println(protein.toString());
@@ -110,7 +110,7 @@ public class PrideProteinEvidenceMongoServiceTest {
     public void saveMzTabTest() {
 
         PrideMongoProteinEvidence protein = PrideMongoProteinEvidence.builder()
-                .accession("sp|Q672I1|POLG_SVSAP")
+                .reportedAccession("sp|Q672I1|POLG_SVSAP")
                 .projectAccession("PXD000433")
                 .proteinSequence("MVSKPFKPIVLNATFEWQVFKRCYLRVAPREAFCENLSELHHYFARRVNAWLKHATRTLP\n" +
                         "DGYTFVEEGLLDMFGTKAPDSVQEGTLFRELFGVDQTEQFPLSLADLAKLQGELVDATRT\n" +
@@ -158,7 +158,7 @@ public class PrideProteinEvidenceMongoServiceTest {
         protein.addAttribute(new DefaultCvParam("MS", "MS:1001013", "database name", "phytophtora_infestans_rnd"));
         protein.addAttribute(new DefaultCvParam("MS", "MS:1001016", "database version", "20100422.fasta"));
 
-        DefaultIdentifiedModification mod = new DefaultIdentifiedModification(new DefaultCvParam("UNIMOD", "UNIMOD:35", "Oxidation", "15.994915"), Collections.singletonList(5));
+        DefaultIdentifiedModification mod = new DefaultIdentifiedModification(new DefaultCvParam("UNIMOD", "UNIMOD:35", "Oxidation", "15.994915"),null, null, null);
         protein.addIdentifiedModification(mod);
 
         System.out.println(protein.toString());

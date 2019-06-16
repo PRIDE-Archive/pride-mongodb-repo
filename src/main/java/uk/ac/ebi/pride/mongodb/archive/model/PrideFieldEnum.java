@@ -14,9 +14,9 @@ import java.util.Date;
  */
 public enum PrideFieldEnum {
 
-    ACCESSION(PrideArchiveField.ACCESSION, new String[]{PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME, PrideArchiveField.PRIDE_PSM_COLLECTION_NAME}, String.class),
+    ACCESSION(PrideArchiveField.ACCESSION, new String[]{PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME, PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME}, String.class),
     PROJECT_TILE(PrideArchiveField.PROJECT_TILE, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, String.class),
-    ADDITIONAL_ATTRIBUTES(PrideArchiveField.ADDITIONAL_ATTRIBUTES, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, PrideArchiveField.PRIDE_PSM_COLLECTION_NAME}, DefaultCvParam.class),
+    ADDITIONAL_ATTRIBUTES(PrideArchiveField.ADDITIONAL_ATTRIBUTES, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME}, DefaultCvParam.class),
     PROJECT_DESCRIPTION(PrideArchiveField.PROJECT_DESCRIPTION, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, String.class),
     PROJECT_SAMPLE_PROTOCOL(PrideArchiveField.PROJECT_SAMPLE_PROTOCOL, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, String.class),
     PROJECT_DATA_PROTOCOL(PrideArchiveField.PROJECT_DATA_PROTOCOL, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, String.class),

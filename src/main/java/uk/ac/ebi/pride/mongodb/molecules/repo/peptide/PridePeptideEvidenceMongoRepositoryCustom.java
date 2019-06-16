@@ -1,24 +1,27 @@
-package uk.ac.ebi.pride.mongodb.spectral.repo.protein;
+package uk.ac.ebi.pride.mongodb.molecules.repo.peptide;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import uk.ac.ebi.pride.mongodb.spectral.model.protein.PrideMongoProteinEvidence;
+import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
+
 
 import java.util.Collection;
 import java.util.List;
 
-public interface PrideProteinMongoRepositoryCustom {
-
+/**
+ * @author ypriverol
+ */
+public interface PridePeptideEvidenceMongoRepositoryCustom {
 
     /**
      * Filter By Attributes
      * @param filters Attributes in {@link Triple} structure
      * @param page Pageable
-     * @return List of {@link PrideMongoProteinEvidence}
+     * @return List of {@link PrideMongoPeptideEvidence}
      */
-    Page<PrideMongoProteinEvidence> filterByAttributes(List<Triple<String, String, String>> filters, Pageable page) ;
+    Page<PrideMongoPeptideEvidence> filterByAttributes(List<Triple<String, String, String>> filters, Pageable page) ;
 
     /**
      * Find by A list of Accessions
@@ -26,5 +29,5 @@ public interface PrideProteinMongoRepositoryCustom {
      * @param sort Sort to order the output
      * @return Page
      */
-    List<PrideMongoProteinEvidence> findByIdAccessions(Collection<String> accessions, Sort sort);
+    List<PrideMongoPeptideEvidence> findByIdAccessions(Collection<String> accessions, Sort sort);
 }

@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.spectral.model.peptide;
+package uk.ac.ebi.pride.mongodb.molecules.model.peptide;
 
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @Data
 @Builder
 @Document(collection = PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME)
-@CompoundIndexes({@CompoundIndex(name = "compound_peptide_accession", def = "{'reportedFileID' : 1'reportedProteinAccession': 1, 'projectAccession':1}", unique = true)})
+//@CompoundIndexes({@CompoundIndex(name = "compound_peptide_accession", def = "{'assayAccession' : 1'projectAccession': 1, 'accession':1}", unique = true)})
 public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequenceProvider {
 
     /** Generated accession **/
@@ -83,7 +83,7 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
     private List<CvParamProvider> additionalAttributes;
 
     @Field(value = PrideArchiveField.SEARCH_ENGINE_SCORES)
-    private Map<CvParamProvider, List<CvParamProvider>> searchEngineScores;
+    private List<Tuple<CvParamProvider, List<CvParamProvider>>> searchEngineScores;
 
     @Indexed(name = PSM_SPECTRUM_ACCESSIONS)
     private List<String> psmAccessions;

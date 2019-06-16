@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.spectral.model.protein;
+package uk.ac.ebi.pride.mongodb.molecules.model.protein;
 
 
 import lombok.Builder;
@@ -26,9 +26,6 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
     @Indexed(name = PrideArchiveField.ID)
     private ObjectId id;
 
-    /** Accession Provided by PRIDE Pipelines **/
-    @Indexed(name = ACCESSION)
-    String accession;
 
     /** Reported File ID is the Identifier of the File mzTab in PRIDE **/
     @Field(value = PrideArchiveField.PROTEIN_REPORTED_ACCESSION)
@@ -103,7 +100,7 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
 
     @Override
     public String getAccession() {
-        return accession;
+        return reportedAccession;
     }
 
     public String getAssayAccession() {
@@ -117,7 +114,7 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
 
     @Override
     public Comparable getId() {
-        return accession;
+        return reportedAccession;
     }
 
     @Override
@@ -149,7 +146,6 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
     public String toString() {
         return "PrideMongoProteinEvidence{" +
                 "id=" + id +
-                ", accession='" + accession + '\'' +
                 ", reportedAccession='" + reportedAccession + '\'' +
                 ", assayAccession='" + assayAccession + '\'' +
                 ", projectAccession='" + projectAccession + '\'' +

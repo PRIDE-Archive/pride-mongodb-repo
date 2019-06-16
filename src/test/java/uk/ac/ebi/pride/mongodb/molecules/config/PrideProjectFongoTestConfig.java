@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.mongodb.spectral.config;
+package uk.ac.ebi.pride.mongodb.molecules.config;
 
 import com.github.fakemongo.Fongo;
 import com.mongodb.MongoClient;
@@ -14,8 +14,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
  * @author ypriverol
  */
 
-@ComponentScan(basePackages = "uk.ac.ebi.pride.mongodb.spectral.service")
-@EnableMongoRepositories(basePackages = {"uk.ac.ebi.pride.mongodb.spectral.repo"})
+@ComponentScan(basePackages = "uk.ac.ebi.pride.mongodb.molecules.service")
+@EnableMongoRepositories(basePackages = {"uk.ac.ebi.pride.mongodb.molecules.repo"})
 @Configuration
 public class PrideProjectFongoTestConfig extends AbstractMongoConfiguration{
 

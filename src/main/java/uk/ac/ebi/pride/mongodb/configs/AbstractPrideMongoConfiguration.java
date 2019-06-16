@@ -22,16 +22,16 @@ public abstract class AbstractPrideMongoConfiguration extends AbstractMongoConfi
     @Bean
     @Override
     public MongoClient mongoClient() {
-        MongoCredential credential = MongoCredential.createCredential(getUser(), getAuthenticationDatabse(), getPassword().toCharArray());
-        options = MongoClientOptions.builder().build();
+//        MongoCredential credential = MongoCredential.createCredential(getUser(), getAuthenticationDatabse(), getPassword().toCharArray());
+//        options = MongoClientOptions.builder().build();
         MongoClient mongoClient;
-        if(!getMongoURI().isEmpty())
+        //if(!getMongoURI().isEmpty())
             mongoClient = configureMachineFromURI(getMongoURI());
-        else if(getSingleMachine().equalsIgnoreCase("true")){
-            mongoClient = configureSingleMachine(credential, options);
-        }else{
-            mongoClient = configureReplicates(credential, options);
-        }
+        //else if(getSingleMachine().equalsIgnoreCase("true")){
+        //    mongoClient = configureSingleMachine(credential, options);
+        //}else{
+        //    mongoClient = configureReplicates(credential, options);
+        //}
 
         return mongoClient;
     }
@@ -57,57 +57,42 @@ public abstract class AbstractPrideMongoConfiguration extends AbstractMongoConfi
         return new MongoClient(clientURI);
     }
 
-    /**
-     * Create a mongo client using the replicates and credentials
-     * @param credential Credentials
-     * @param options Mongo Options
-     * @return MongoClient
-     */
-    private MongoClient configureReplicates(MongoCredential credential, MongoClientOptions options) {
-        String[] hosts = getMongoHosts().split(",");
-        String[] ports = getMongoPorts().split(",");
-        if (hosts.length != ports.length) {
-            throw new IllegalArgumentException("The ports don't match the number of hosts for Mongo for Replica Set config. " + "Hosts: " + StringUtils.join(hosts, ',') + ", Ports: " + StringUtils.join(ports, ','));
-        }
-        List<ServerAddress> servers = new ArrayList<>();
-        for (int i = 0; i < hosts.length; i++) {
-            servers.add(new ServerAddress(hosts[i], Integer.parseInt(ports[i % ports.length])));
-        }
-        if (credential != null) {
-            return new MongoClient(servers, credential, options);
-        }
-        return new MongoClient(servers,options);
-    }
+//    /**
+//     * Create a mongo client using the replicates and credentials
+//     * @param credential Credentials
+//     * @param options Mongo Options
+//     * @return MongoClient
+//     */
+//    private MongoClient configureReplicates(MongoCredential credential, MongoClientOptions options) {
+//        String[] hosts = getMongoHosts().split(",");
+//        String[] ports = getMongoPorts().split(",");
+//        if (hosts.length != ports.length) {
+//            throw new IllegalArgumentException("The ports don't match the number of hosts for Mongo for Replica Set config. " + "Hosts: " + StringUtils.join(hosts, ',') + ", Ports: " + StringUtils.join(ports, ','));
+//        }
+//        List<ServerAddress> servers = new ArrayList<>();
+//        for (int i = 0; i < hosts.length; i++) {
+//            servers.add(new ServerAddress(hosts[i], Integer.parseInt(ports[i % ports.length])));
+//        }
+//        if (credential != null) {
+//            return new MongoClient(servers, credential, options);
+//        }
+//        return new MongoClient(servers,options);
+//    }
+//
+//
+//    /**
+//     * Create machine in single mode run, for example for localhost.
+//     * @param credential Credentials
+//     * @param options options
+//     * @return MongoClient.
+//     */
+//    private MongoClient configureSingleMachine(MongoCredential credential, MongoClientOptions options) {
+//        ServerAddress serverAddress = new ServerAddress(getMongoHost(), Integer.parseInt(getPort()));
+//        if(credential != null)
+//            return new MongoClient(serverAddress, credential, options);
+//        return new MongoClient(serverAddress, options);
+//    }
 
-
-    /**
-     * Create machine in single mode run, for example for localhost.
-     * @param credential Credentials
-     * @param options options
-     * @return MongoClient.
-     */
-    private MongoClient configureSingleMachine(MongoCredential credential, MongoClientOptions options) {
-        ServerAddress serverAddress = new ServerAddress(getMongoHost(), Integer.parseInt(getPort()));
-        if(credential != null)
-            return new MongoClient(serverAddress, credential, options);
-        return new MongoClient(serverAddress, options);
-    }
-
-    public abstract String getUser();
-
-    public abstract String getPassword();
-
-    public abstract String getAuthenticationDatabse();
-
-    public abstract String getMongoHosts();
-
-    public abstract String getMongoPorts();
-
-    public abstract String getPort() ;
-
-    public abstract String getSingleMachine();
-
-    public abstract String getMongoHost();
 
     public abstract String getMongoURI();
 }

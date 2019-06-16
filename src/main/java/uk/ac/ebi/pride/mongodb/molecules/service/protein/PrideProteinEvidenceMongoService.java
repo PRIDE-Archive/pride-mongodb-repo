@@ -1,5 +1,6 @@
-package uk.ac.ebi.pride.mongodb.spectral.service.protein;
+package uk.ac.ebi.pride.mongodb.molecules.service.protein;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,8 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
-import uk.ac.ebi.pride.mongodb.spectral.model.protein.PrideMongoProteinEvidence;
-import uk.ac.ebi.pride.mongodb.spectral.repo.protein.PrideProteinMongoRepository;
+import uk.ac.ebi.pride.mongodb.molecules.model.protein.PrideMongoProteinEvidence;
+import uk.ac.ebi.pride.mongodb.molecules.repo.protein.PrideProteinMongoRepository;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
 import java.util.List;
@@ -22,15 +23,13 @@ import java.util.List;
  */
 
 @Service
+@Slf4j
 public class PrideProteinEvidenceMongoService {
 
     final PrideProteinMongoRepository proteinMongoRepository;
 
     @Autowired
     private MongoOperations mongo;
-
-    /** Logger use to query and filter the data **/
-    private static final Logger LOGGER = LoggerFactory.getLogger(PrideProteinEvidenceMongoService.class);
 
     @Autowired
     public PrideProteinEvidenceMongoService(PrideProteinMongoRepository proteinRepository) {
@@ -46,7 +45,7 @@ public class PrideProteinEvidenceMongoService {
     public Page<PrideMongoProteinEvidence> findProteinsByProjectAccession(String projectAccession, Pageable page){
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("projectAccession=in=" + projectAccession);
         Page<PrideMongoProteinEvidence> proteins =  proteinMongoRepository.filterByAttributes(filters, page);
-        LOGGER.debug("The number of Proteins for the Project Accession -- " + projectAccession + " -- "+ proteins.getTotalElements());
+        log.debug("The number of Proteins for the Project Accession -- " + projectAccession + " -- "+ proteins.getTotalElements());
         return proteins;
     }
 

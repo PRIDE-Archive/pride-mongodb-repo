@@ -8,7 +8,7 @@ import uk.ac.ebi.pride.archive.dataprovider.data.database.DefaultDatabase;
 import uk.ac.ebi.pride.archive.utils.spectrum.SpectrumIDGenerator;
 import uk.ac.ebi.pride.archive.utils.spectrum.SpectrumIdGeneratorPrideArchive;
 import uk.ac.ebi.pride.jmztab.model.*;
-import uk.ac.ebi.pride.mongodb.spectral.model.peptide.PrideMongoPeptideEvidence;
+import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
 
 import java.util.Collection;
 import java.util.Collections;

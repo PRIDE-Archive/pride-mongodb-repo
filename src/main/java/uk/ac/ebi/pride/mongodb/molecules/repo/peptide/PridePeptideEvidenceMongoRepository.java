@@ -16,6 +16,9 @@ import java.util.Optional;
 @Repository
 public interface PridePeptideEvidenceMongoRepository extends MongoRepository<PrideMongoPeptideEvidence, ObjectId>, PridePeptideEvidenceMongoRepositoryCustom {
 
+    @Query("{'"+ PrideArchiveField.PROTEIN_ACCESSION + "' : ?0, '" + PrideArchiveField.PROTEIN_ASSAY_ACCESSION + "' : ?1, '" + PrideArchiveField.PEPTIDE_ACCESSION + "' : ?2 }")
+    Optional<PrideMongoPeptideEvidence> findPeptideByProteinAndAssayAccession(String proteinAccession, String assayAccession, String peptideAccession);
+
 //    @Query("{'"+ PrideArchiveField.ACCESSION + "' : ?0}")
 //    Optional<PrideMongoPeptideEvidence> findByAccession(String accession);
 

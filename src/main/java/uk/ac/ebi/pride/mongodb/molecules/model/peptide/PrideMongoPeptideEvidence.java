@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @Data
 @Builder
 @Document(collection = PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME)
-//@CompoundIndexes({@CompoundIndex(name = "compound_peptide_accession", def = "{'assayAccession' : 1'projectAccession': 1, 'accession':1}", unique = true)})
+@CompoundIndexes({@CompoundIndex(name = "compound_peptide_accession", def = "{'assayAccession' : 1, 'proteinAccession': 1, 'peptideAccession':1}", unique = true)})
 public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequenceProvider {
 
     /** Generated accession **/
@@ -43,12 +43,12 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
     private ObjectId id;
 
     /** Accession Provided by PRIDE Pipelines **/
-    @Indexed(name = ACCESSION, unique = true)
-    String accession;
+    @Indexed(name = PrideArchiveField.PEPTIDE_ACCESSION)
+    String peptideAccession;
 
     /** Reported File ID is the Identifier of the File mzTab in PRIDE **/
-    @Field(value = PrideArchiveField.REPORTED_FILE_ID)
-    private String reportedFileID;
+    @Field(value = PrideArchiveField.PROTEIN_ACCESSION)
+    private String proteinAccession;
 
     /** Accession in Reported File **/
     @Indexed(name = PROTEIN_ASSAY_ACCESSION)
@@ -62,9 +62,6 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
     @Indexed(name = PrideArchiveField.PEPTIDE_SEQUENCE)
     private String peptideSequence;
 
-    /** Protein Accession **/
-    @Indexed(name = PrideArchiveField.REPORTED_PROTEIN_ACCESSION)
-    private String reportedProteinAccession;
 
     /** Database information used to perform the identification/quantification **/
     @Field(value = IDENTIFICATION_DATABASE)
@@ -76,17 +73,17 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
 
     /** Best Search engine scores **/
     @Field(value = BEST_PSM_SCORE)
-    Tuple<CvParamProvider, CvParamProvider> bestPSMScore;
+    CvParamProvider bestPSMScore;
 
     /** Additional Attributes **/
-    @Indexed(name = PrideArchiveField.ADDITIONAL_ATTRIBUTES)
+    @Field(value = PrideArchiveField.ADDITIONAL_ATTRIBUTES)
     private List<CvParamProvider> additionalAttributes;
-
-    @Field(value = PrideArchiveField.SEARCH_ENGINE_SCORES)
-    private List<Tuple<CvParamProvider, List<CvParamProvider>>> searchEngineScores;
 
     @Indexed(name = PSM_SPECTRUM_ACCESSIONS)
     private List<String> psmAccessions;
+
+    @Field( value = IS_DECOY)
+    private boolean isDecoy;
 
     @Override
     public Collection<? extends IdentifiedModificationProvider> getModifications() {

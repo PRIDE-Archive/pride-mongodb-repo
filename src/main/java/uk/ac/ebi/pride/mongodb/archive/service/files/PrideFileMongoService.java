@@ -96,7 +96,7 @@ public class PrideFileMongoService {
                 finalNumber--;
                 String accession = "PXF" + formatter.format(finalNumber);
                 file.setAccession(accession);
-                insertedFiles.add(new Tuple<>(file, fileRepository.save(file)));
+                insertedFiles.add(new Tuple<>(file, fileRepository.saveProteinEvidences(file)));
                 log.debug("A new project has been saved into MongoDB database with Accession -- " + accession);
             }
         }
@@ -120,7 +120,7 @@ public class PrideFileMongoService {
                     log.info("A new MSRun has been saved into MongoDB database with Accession -- " + msRunFile.getAccession());
                 }
             }else{
-                log.info("No MSRun files available to save");
+                log.info("No MSRun files available to saveProteinEvidences");
             }
 
 

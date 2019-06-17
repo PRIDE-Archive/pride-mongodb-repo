@@ -191,10 +191,12 @@ public interface PrideArchiveField {
     String PROTEIN_GROUP_MEMBERS = "proteinGroupMembers";
     String PROTEIN_DESCRIPTION = "proteinDescription";
     String PROTEIN_MODIFICATIONS = "ptms";
-    String PROTEIN_DECOY = "isDecoy";
+    String IS_DECOY = "isDecoy";
     String BEST_SEARCH_ENGINE = "bestSearchEngineScore";
     String PROTEIN_REPORTED_ACCESSION = "reportedAccession";
 
     String MSRUN_PROPERTIES = "MSRunProperties";
 
+    String PEPTIDE_ACCESSION = "peptideAccession";
+    String PROTEIN_ACCESSION = "proteinAccession";
 }

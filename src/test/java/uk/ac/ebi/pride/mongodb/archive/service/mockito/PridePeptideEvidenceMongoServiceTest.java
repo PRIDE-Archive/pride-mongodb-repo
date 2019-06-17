@@ -175,7 +175,7 @@ public class PridePeptideEvidenceMongoServiceTest {
 //                .ptmList(Arrays.asList(mod1, mod2))
 //        .build();
 //
-//        mongoService.save(psm);
+//        mongoService.saveProteinEvidences(psm);
 //        mongoPsms.add(psm);
 //    }
 //

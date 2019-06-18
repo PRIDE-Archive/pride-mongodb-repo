@@ -69,7 +69,7 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
 
     /** PTMs Identified in the PEptide Sequence **/
     @Field(value = PROJECT_IDENTIFIED_PTM)
-    private List<IdentifiedModificationProvider> ptmList;
+    private Collection<? extends IdentifiedModificationProvider> ptmList;
 
     /** Best Search engine scores **/
     @Field(value = BEST_PSM_SCORE)

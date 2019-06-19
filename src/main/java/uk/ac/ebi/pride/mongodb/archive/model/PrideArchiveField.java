@@ -182,6 +182,7 @@ public interface PrideArchiveField {
     String ASSAY_DATA_ANALYSIS_PROTOCOL = "dataAnalysisProperties";
     String ASSAY_DATA_ANALYSIS_PTMS = "ptmsResults";
     String ASSAY_FILES = "assayFiles";
+    String VALID_ASSAY = "validAssay";
 
     /** Alias Protein Table **/
     String PRIDE_PROTEIN_COLLECTION_NAME = "archive_protein_collection";

@@ -80,7 +80,7 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
     private List<CvParamProvider> additionalAttributes;
 
     @Indexed(name = PSM_SPECTRUM_ACCESSIONS)
-    private List<String> psmAccessions;
+    private List<PeptideSpectrumOverview> psmAccessions;
 
     @Field( value = IS_DECOY)
     private boolean isDecoy;

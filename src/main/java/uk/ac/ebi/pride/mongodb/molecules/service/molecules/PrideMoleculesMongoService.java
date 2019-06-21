@@ -33,16 +33,16 @@ public class PrideMoleculesMongoService {
     }
 
     /**
-     * This functions allows to find all the PSMs for an specific project Accession
+     * This function is to find all the {@link PrideMongoProteinEvidence}
      * @param projectAccession Project Accession
-     * @param page Page to be retrirve
-     * @return List of PSMs
+     * @param page Page Number of Proteins to be retrieve .
+     * @return List of {@link PrideMongoProteinEvidence}
      */
     public Page<PrideMongoProteinEvidence> findProteinsByProjectAccession(String projectAccession, Pageable page){
 
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("projectAccession=in=" + projectAccession);
         Page<PrideMongoProteinEvidence> proteins =  proteinMongoRepository.filterByAttributes(filters, page);
-        log.debug("The number of Proteins for the Project Accession -- " + projectAccession + " -- "+ proteins.getTotalElements());
+        log.debug("The number of Proteins for the Project Accession -- " + projectAccession + " and Page -- " + page.getPageNumber() + " is -- " + proteins.getTotalElements());
         return proteins;
     }
 

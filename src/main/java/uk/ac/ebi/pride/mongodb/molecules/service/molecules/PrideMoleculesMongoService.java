@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
 import uk.ac.ebi.pride.mongodb.molecules.model.protein.PrideMongoProteinEvidence;
@@ -81,12 +80,12 @@ public class PrideMoleculesMongoService {
     }
 
     /**
-     * Find all {@link PrideMongoProteinEvidence}. This method shouldn't be
-     * executed because it returns all the data proteins (can be millions)
+     * Find all {@link PrideMongoProteinEvidence}. This method should be executed using the Pagination.
      * @return List of {@link PrideMongoProteinEvidence}
+     * @param page a {@link PageRequest}
      */
-    public List<PrideMongoProteinEvidence> findAllProteinEvidences() {
-        return proteinMongoRepository.findAll();
+    public Page<PrideMongoProteinEvidence> findAllProteinEvidences(PageRequest page) {
+        return proteinMongoRepository.findAll(page);
     }
 
 

@@ -169,4 +169,8 @@ public class PrideMoleculesMongoService {
     }
 
 
+    public Optional<PrideMongoProteinEvidence> getProteinEvidence(String reportedAccession, String projectAccession, String assayAccession) {
+        return proteinMongoRepository.findByAccessionAndAssayAccessionAndProjectAccession(reportedAccession,
+                assayAccession, projectAccession);
+    }
 }

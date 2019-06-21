@@ -15,4 +15,8 @@ public interface PrideProteinMongoRepository extends MongoRepository<PrideMongoP
     @Query("{'"+ PrideArchiveField.PROTEIN_REPORTED_ACCESSION + "' : ?0, '" + PrideArchiveField.PROTEIN_ASSAY_ACCESSION + "' : ?1}")
     Optional<PrideMongoProteinEvidence> findByAccessionAndAssayAccession(String accession, String assayAccession);
 
+    @Query("{'"+ PrideArchiveField.PROTEIN_REPORTED_ACCESSION + "' : ?0, '" + PrideArchiveField.PROTEIN_ASSAY_ACCESSION + "' : ?1, '" + PrideArchiveField.EXTERNAL_PROJECT_ACCESSION + "' : ?2}")
+    Optional<PrideMongoProteinEvidence> findByAccessionAndAssayAccessionAndProjectAccession(String accession, String assayAccession, String projectAccession);
+
+
 }

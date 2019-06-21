@@ -26,10 +26,6 @@ public class PrideMoleculesMongoService {
 
     final PridePeptideEvidenceMongoRepository peptideMongoRepository;
 
-
-    @Autowired
-    private MongoOperations mongo;
-
     @Autowired
     public PrideMoleculesMongoService(PrideProteinMongoRepository proteinRepository, PridePeptideEvidenceMongoRepository peptideMongoRepository) {
         this.proteinMongoRepository = proteinRepository;

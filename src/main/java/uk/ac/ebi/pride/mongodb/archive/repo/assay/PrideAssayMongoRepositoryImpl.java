@@ -2,6 +2,7 @@ package uk.ac.ebi.pride.mongodb.archive.repo.assay;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -24,11 +25,23 @@ import java.util.List;
  */
 public class PrideAssayMongoRepositoryImpl implements PrideAssayMongoRepositoryCustom {
 
-    @Autowired
     MongoTemplate mongoTemplate;
 
     @Autowired
+    @Qualifier("archiveMongoTemplate")
+    public void setMongoTemplate(MongoTemplate template) {
+        this.mongoTemplate = template;
+    }
+
+
     MongoOperations mongoOperations;
+
+    @Autowired
+    @Qualifier("archiveMongoTemplate")
+    public void setMongoOperations(MongoTemplate mongoTemplate){
+        this.mongoOperations = mongoTemplate;
+    }
+
 
     @Override
     public List<MongoPrideAssay> filterByAttributes(List<Triple<String, String, String>> filters) {

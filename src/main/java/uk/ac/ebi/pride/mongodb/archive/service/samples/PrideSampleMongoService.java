@@ -35,9 +35,6 @@ public class PrideSampleMongoService {
 
     final PrideMongoExperimentalDesign prideMongoExperimentalDesign;
 
-    @Autowired
-    private MongoOperations mongo;
-
     /** Logger use to query and filter the data **/
     private static final Logger LOGGER = LoggerFactory.getLogger(PrideSampleMongoService.class);
 

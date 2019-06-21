@@ -2,6 +2,7 @@ package uk.ac.ebi.pride.mongodb.archive.repo.projects;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -29,11 +30,22 @@ import java.util.List;
  */
 public class PrideAnalysisMongoRepositoryImpl implements PrideAnalysisMongoRepositoryCustom{
 
-    @Autowired
     MongoTemplate mongoTemplate;
 
     @Autowired
+    @Qualifier("archiveMongoTemplate")
+    public void setMongoTemplate(MongoTemplate template) {
+        this.mongoTemplate = template;
+    }
+
+
     MongoOperations mongoOperations;
+
+    @Autowired
+    @Qualifier("archiveMongoTemplate")
+    public void setMongoOperations(MongoTemplate mongoTemplate){
+        this.mongoOperations = mongoTemplate;
+    }
 
     @Override
     public Page<MongoPrideAnalysis> filterByAttributes(List<Triple<String, String, String>> filters, Pageable page) {

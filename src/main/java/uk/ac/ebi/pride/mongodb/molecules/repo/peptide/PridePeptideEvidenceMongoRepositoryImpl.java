@@ -2,6 +2,7 @@ package uk.ac.ebi.pride.mongodb.molecules.repo.peptide;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,11 +22,22 @@ import java.util.List;
  */
 public class PridePeptideEvidenceMongoRepositoryImpl implements PridePeptideEvidenceMongoRepositoryCustom {
 
-    @Autowired
     MongoTemplate mongoTemplate;
 
     @Autowired
+    @Qualifier("moleculesMongoTemplate")
+    public void setMongoTemplate(MongoTemplate template) {
+        this.mongoTemplate = template;
+    }
+
+
     MongoOperations mongoOperations;
+
+    @Autowired
+    @Qualifier("moleculesMongoTemplate")
+    public void setMongoOperations(MongoTemplate mongoTemplate){
+        this.mongoOperations = mongoTemplate;
+    }
 
     @Override
     public Page<PrideMongoPeptideEvidence> filterByAttributes(List<Triple<String, String, String>> filters, Pageable page) {

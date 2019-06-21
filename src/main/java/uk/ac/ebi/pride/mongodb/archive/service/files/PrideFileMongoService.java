@@ -3,9 +3,11 @@ package uk.ac.ebi.pride.mongodb.archive.service.files;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
@@ -33,8 +35,13 @@ public class PrideFileMongoService {
 
     final PrideMSRunMongoRepository msRunMongoRepository;
 
+    MongoOperations mongoOperations;
+
     @Autowired
-    private MongoOperations mongo;
+    @Qualifier("archiveMongoTemplate")
+    public void setMongoOperations(MongoTemplate mongoTemplate){
+        this.mongoOperations = mongoTemplate;
+    }
 
     @Autowired
     public PrideFileMongoService(PrideFileMongoRepository fileRepository,PrideMSRunMongoRepository msRunMongoRepository) {
@@ -46,7 +53,7 @@ public class PrideFileMongoService {
     * Return an accession for inserting
     * */
     public int getNextAccessionNumber(int size){
-        int finalNumber = PrideMongoUtils.getNextSizedSequence(mongo, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, size) + 1;
+        int finalNumber = PrideMongoUtils.getNextSizedSequence(mongoOperations, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, size) + 1;
         return finalNumber;
     }
 
@@ -58,7 +65,7 @@ public class PrideFileMongoService {
     public MongoPrideFile insert(MongoPrideFile prideFile) {
         NumberFormat formatter = new DecimalFormat("00000000000");
         if (prideFile.getAccession() == null) {
-            String accession = "PXF" + formatter.format(PrideMongoUtils.getNextSizedSequence(mongo, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, 1));
+            String accession = "PXF" + formatter.format(PrideMongoUtils.getNextSizedSequence(mongoOperations, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, 1));
             prideFile.setAccession(accession);
             prideFile = fileRepository.save(prideFile);
             log.debug("A new project has been saved into MongoDB database with Accession -- " + prideFile.getAccession());
@@ -67,41 +74,6 @@ public class PrideFileMongoService {
         return prideFile;
     }
 
-
-    /**
-     * Insert is allowing using to create a File Accession for the File and insert the actual File into MongoDB. The method return a List of Tuples
-     * where the key is the submitted File and the value the inserted File.
-     *
-     * @param prideFiles MongoPride File List
-     * @param msRunRawFiles MongoPrideMSRun File List
-     * @return List of Tuple
-     */
-    /*public List<Tuple<MongoPrideFile,MongoPrideFile>> insertAll(List<MongoPrideFile> prideFiles) {
-        NumberFormat formatter = new DecimalFormat("00000000000");
-        List<MongoPrideFile> newFiles = new ArrayList<>();
-        List<Tuple<MongoPrideFile, MongoPrideFile>> insertedFiles = new ArrayList<>();
-        prideFiles.forEach(prideFile -> {
-            if (prideFile.getAccession() == null)
-                newFiles.add(prideFile);
-            else{
-                insertedFiles.add(new Tuple<>(prideFile, null));
-                log.error("The current File has an Accession already, please use the update function -- " + prideFile.getAccession());
-
-            }
-
-        });
-        if(!newFiles.isEmpty()){
-            int finalNumber = PrideMongoUtils.getNextSizedSequence(mongo, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, newFiles.size()) + 1;
-            for (MongoPrideFile file: newFiles){
-                finalNumber--;
-                String accession = "PXF" + formatter.format(finalNumber);
-                file.setAccession(accession);
-                insertedFiles.add(new Tuple<>(file, fileRepository.saveProteinEvidences(file)));
-                log.debug("A new project has been saved into MongoDB database with Accession -- " + accession);
-            }
-        }
-        return insertedFiles;
-    }*/
 
     /**
      * Insert is allowing using to create a File Accession for the File and insert the actual File into MongoDB. The method return a List of Tuples

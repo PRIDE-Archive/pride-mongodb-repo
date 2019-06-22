@@ -173,4 +173,26 @@ public class PrideMoleculesMongoService {
         return proteinMongoRepository.findByAccessionAndAssayAccessionAndProjectAccession(reportedAccession,
                 assayAccession, projectAccession);
     }
+
+    public Page<PrideMongoPeptideEvidence> findPeptideEvidencesByProteinEvidence(String proteinAccession,
+                                                                                 String projectAccession,
+                                                                                 String assayAccession, PageRequest page) {
+
+        List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("proteinAccession==" + proteinAccession + ", projectAccession==" + projectAccession + ", assayAccession==" + assayAccession);
+        Page<PrideMongoPeptideEvidence> peptides = peptideMongoRepository.filterByAttributes(filters, page);
+
+        return peptides;
+    }
+
+    /**
+     * Return one {@link PrideMongoProteinEvidence} protein evidence for an specific project and assay.
+     * @param projectAccession Protect Accession
+     * @param assayAccession Assay Accession
+     * @param reportedProtein Reported protein accession
+     * @return
+     */
+    public Optional<PrideMongoProteinEvidence> findProteinsEvidence(String projectAccession, String assayAccession,
+                                                                    String reportedProtein) {
+        return proteinMongoRepository.findByAccessionAndAssayAccessionAndProjectAccession(reportedProtein, assayAccession, projectAccession);
+    }
 }

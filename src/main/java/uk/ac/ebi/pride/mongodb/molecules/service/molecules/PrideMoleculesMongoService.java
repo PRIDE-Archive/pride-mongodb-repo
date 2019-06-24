@@ -178,8 +178,7 @@ public class PrideMoleculesMongoService {
                                                                                  String projectAccession,
                                                                                  String assayAccession, PageRequest page) {
 
-        List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("proteinAccession==" + proteinAccession + ", projectAccession==" + projectAccession + ", assayAccession==" + assayAccession);
-        Page<PrideMongoPeptideEvidence> peptides = peptideMongoRepository.filterByAttributes(filters, page);
+        Page<PrideMongoPeptideEvidence> peptides = peptideMongoRepository.findPeptideEvidenceByProteinEvidence(projectAccession,assayAccession,proteinAccession, page);
 
         return peptides;
     }

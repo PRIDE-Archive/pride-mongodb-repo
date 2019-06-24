@@ -109,17 +109,7 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
     }
 
     @Override
-    public double getTheoreticalMass() {
-        return 0;
-    }
-
-    @Override
     public int getMissedCleavages() {
-        return 0;
-    }
-
-    @Override
-    public double getDeltaMass() {
         return 0;
     }
 

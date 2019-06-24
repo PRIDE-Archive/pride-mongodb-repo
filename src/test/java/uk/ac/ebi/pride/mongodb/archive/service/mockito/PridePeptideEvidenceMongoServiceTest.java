@@ -16,7 +16,6 @@ import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
-import uk.ac.ebi.pride.mongodb.molecules.service.psms.PridePeptideEvidenceMongoService;
 
 
 import java.util.*;

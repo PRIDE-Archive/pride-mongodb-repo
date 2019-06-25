@@ -14,7 +14,6 @@ import uk.ac.ebi.pride.mongodb.molecules.repo.peptide.PridePeptideEvidenceMongoR
 import uk.ac.ebi.pride.mongodb.molecules.repo.protein.PrideProteinMongoRepository;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.StringJoiner;

@@ -1,25 +1,9 @@
 package uk.ac.ebi.pride.mongodb.archive.service.mockito;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.ac.ebi.pride.archive.dataprovider.data.ptm.DefaultIdentifiedModification;
-import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
-import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
-
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author ypriverol

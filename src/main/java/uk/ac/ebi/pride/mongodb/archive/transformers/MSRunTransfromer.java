@@ -2,12 +2,10 @@ package uk.ac.ebi.pride.mongodb.archive.transformers;
 
 import lombok.extern.slf4j.Slf4j;
 import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.idsettings.IdSetting;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
-import uk.ac.ebi.pride.utilities.obo.OBOMapper;
 import uk.ac.ebi.pride.utilities.ols.web.service.cache.OntologyCacheService;
 
 import java.util.Set;

@@ -1,21 +1,5 @@
 package uk.ac.ebi.pride.mongodb.archive.service.mockito;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import uk.ac.ebi.pride.archive.dataprovider.data.ptm.ModificationProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
-import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
-import uk.ac.ebi.pride.jmztab.model.MZTabFile;
-import uk.ac.ebi.pride.jmztab.utils.MZTabFileParser;
-import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
-
-import java.io.File;
-import java.util.*;
-
 /** Tests building PSMs from mzTab files. */
 public class MongoPsmMzTabBuilderTest {
 

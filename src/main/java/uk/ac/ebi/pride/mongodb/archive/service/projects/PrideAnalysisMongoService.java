@@ -2,15 +2,8 @@ package uk.ac.ebi.pride.mongodb.archive.service.projects;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
-import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideAnalysis;
 import uk.ac.ebi.pride.mongodb.archive.repo.projects.PrideAnalysisMongoRepository;
-import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 /**
  * @author ypriverol

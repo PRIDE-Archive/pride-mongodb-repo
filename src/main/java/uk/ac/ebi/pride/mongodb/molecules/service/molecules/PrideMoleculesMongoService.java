@@ -90,6 +90,25 @@ public class PrideMoleculesMongoService {
         return proteinMongoRepository.findAll(page);
     }
 
+    /**
+     * Find all {@link PrideMongoProteinEvidence}. This method should be executed using the Pagination.
+     * @return List of {@link PrideMongoProteinEvidence}
+     * @param page a {@link PageRequest}
+     */
+    public Page<PrideMongoProteinEvidence> findAllProteinEvidences(String projectAccession, String assayAccession, String reportedAccession, PageRequest page) {
+
+        StringJoiner filter = new StringJoiner(",");
+        if(projectAccession != null && !projectAccession.isEmpty())
+            filter.add("projectAccession=in=" + projectAccession);
+        if(assayAccession != null && !assayAccession.isEmpty())
+            filter.add("assayAccession=in=" + assayAccession);
+        if(reportedAccession != null && !reportedAccession.isEmpty())
+            filter.add("reportedAccession=in=" + reportedAccession);
+
+        List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters(filter.toString());
+        return proteinMongoRepository.filterByAttributes(filters, page);
+    }
+
 
     /**
      * This functions allows to find all the Peptides for an specific project Accession

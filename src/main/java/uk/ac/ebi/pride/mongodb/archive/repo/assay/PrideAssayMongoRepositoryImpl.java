@@ -45,8 +45,8 @@ public class PrideAssayMongoRepositoryImpl implements PrideAssayMongoRepositoryC
 
     @Override
     public List<MongoPrideAssay> filterByAttributes(List<Triple<String, String, String>> filters) {
-        Criteria queryCriteria = PrideMongoUtils.buildQuery(filters);
-        Query queryMongo = new Query().addCriteria(queryCriteria);
+//        Criteria queryCriteria = PrideMongoUtils.buildCriteria(filters);
+        Query queryMongo = PrideMongoUtils.buildQuery(filters);
         return mongoTemplate.find(queryMongo, MongoPrideAssay.class);
     }
 }

@@ -42,8 +42,7 @@ public class PridePeptideEvidenceMongoRepositoryImpl implements PridePeptideEvid
 
     @Override
     public Page<PrideMongoPeptideEvidence> filterByAttributes(List<Triple<String, String, String>> filters, Pageable page) {
-        Criteria queryCriteria = PrideMongoUtils.buildQuery(filters);
-        Query queryMongo = new Query().addCriteria(queryCriteria);
+        Query queryMongo = PrideMongoUtils.buildQuery(filters);
         queryMongo.with(page);
         List<PrideMongoPeptideEvidence> files =  mongoTemplate.find(queryMongo, PrideMongoPeptideEvidence.class);
         return PageableExecutionUtils.getPage(files, page, () -> mongoOperations.count(queryMongo, PrideMongoPeptideEvidence.class));

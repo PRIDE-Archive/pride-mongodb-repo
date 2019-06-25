@@ -40,11 +40,11 @@ public class PrideFileMongoRepositoryImpl implements PrideFileMongoRepositoryCus
 
     @Override
     public Page<MongoPrideFile> filterByAttributes(List<Triple<String, String, String>> filters, Pageable page) {
-        Criteria queryCriteria = PrideMongoUtils.buildQuery(filters);
-        Query queryMongo = new Query();
-        if(queryCriteria!=null){
-            queryMongo.addCriteria(queryCriteria);
-        }
+//        Criteria queryCriteria = PrideMongoUtils.buildCriteria(filters);
+        Query queryMongo =PrideMongoUtils.buildQuery(filters);
+//        if(queryCriteria!=null){
+//            queryMongo.addCriteria(queryCriteria);
+//        }
         queryMongo.with(page);
         List<MongoPrideFile> files =  mongoTemplate.find(queryMongo, MongoPrideFile.class);
         return PageableExecutionUtils.getPage(files, page, () -> mongoOperations.count(queryMongo, MongoPrideFile.class));
@@ -52,8 +52,8 @@ public class PrideFileMongoRepositoryImpl implements PrideFileMongoRepositoryCus
 
     @Override
     public List<MongoPrideFile> filterByAttributes(List<Triple<String, String, String>> filters) {
-        Criteria queryCriteria = PrideMongoUtils.buildQuery(filters);
-        Query queryMongo = new Query().addCriteria(queryCriteria);
+        // Criteria queryCriteria = PrideMongoUtils.buildCriteria(filters);
+        Query queryMongo = PrideMongoUtils.buildQuery(filters);
         return mongoTemplate.find(queryMongo, MongoPrideFile.class);
     }
 

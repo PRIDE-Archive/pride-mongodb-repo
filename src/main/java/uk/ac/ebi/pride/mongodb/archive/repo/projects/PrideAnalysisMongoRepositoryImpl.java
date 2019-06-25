@@ -49,8 +49,8 @@ public class PrideAnalysisMongoRepositoryImpl implements PrideAnalysisMongoRepos
 
     @Override
     public Page<MongoPrideAnalysis> filterByAttributes(List<Triple<String, String, String>> filters, Pageable page) {
-        Criteria queryCriteria = PrideMongoUtils.buildQuery(filters);
-        Query queryMongo = new Query().addCriteria(queryCriteria);
+//        Criteria queryCriteria = PrideMongoUtils.buildCriteria(filters);
+        Query queryMongo = PrideMongoUtils.buildQuery(filters);
         queryMongo.with(page);
         List<MongoPrideAnalysis> files =  mongoTemplate.find(queryMongo, MongoPrideAnalysis.class);
         return PageableExecutionUtils.getPage(files, page, () -> mongoOperations.count(queryMongo, MongoPrideAnalysis.class));

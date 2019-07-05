@@ -60,7 +60,8 @@ public class PrideMongoUtils {
                             filters.add(new ImmutableTriple<>(filterString[0], "in",filterString[1]));
                         else if(matcher.find()){
                             if(matcher.group(2).equalsIgnoreCase("in")) {
-                                filters.add(new ImmutableTriple<>(matcher.group(1), matcher.group(2), matcher.group(3).replace("|", ",")));
+//                                filters.add(new ImmutableTriple<>(matcher.group(1), matcher.group(2), matcher.group(3).replace("|", ",")));
+                                filters.add(new ImmutableTriple<>(matcher.group(1), matcher.group(2), matcher.group(3)));
                             }else{
                                 filters.add(new ImmutableTriple<>(matcher.group(1), matcher.group(2), matcher.group(3)));
                             }
@@ -79,7 +80,7 @@ public class PrideMongoUtils {
      * @param filters Filters to Create Criteria
      * @return Final Criteria to Filter
      */
-    public static Criteria buildQuery(List<Triple<String,String, String>> filters) {
+    public static Criteria buildCriteria(List<Triple<String,String, String>> filters) {
         Criteria filterCriteria = null;
         if(!filters.isEmpty()){
             for(Triple filter: filters){
@@ -87,6 +88,25 @@ public class PrideMongoUtils {
             }
         }
         return filterCriteria;
+    }
+
+    /**
+     * Filter Criteria for Collection
+     * @param filters Filters to Create Criteria
+     * @return Final Criteria to Filter
+     */
+    public static Query buildQuery(List<Triple<String,String, String>> filters) {
+        List<Criteria> filterCriteria = new ArrayList<>();
+        Query query = new Query();
+        if(!filters.isEmpty()){
+            for(Triple filter: filters){
+                filterCriteria.add(convertStringToCriteria((String)filter.getLeft(), (String)filter.getMiddle(), (String)filter.getRight()));
+            }
+        }
+        if (filterCriteria.size() > 0){
+            query.addCriteria(new Criteria().andOperator(filterCriteria.toArray(new Criteria[filterCriteria.size()])));
+        }
+        return query;
     }
 
     private static Criteria convertStringToCriteria(Criteria filterCriteria, String filterField, String operator, String valueFilter) {
@@ -115,6 +135,22 @@ public class PrideMongoUtils {
                 filterCriteria = filterCriteria.andOperator(new Criteria(filterField).regex(valueFilter));
             }
 
+        }
+        return filterCriteria;
+    }
+
+    private static Criteria convertStringToCriteria(String filterField, String operator, String valueFilter) {
+        Criteria filterCriteria = null;
+        if(operator.equalsIgnoreCase("in"))
+            filterCriteria = new Criteria(filterField).in(valueFilter.split(","));
+        else if(operator.equalsIgnoreCase("all"))
+            filterCriteria = new Criteria(filterField).all(valueFilter);
+        else if(operator.equalsIgnoreCase("range")){
+            Tuple<Object, Object> betweenClass = parseBetweenObjects(parseFilterBetween(valueFilter), filterField);
+            filterCriteria = Criteria.where(filterField).gte(betweenClass.getKey()).lt(betweenClass.getValue());
+        }
+        else if(operator.equalsIgnoreCase("regex")){
+            filterCriteria = Criteria.where(filterField).regex(valueFilter);
         }
         return filterCriteria;
     }

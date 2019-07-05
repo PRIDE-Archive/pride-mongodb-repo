@@ -13,14 +13,13 @@ import uk.ac.ebi.pride.archive.dataprovider.data.database.DatabaseProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PeptideSequenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
+import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -62,7 +61,6 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
     @Indexed(name = PrideArchiveField.PEPTIDE_SEQUENCE)
     private String peptideSequence;
 
-
     /** Database information used to perform the identification/quantification **/
     @Field(value = IDENTIFICATION_DATABASE)
     private DatabaseProvider database;
@@ -83,7 +81,22 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
     private List<PeptideSpectrumOverview> psmAccessions;
 
     @Field( value = IS_DECOY)
-    private boolean isDecoy;
+    private Boolean isDecoy;
+
+    @Field (value = START_POSITION)
+    private Integer startPosition;
+
+    @Field( value = END_POSITION)
+    private Integer endPosition;
+
+    @Field( value = MISSED_CLEAVAGES)
+    Integer missedCleavages;
+
+    @Field(PrideArchiveField.QUALITY_ESTIMATION_METHOD)
+    private List<MongoCvParam> qualityEstimationMethods;
+
+    @Indexed(name = PrideArchiveField.IS_VALIDATED)
+    private Boolean isValid;
 
     @Override
     public Collection<? extends IdentifiedModificationProvider> getModifications() {
@@ -99,7 +112,7 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
     }
 
     @Override
-    public int getNumberModifiedSites() {
+    public Integer getNumberModifiedSites() {
         final int[] sites = {0};
         if(this.ptmList != null && !this.ptmList.isEmpty()){
             this.ptmList.forEach(x -> sites[0] += x.getPositionMap().size());
@@ -109,8 +122,13 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
     }
 
     @Override
-    public int getMissedCleavages() {
-        return 0;
+    public Integer getMissedCleavages() {
+        return missedCleavages;
+    }
+
+    @Override
+    public Boolean isDecoy() {
+        return isDecoy;
     }
 
     @Override
@@ -120,4 +138,8 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
             return additionalAttributes.stream().map(CvParamProvider::getName).collect(Collectors.toList());
         return attributes;
     }
+
+
+
+
 }

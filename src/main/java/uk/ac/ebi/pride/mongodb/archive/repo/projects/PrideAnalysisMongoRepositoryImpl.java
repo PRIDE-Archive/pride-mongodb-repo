@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.repository.support.PageableExecutionUtils;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideAnalysis;
@@ -49,8 +48,8 @@ public class PrideAnalysisMongoRepositoryImpl implements PrideAnalysisMongoRepos
 
     @Override
     public Page<MongoPrideAnalysis> filterByAttributes(List<Triple<String, String, String>> filters, Pageable page) {
-        Criteria queryCriteria = PrideMongoUtils.buildQuery(filters);
-        Query queryMongo = new Query().addCriteria(queryCriteria);
+//        Criteria queryCriteria = PrideMongoUtils.buildCriteria(filters);
+        Query queryMongo = PrideMongoUtils.buildQuery(filters);
         queryMongo.with(page);
         List<MongoPrideAnalysis> files =  mongoTemplate.find(queryMongo, MongoPrideAnalysis.class);
         return PageableExecutionUtils.getPage(files, page, () -> mongoOperations.count(queryMongo, MongoPrideAnalysis.class));

@@ -14,6 +14,7 @@ import uk.ac.ebi.pride.archive.dataprovider.data.protein.ProteinDetailProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
+import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -77,6 +78,13 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
 
     @Field(PrideArchiveField.BEST_SEARCH_ENGINE)
     private CvParamProvider bestSearchEngineScore;
+
+    @Field(PrideArchiveField.QUALITY_ESTIMATION_METHOD)
+    private List<MongoCvParam> qualityEstimationMethods;
+
+
+    @Indexed(name = PrideArchiveField.IS_VALIDATED)
+    private Boolean isValid;
 
     @Field(PrideArchiveField.IS_DECOY)
     private boolean isDecoy;

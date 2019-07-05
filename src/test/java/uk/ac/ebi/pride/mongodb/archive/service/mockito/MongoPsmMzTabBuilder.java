@@ -1,20 +1,5 @@
 package uk.ac.ebi.pride.mongodb.archive.service.mockito;
 
-import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.CollectionUtils;
-import uk.ac.ebi.pride.archive.dataprovider.data.database.DefaultDatabase;
-import uk.ac.ebi.pride.archive.utils.spectrum.SpectrumIDGenerator;
-import uk.ac.ebi.pride.archive.utils.spectrum.SpectrumIdGeneratorPrideArchive;
-import uk.ac.ebi.pride.jmztab.model.*;
-import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
 public class MongoPsmMzTabBuilder {
 
 //  private static Logger logger = LoggerFactory.getLogger(MongoPsmMzTabBuilder.class.getName());

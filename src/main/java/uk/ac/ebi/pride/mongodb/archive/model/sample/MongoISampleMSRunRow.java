@@ -84,13 +84,13 @@ public class MongoISampleMSRunRow implements ISampleMSRunRow {
         this.sampleProperties = sampleProperties.stream().map( x -> {
             CvParamProvider key = x.getKey();
             CvParamProvider value = x.getValue();
-            return new Tuple<MongoCvParam, MongoCvParam>(new MongoCvParam(key.getCvLabel(), key.getAccession(), key.getName(), key.getValue()), new MongoCvParam(value.getCvLabel(), value.getAccession(), value.getName(), value.getValue()));
+            return new Tuple<>(new MongoCvParam(key.getCvLabel(), key.getAccession(), key.getName(), key.getValue()), new MongoCvParam(value.getCvLabel(), value.getAccession(), value.getName(), value.getValue()));
         }).collect(Collectors.toList());
 
         this.msRunProperties = (msRunProperties !=null)?msRunProperties.stream().map( x -> {
             CvParamProvider key = x.getKey();
             CvParamProvider value = x.getValue();
-            return new Tuple<MongoCvParam, MongoCvParam>(new MongoCvParam(key.getCvLabel(), key.getAccession(), key.getName(), key.getValue()), new MongoCvParam(value.getCvLabel(), value.getAccession(), value.getName(), value.getValue()));
+            return new Tuple<>(new MongoCvParam(key.getCvLabel(), key.getAccession(), key.getName(), key.getValue()), new MongoCvParam(value.getCvLabel(), value.getAccession(), value.getName(), value.getValue()));
         }).collect(Collectors.toList()): Collections.emptyList();
 
     }

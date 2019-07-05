@@ -38,8 +38,8 @@ public class PrideProteinMongoRepositoryImpl implements PrideProteinMongoReposit
 
     @Override
     public Page<PrideMongoProteinEvidence> filterByAttributes(List<Triple<String, String, String>> filters, Pageable page) {
-        Criteria queryCriteria = PrideMongoUtils.buildQuery(filters);
-        Query queryMongo = new Query().addCriteria(queryCriteria);
+        // Criteria queryCriteria = PrideMongoUtils.buildCriteria(filters);
+        Query queryMongo = PrideMongoUtils.buildQuery(filters);
         queryMongo.with(page);
         List<PrideMongoProteinEvidence> files =  mongoTemplate.find(queryMongo, PrideMongoProteinEvidence.class);
         return PageableExecutionUtils.getPage(files, page, () -> mongoOperations.count(queryMongo, PrideMongoProteinEvidence.class));

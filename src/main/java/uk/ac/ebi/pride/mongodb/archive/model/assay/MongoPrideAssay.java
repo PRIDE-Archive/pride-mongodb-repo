@@ -88,8 +88,11 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
     @Field(value = ASSAY_FILES)
     List<MongoAssayFile> assayFiles;
 
-    @Indexed(name = VALID_ASSAY)
-    Boolean validAssay;
+    @Field(PrideArchiveField.QUALITY_ESTIMATION_METHOD)
+    private List<MongoCvParam> qualityEstimationMethods;
+
+    @Indexed(name = PrideArchiveField.IS_VALIDATED)
+    private Boolean isValid;
 
     @Override
     public Collection<MongoCvParam> getAdditionalProperties() {

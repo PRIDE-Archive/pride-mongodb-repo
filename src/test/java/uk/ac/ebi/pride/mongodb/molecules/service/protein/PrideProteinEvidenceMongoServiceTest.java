@@ -1,26 +1,9 @@
 package uk.ac.ebi.pride.mongodb.molecules.service.protein;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.ac.ebi.pride.archive.dataprovider.data.ptm.DefaultIdentifiedModification;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
-import uk.ac.ebi.pride.jmztab.model.MZTabFile;
-import uk.ac.ebi.pride.jmztab.utils.MZTabFileParser;
-import uk.ac.ebi.pride.mongodb.archive.service.mockito.MongoPsmMzTabBuilderTest;
 import uk.ac.ebi.pride.mongodb.molecules.config.PrideProjectFongoTestConfig;
-import uk.ac.ebi.pride.mongodb.molecules.model.protein.PrideMongoProteinEvidence;
-import uk.ac.ebi.pride.mongodb.molecules.service.molecules.PrideMoleculesMongoService;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.Objects;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {PrideProjectFongoTestConfig.class})

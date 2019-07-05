@@ -136,6 +136,7 @@ public interface PrideArchiveField {
     String START_POSITION = "startPosition";
     String END_POSITION = "endPosition";
     String SEARCH_ENGINE_SCORES = "searchEngineScores";
+    String MISSED_CLEAVAGES = "missedCleavages";
 
     /** PRIDE Analysis Collection **/
     String PRIDE_ANALYSIS_COLLECTION = "pride_analysis_collection";
@@ -200,4 +201,6 @@ public interface PrideArchiveField {
 
     String PEPTIDE_ACCESSION = "peptideAccession";
     String PROTEIN_ACCESSION = "proteinAccession";
+    String QUALITY_ESTIMATION_METHOD = "qualityEstimationMethods";
+    String IS_VALIDATED = "isValid";
 }

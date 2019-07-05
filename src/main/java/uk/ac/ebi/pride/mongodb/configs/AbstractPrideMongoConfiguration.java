@@ -1,15 +1,9 @@
 package uk.ac.ebi.pride.mongodb.configs;
 
 import com.mongodb.*;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This Abstract class is used to Configure all the connections to Spring.

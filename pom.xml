@@ -4,7 +4,7 @@
 
     <groupId>uk.ac.ebi.pride.archive</groupId>
     <artifactId>pride-mongodb-repo</artifactId>
-    <version>1.0.2-springboot-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>PRIDE MongoDB repository</name>
 
@@ -23,17 +23,16 @@
       -->
 
     <properties>
-        <archive.data.provider.api.version>1.0.0-SNAPSHOT</archive.data.provider.api.version>
-        <uk.ac.ebi.pride.architectural-pride-tdd.version>1.0.3</uk.ac.ebi.pride.architectural-pride-tdd.version>
+        <archive.data.provider.api.version>1.0.1-SNAPSHOT</archive.data.provider.api.version>
+        <uk.ac.ebi.pride.architectural-pride-tdd.version>1.0.4-SNAPSHOT</uk.ac.ebi.pride.architectural-pride-tdd.version>
         <uk.ac.ebi.pride.architectural-pride-spring.version>1.0.0-SNAPSHOT</uk.ac.ebi.pride.architectural-pride-spring.version>
         <uk.ac.ebi.pride.px-submission-core.version>2.0.18</uk.ac.ebi.pride.px-submission-core.version>
-        <uk.ac.ebi.pride.utilities.pride-utilities.version>2.0.19-SNAPSHOT</uk.ac.ebi.pride.utilities.pride-utilities.version>
         <com.github.fakemongo.version>2.2.0-RC1</com.github.fakemongo.version>
         <archive.repo.version>1.0.3-SNAPSHOT</archive.repo.version>
         <uk.ac.ebi.pride-utilities.version>2.0.19-SNAPSHOT</uk.ac.ebi.pride-utilities.version>
         <jmztab.version>3.0.7</jmztab.version>
         <pride.mod.version>2.1.2</pride.mod.version>
-        <jackson.version>2.9.5</jackson.version>
+        <jackson.version>2.9.9</jackson.version>
     </properties>
 
 
@@ -130,12 +129,6 @@
             <groupId>uk.ac.ebi.pride.archive</groupId>
             <artifactId>archive-repo</artifactId>
             <version>${archive.repo.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>oracle-thin</artifactId>
-            <version>11.2.0.1.0</version>
             <scope>test</scope>
         </dependency>
 

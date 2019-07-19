@@ -63,7 +63,7 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
     String title;
 
     /** Accession generated for each File **/
-    @Indexed(name = ASSAY)
+    //@Indexed(name = ASSAY)
     @Getter(AccessLevel.NONE)
     AssayType assayType;
 

@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
  * This Abstract class is used to Configure all the connections to Spring.
  * @author ypriverol
  */
-public abstract class AbstractPrideMongoConfiguration extends AbstractMongoConfiguration {
+public abstract class   AbstractPrideMongoConfiguration extends AbstractMongoConfiguration {
 
     @Override
     public MongoClient mongoClient() {

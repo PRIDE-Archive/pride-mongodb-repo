@@ -82,12 +82,20 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
     @Field(PrideArchiveField.QUALITY_ESTIMATION_METHOD)
     private List<MongoCvParam> qualityEstimationMethods;
 
-
     @Indexed(name = PrideArchiveField.IS_VALIDATED)
     private Boolean isValid;
 
     @Field(PrideArchiveField.IS_DECOY)
     private boolean isDecoy;
+
+    @Field(PrideArchiveField.NUMBER_PEPTIDEEVIDENCES)
+    private Integer numberPeptides;
+
+    @Field(PrideArchiveField.NUMBER_PSMS)
+    private Integer numberPSMs;
+
+    @Field(PrideArchiveField.PROTEIN_COVERAGE)
+    private double sequenceCoverage;
 
     @Override
     public String getUniprotMapping() {

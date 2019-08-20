@@ -62,6 +62,14 @@ public class PrideMoleculesMongoService {
     }
 
     /**
+     * This method not not find for present of the protein in the database, only try to insert it.
+     * @param protein {@link PrideMongoProteinEvidence}
+     */
+    public void insertProteinEvidences(PrideMongoProteinEvidence protein){
+        proteinMongoRepository.save(protein);
+    }
+
+    /**
      * Delete all Protein evidences from the database
      */
     public void deleteAllProteinEvidences() {
@@ -179,6 +187,14 @@ public class PrideMoleculesMongoService {
             peptideEvidence.setId(currentPeptide.get().getId());
 
          peptideMongoRepository.save(peptideEvidence);
+    }
+
+    /**
+     * Save an specific Peptide Evidence in MongoDB
+     * @param peptideEvidence {@link PrideMongoPeptideEvidence}
+     */
+    public void insertPeptideEvidence(PrideMongoPeptideEvidence peptideEvidence){
+        peptideMongoRepository.save(peptideEvidence);
     }
 
     /**

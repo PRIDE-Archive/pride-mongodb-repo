@@ -3,6 +3,7 @@ package uk.ac.ebi.pride.mongodb.archive.repo.files;
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -19,6 +20,7 @@ import java.util.List;
 /**
  * @author ypriverol
  */
+@ComponentScan(basePackages = {"uk.ac.ebi.pride.mongodb.configs"})
 public class PrideFileMongoRepositoryImpl implements PrideFileMongoRepositoryCustom{
 
     MongoTemplate mongoTemplate;

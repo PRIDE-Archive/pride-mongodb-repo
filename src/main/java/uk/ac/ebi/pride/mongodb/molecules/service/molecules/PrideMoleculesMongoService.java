@@ -240,7 +240,7 @@ public class PrideMoleculesMongoService {
         if(assayAccession != null && !assayAccession.isEmpty())
             filter.add("assayAccession=in=" + assayAccession);
         if(peptideSequence != null && !peptideSequence.isEmpty())
-            filter.add("peptideSequence=in=" + peptideSequence);
+            filter.add("peptideSequence=regex=" + peptideSequence);
         if(reportedProtein != null && !reportedProtein.isEmpty())
             filter.add("proteinAccession=in=" + reportedProtein);
 

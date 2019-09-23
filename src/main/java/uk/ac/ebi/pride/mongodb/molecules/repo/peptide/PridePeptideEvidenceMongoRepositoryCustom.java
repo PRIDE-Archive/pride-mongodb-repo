@@ -33,4 +33,7 @@ public interface PridePeptideEvidenceMongoRepositoryCustom {
 
     Page<PrideMongoPeptideEvidence> findPeptideEvidenceByProteinEvidence(String projectAccession, String assayAccession,
                                                                          String reportedProtein, Pageable page);
+
+    List<String> findProteinAccessionByProjectAccessions(String projectAccession);
+    List<String> findPeptideSequenceByProjectAccessions(String projectAccession);
 }

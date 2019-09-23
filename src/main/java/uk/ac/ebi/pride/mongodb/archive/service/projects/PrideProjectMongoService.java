@@ -13,6 +13,7 @@ import uk.ac.ebi.pride.mongodb.archive.repo.assay.PrideAssayMongoRepository;
 import uk.ac.ebi.pride.mongodb.archive.repo.projects.PrideProjectMongoRepository;
 import uk.ac.ebi.pride.utilities.util.Triple;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,11 +43,11 @@ public class PrideProjectMongoService {
      * @param project {@link MongoPrideProject}
      * @return MongoPrideProject
      */
-    public Optional<MongoPrideProject> insert(MongoPrideProject project){
-        if(!repository.findByAccession(project.getAccession()).isPresent()){
+    public Optional<MongoPrideProject> insert(MongoPrideProject project) {
+        if (!repository.findByAccession(project.getAccession()).isPresent()) {
             project = repository.save(project);
             log.info("A new project has been saved into MongoDB database with Accession -- " + project.getAccession());
-        }else
+        } else
             log.info("A project with similar accession has been found in the MongoDB database, please use update function -- " + project.getAccession());
         return Optional.of(project);
     }
@@ -57,11 +58,11 @@ public class PrideProjectMongoService {
      * @param project {@link MongoPrideProject}
      * @return MongoPrideProject
      */
-    public Optional<MongoPrideProject> update(MongoPrideProject project){
-        if(repository.findByAccession(project.getAccession()).isPresent()){
+    public Optional<MongoPrideProject> update(MongoPrideProject project) {
+        if (repository.findByAccession(project.getAccession()).isPresent()) {
             project = repository.save(project);
             log.info("A new project has been updated in MongoDB with accession -- " + project.getAccession());
-        }else
+        } else
             log.info("The project do not exists in the database the insert function should be used -- " + project.getAccession());
         return Optional.of(project);
     }
@@ -70,18 +71,18 @@ public class PrideProjectMongoService {
     /**
      * This method add projectFiles with the corresponding type of relations defined as {@link CvParamProvider}.
      *
-     * @param projectAccession project accession
+     * @param projectAccession     project accession
      * @param projectFileRelations Project File relations
      * @return MongoPrideProject
      */
-    public Optional<MongoPrideProject> updateFileRelations(String projectAccession, List<Triple<String, String, CvParamProvider>> projectFileRelations){
+    public Optional<MongoPrideProject> updateFileRelations(String projectAccession, List<Triple<String, String, CvParamProvider>> projectFileRelations) {
         Optional<MongoPrideProject> project = repository.findByAccession(projectAccession);
-        List projectFiles = projectFileRelations.stream().map(x-> new Triple(x.getFirst(), x.getSecond(), new MongoCvParam(x.getThird().getCvLabel(), x.getThird().getAccession(), x.getThird().getName(), x.getThird().getValue()))).collect(Collectors.toList());
-        if(project.isPresent()){
+        List projectFiles = projectFileRelations.stream().map(x -> new Triple(x.getFirst(), x.getSecond(), new MongoCvParam(x.getThird().getCvLabel(), x.getThird().getAccession(), x.getThird().getName(), x.getThird().getValue()))).collect(Collectors.toList());
+        if (project.isPresent()) {
             project.get().setSubmittedFileRelations(projectFiles);
             repository.save(project.get());
             log.info("Update the current project -- " + project.get().getAccession() + " with the File relations -- " + projectFileRelations);
-        }else
+        } else
             log.info("The requested project is not in the Database -- " + project.get().getAccession());
         return project;
     }
@@ -89,11 +90,16 @@ public class PrideProjectMongoService {
 
     /**
      * This method return the Pride Mongo Project by accession of the Project PX or PRD
+     *
      * @param accession PX accession
      * @return Optional
      */
-    public Optional<MongoPrideProject> findByAccession(String accession){
+    public Optional<MongoPrideProject> findByAccession(String accession) {
         return repository.findByAccession(accession);
+    }
+
+    public List<String> getAllProjectAccessions() {
+        return repository.getAllProjectAccessions();
     }
 
     /**
@@ -102,16 +108,51 @@ public class PrideProjectMongoService {
      * @param page Page
      * @return List of Mongo Pride Projects
      */
-    public Page<MongoPrideProject> findAll(Pageable page){
+    public Page<MongoPrideProject> findAll(Pageable page) {
         return repository.findAll(page);
+    }
+
+    /*
+     sample_attributes = species
+     ptmList = modifications
+    */
+    public Page<MongoPrideProject> findByMultipleAttributes(Pageable page, String accessionsStr, String speciesStr,
+                                                            String instrumentsStr, String contact,
+                                                            String modifications, String publicationsStr,
+                                                            String keywordsStr) {
+        String[] accessions = null;
+        String[] species = null;
+        String[] instruments = null;
+        String[] publications = null;
+        String[] keywords = null;
+
+        if (accessionsStr != null) {
+            accessions = Arrays.stream(accessionsStr.split(",")).map(String::trim).toArray(String[]::new);
+        }
+        if (speciesStr != null) {
+            species = Arrays.stream(speciesStr.split(",")).map(String::trim).toArray(String[]::new);
+        }
+        if (instrumentsStr != null) {
+            instruments = Arrays.stream(instrumentsStr.split(",")).map(String::trim).toArray(String[]::new);
+        }
+        if (publicationsStr != null) {
+            publications = Arrays.stream(publicationsStr.split(",")).map(String::trim).toArray(String[]::new);
+        }
+        if (keywordsStr != null) {
+            keywords = Arrays.stream(keywordsStr.split(",")).map(String::trim).toArray(String[]::new);
+        }
+
+        return repository.findByMultipleAttributes(page, accessions, species,
+                instruments, contact, modifications, publications, keywords);
     }
 
     /**
      * Return all the Projects from the database using Stream. It is important to know that
      * this method is only retrieving the Stream of the List returned
+     *
      * @return
      */
-    public Stream<MongoPrideProject> findAllStream(){
+    public Stream<MongoPrideProject> findAllStream() {
         return repository.findAll().stream();
     }
 
@@ -120,9 +161,9 @@ public class PrideProjectMongoService {
         repository.deleteAll();
     }
 
-    public boolean deleteByAccession(String accession){
+    public boolean deleteByAccession(String accession) {
         Optional<MongoPrideProject> project = repository.findByAccession(accession);
-        if(project.isPresent()) {
+        if (project.isPresent()) {
             repository.delete(project.get());
             return true;
         }
@@ -131,11 +172,11 @@ public class PrideProjectMongoService {
     }
 
     public void saveAssays(List<MongoPrideAssay> mongoAssays) {
-        mongoAssays.stream().forEach(x -> {
+        mongoAssays.forEach(x -> {
             Optional<MongoPrideAssay> currentAssay = assayMongoRepository.findPrideAssayByAccession(x.getAccession());
-            if(!currentAssay.isPresent())
+            if (!currentAssay.isPresent())
                 assayMongoRepository.save(x);
-            else{
+            else {
                 updateAssay(currentAssay.get(), x);
                 log.info("The request assay is already in MongoDB, it will be updated -- " + x.getAccession());
             }
@@ -143,15 +184,15 @@ public class PrideProjectMongoService {
 
     }
 
-    public MongoPrideAssay updateAssay(MongoPrideAssay currentAssay, MongoPrideAssay newAssay){
+    public MongoPrideAssay updateAssay(MongoPrideAssay currentAssay, MongoPrideAssay newAssay) {
         newAssay.setId(currentAssay.getId());
         assayMongoRepository.save(newAssay);
         return newAssay;
     }
 
-    public MongoPrideAssay updateAssay(MongoPrideAssay newAssay){
+    public MongoPrideAssay updateAssay(MongoPrideAssay newAssay) {
         Optional<MongoPrideAssay> currentAssay = assayMongoRepository.findPrideAssayByAccession(newAssay.getAccession());
-        if(currentAssay.isPresent()){
+        if (currentAssay.isPresent()) {
             updateAssay(currentAssay.get(), newAssay);
             log.info("The request assay is already in MongoDB, it will be updated -- " + newAssay.getAccession());
         }
@@ -159,7 +200,7 @@ public class PrideProjectMongoService {
     }
 
 
-    public Optional<MongoPrideAssay> findAssayByAccession(String assayAccession){
+    public Optional<MongoPrideAssay> findAssayByAccession(String assayAccession) {
         return assayMongoRepository.findPrideAssayByAccession(assayAccession);
     }
 }

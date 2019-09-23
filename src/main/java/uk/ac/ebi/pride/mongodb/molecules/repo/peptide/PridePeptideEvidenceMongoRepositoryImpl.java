@@ -15,6 +15,7 @@ import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -66,5 +67,25 @@ public class PridePeptideEvidenceMongoRepositoryImpl implements PridePeptideEvid
         List<PrideMongoPeptideEvidence> files =  mongoTemplate.find(queryMongo, PrideMongoPeptideEvidence.class);
         return PageableExecutionUtils.getPage(files, page, () -> mongoOperations.count(queryMongo, PrideMongoPeptideEvidence.class));
 
+    }
+
+    @Override
+    public List<String> findProteinAccessionByProjectAccessions(String projectAccession) {
+        Query query = Query.query(Criteria.where(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(projectAccession));
+
+        ArrayList<String> proteinAccessions = mongoTemplate.getCollection(PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME)
+                .distinct(PrideArchiveField.PROTEIN_ACCESSION, query.getQueryObject(), String.class)
+                .into(new ArrayList<>());
+        return proteinAccessions;
+    }
+
+    @Override
+    public List<String> findPeptideSequenceByProjectAccessions(String projectAccession) {
+        Query query = Query.query(Criteria.where(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(projectAccession));
+
+        ArrayList<String> peptideSequences = mongoTemplate.getCollection(PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME)
+                .distinct(PrideArchiveField.PEPTIDE_SEQUENCE, query.getQueryObject(), String.class)
+                .into(new ArrayList<>());
+        return peptideSequences;
     }
 }

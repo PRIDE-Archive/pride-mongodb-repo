@@ -13,6 +13,7 @@ public interface PrideProjectMongoRepositoryCustom {
     sample_attributes = species
     ptmList = modifications
     */
+    //TODO : this function is not used for now. But it might be useful for future
     Page<MongoPrideProject> findByMultipleAttributes(Pageable page, String[] accessions, String[] sample_attributes,
                                                      String[] instruments, String contact, String ptmList,
                                                      String[] publications, String[] keywords);

@@ -28,6 +28,7 @@ public class PrideProjectMongoRepositoryCustomImpl implements PrideProjectMongoR
      sample_attributes = species
      ptmList = modifications
     */
+    //TODO : this function is not used for now. But it might be useful for future
     @Override
     public Page<MongoPrideProject> findByMultipleAttributes(Pageable page, String[] accessions, String[] sampleAttributes,
                                                             String[] instruments, String contact,

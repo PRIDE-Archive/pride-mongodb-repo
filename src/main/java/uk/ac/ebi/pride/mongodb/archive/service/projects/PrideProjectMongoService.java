@@ -116,6 +116,7 @@ public class PrideProjectMongoService {
      sample_attributes = species
      ptmList = modifications
     */
+    //TODO : this code is not used for now. But it might be useful for future
     public Page<MongoPrideProject> findByMultipleAttributes(Pageable page, String accessionsStr, String speciesStr,
                                                             String instrumentsStr, String contact,
                                                             String modifications, String publicationsStr,

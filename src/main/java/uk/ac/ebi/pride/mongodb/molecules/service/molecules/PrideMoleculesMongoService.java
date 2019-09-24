@@ -253,4 +253,12 @@ public class PrideMoleculesMongoService {
                                                                    String reportedProtein, String peptideAccession) {
         return peptideMongoRepository.findPeptideByProteinAndAssayAccession(reportedProtein, assayAccession, peptideAccession);
     }
+
+    public List<String> findProteinAccessionByProjectAccessions(String projectAccession) {
+        return peptideMongoRepository.findProteinAccessionByProjectAccessions(projectAccession);
+    }
+
+    public List<String> findPeptideSequenceByProjectAccessions(String projectAccession) {
+        return peptideMongoRepository.findPeptideSequenceByProjectAccessions(projectAccession);
+    }
 }

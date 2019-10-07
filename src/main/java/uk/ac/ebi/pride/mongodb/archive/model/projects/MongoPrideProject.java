@@ -257,7 +257,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Override
     public Collection<String> getHeadLab() {
         Collection<String> headLab = Collections.EMPTY_LIST;
-        if(this.headLab != null && this.headLab.isEmpty())
+        if(this.headLab != null && !this.headLab.isEmpty())
             headLab =  this.headLab.stream().map(MongoContact::getName).collect(Collectors.toList());
         return headLab;
     }

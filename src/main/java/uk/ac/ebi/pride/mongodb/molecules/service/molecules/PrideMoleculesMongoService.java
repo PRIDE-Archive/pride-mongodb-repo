@@ -249,6 +249,22 @@ public class PrideMoleculesMongoService {
 
     }
 
+    /**
+     * Search {@link PrideMongoPeptideEvidence} peptide evidences by USI or project accession
+     * @param usi USI
+     * @param accession project accession
+     * @param page Page
+     * @return
+     */
+    public Page<PrideMongoPeptideEvidence> findPeptideEvidences(String usi, String accession,  PageRequest page){
+        StringJoiner filter = new StringJoiner(",");
+        if(accession != null && !accession.isEmpty())
+            filter.add("projectAccession=in=" + accession);
+
+        List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters(filter.toString());
+        return peptideMongoRepository.filterByAttributes(filters, page);
+    }
+
     public Optional<PrideMongoPeptideEvidence> findPeptideEvidence(String projectAccession, String assayAccession,
                                                                    String reportedProtein, String peptideAccession) {
         return peptideMongoRepository.findPeptideByProteinAndAssayAccession(reportedProtein, assayAccession, peptideAccession);

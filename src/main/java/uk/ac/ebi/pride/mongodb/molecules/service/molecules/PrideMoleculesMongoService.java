@@ -143,16 +143,6 @@ public class PrideMoleculesMongoService {
         return psms;
     }
 
-//    /**
-//     * Finds a PSM by an Accession .
-//     *
-//     * @param accession Accession
-//     * @return a PSM corresponding to the provided ID.
-//     */
-//    public PrideMongoPeptideEvidence findByAccession(String accession) {
-//        return psmMongoRepository.findByAccession(accession).orElse(null);
-//    }
-
 
     /**
      * Counts how many PSMs are for a project accession.
@@ -276,5 +266,14 @@ public class PrideMoleculesMongoService {
 
     public List<String> findPeptideSequenceByProjectAccessions(String projectAccession) {
         return peptideMongoRepository.findPeptideSequenceByProjectAccessions(projectAccession);
+    }
+
+    /**
+     * List all the peptide Evidecnes.
+     * @param page
+     * @return
+     */
+    public Page<PrideMongoPeptideEvidence> listPeptideEvidences(PageRequest page){
+        return peptideMongoRepository.findAll(page);
     }
 }

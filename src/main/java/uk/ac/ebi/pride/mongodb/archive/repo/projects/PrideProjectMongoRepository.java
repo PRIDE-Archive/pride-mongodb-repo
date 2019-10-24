@@ -30,4 +30,7 @@ public interface PrideProjectMongoRepository extends MongoRepository<MongoPrideP
 
     @Query("{'" + PrideArchiveField.ACCESSION + "' : ?0}")
     Optional<MongoPrideProject> findByAccession(String accession);
+
+    @Query("{'" + PrideArchiveField.ACCESSION + "': {'$in' : ?0}}")
+    List<MongoPrideProject> findByMultipleAccessions(List<String> accessions);
 }

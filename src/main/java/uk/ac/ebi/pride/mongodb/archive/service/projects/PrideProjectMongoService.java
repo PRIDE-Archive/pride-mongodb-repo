@@ -98,6 +98,10 @@ public class PrideProjectMongoService {
         return repository.findByAccession(accession);
     }
 
+    public List<MongoPrideProject> findByMultipleAccessions(List<String> accessions) {
+        return repository.findByMultipleAccessions(accessions);
+    }
+
     public List<String> getAllProjectAccessions() {
         return repository.getAllProjectAccessions();
     }

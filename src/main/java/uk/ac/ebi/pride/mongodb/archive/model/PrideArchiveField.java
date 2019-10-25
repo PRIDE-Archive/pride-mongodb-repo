@@ -117,8 +117,10 @@ public interface PrideArchiveField {
 
     /** PSM Collections **/
     String PRIDE_PEPTIDE_COLLECTION_NAME = "pride_peptide_evidences";
+    String PRIDE_PSM_COLLECTION_NAME = "pride_psm_evidences";
     String PSM_SPECTRUM_ACCESSIONS = "psmAccessions";
     String PEPTIDE_SEQUENCE = "peptideSequence";
+    String MODIFIED_PEPTIDE_SEQUENCE = "modifiedPeptideSequence";
     String REPORTED_PROTEIN_ACCESSION = "reportedProteinAccession";
     String REPORTED_FILE_ID = "reportedFileID";
     String EXTERNAL_PROJECT_ACCESSION = "projectAccession";
@@ -129,6 +131,7 @@ public interface PrideArchiveField {
     String BEST_PSM_SCORE = "bestPSMScore";
     String RETENTION_TIME = "retentionTime";
     String CHARGE = "charge";
+    String PRECURSOR_MASS = "precursorMass";
     String EXPERIMENTAL_MASS_TO_CHARGE = "expMassToCharge";
     String CALCULATED_MASS_TO_CHARGE = "calculatedMassToCharge";
     String PRE_AMINO_ACID = "preAminoAcid";
@@ -186,7 +189,7 @@ public interface PrideArchiveField {
     String VALID_ASSAY = "validAssay";
 
     /** Alias Protein Table **/
-    String PRIDE_PROTEIN_COLLECTION_NAME = "archive_protein_collection";
+    String PRIDE_PROTEIN_COLLECTION_NAME = "pride_protein_evidences";
     String PROTEIN_SEQUENCE = "proteinSequence";
     String UNIPROT_MAPPED_PROTEIN_ACCESSION = "uniprotMappedProteinAccession";
     String ENSEMBL_MAPPED_PROTEIN_ACCESSION = "ensemblMappedProteinAccession";
@@ -207,4 +210,7 @@ public interface PrideArchiveField {
     String NUMBER_PEPTIDEEVIDENCES = "numberPeptides";
     String NUMBER_PSMS = "numberPSMs";
     String PROTEIN_COVERAGE = "sequenceCoverage";
+
+    String USI = "usi";
+    String PSM_SUMMARY_FILE = "fileName";
 }

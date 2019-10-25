@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class PeptideSpectrumOverview {
-
     int charge;
     double precursorMass;
     String usi;

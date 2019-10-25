@@ -10,8 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
 import uk.ac.ebi.pride.mongodb.molecules.model.protein.PrideMongoProteinEvidence;
+import uk.ac.ebi.pride.mongodb.molecules.model.psm.PrideMongoPsmSummaryEvidence;
 import uk.ac.ebi.pride.mongodb.molecules.repo.peptide.PridePeptideEvidenceMongoRepository;
 import uk.ac.ebi.pride.mongodb.molecules.repo.protein.PrideProteinMongoRepository;
+import uk.ac.ebi.pride.mongodb.molecules.repo.psm.PridePsmSummaryEvidenceMongoRepository;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
 import java.util.List;
@@ -26,10 +28,13 @@ public class PrideMoleculesMongoService {
 
     final PridePeptideEvidenceMongoRepository peptideMongoRepository;
 
+    final PridePsmSummaryEvidenceMongoRepository psmMongoRepository;
+
     @Autowired
-    public PrideMoleculesMongoService(PrideProteinMongoRepository proteinRepository, PridePeptideEvidenceMongoRepository peptideMongoRepository) {
+    public PrideMoleculesMongoService(PrideProteinMongoRepository proteinRepository, PridePeptideEvidenceMongoRepository peptideMongoRepository, PridePsmSummaryEvidenceMongoRepository psmMongoRepository) {
         this.proteinMongoRepository = proteinRepository;
         this.peptideMongoRepository = peptideMongoRepository;
+        this.psmMongoRepository = psmMongoRepository;
     }
 
     /**
@@ -51,12 +56,15 @@ public class PrideMoleculesMongoService {
      * @param protein {@link PrideMongoProteinEvidence}
      */
     public void saveProteinEvidences(PrideMongoProteinEvidence protein){
-        Optional<PrideMongoProteinEvidence> currentProtein = proteinMongoRepository.findByAccessionAndAssayAccession(protein.getReportedAccession(), protein.getAssayAccession());
+        Optional<PrideMongoProteinEvidence> currentProtein = proteinMongoRepository
+                .findByAccessionAndAssayAccession(protein.getReportedAccession(), protein.getAssayAccession());
         if(currentProtein.isPresent()){
             protein.setId((ObjectId) currentProtein.get().getId());
-            log.debug("The protein will be updated -- Assay: " + protein.getAssayAccession() + " Protein: " + protein.getReportedAccession());
+            log.debug("The protein will be updated -- Assay: " + protein.getAssayAccession() + " Protein: "
+                    + protein.getReportedAccession());
         }else{
-            log.debug("New protein will be added to the database -- Assay: " + protein.getAssayAccession() + " Protein: " + protein.getReportedAccession());
+            log.debug("New protein will be added to the database -- Assay: " + protein.getAssayAccession()
+                    + " Protein: " + protein.getReportedAccession());
         }
         proteinMongoRepository.save(protein);
     }
@@ -276,4 +284,42 @@ public class PrideMoleculesMongoService {
     public Page<PrideMongoPeptideEvidence> listPeptideEvidences(PageRequest page){
         return peptideMongoRepository.findAll(page);
     }
+
+    /**
+     * This method not not find for present of the protein in the database, only try to insert it.
+     * @param psmSummaryEvidence {@link PrideMongoPsmSummaryEvidence}
+     */
+    public void insertPsmSummaryEvidence(PrideMongoPsmSummaryEvidence psmSummaryEvidence){
+        psmMongoRepository.save(psmSummaryEvidence);
+    }
+
+    public void savePsmSummaryEvidence(PrideMongoPsmSummaryEvidence psmMongo){
+        Optional<PrideMongoPeptideEvidence> currentPSM = psmMongoRepository
+                .findPsmSummaryByUsi(psmMongo.getUsi());
+        if(currentPSM.isPresent())
+            psmMongo.setId(currentPSM.get().getId());
+
+        psmMongoRepository.save(psmMongo);
+
+    }
+
+    public Page<PrideMongoPsmSummaryEvidence> findPsmSummaryEvidences(String usi, String projectAccession, String unmodifiedPeptideSequence, String modifiedPeptideSequence,
+                                                                PageRequest page){
+
+        StringJoiner filter = new StringJoiner(",");
+        if(projectAccession != null && !projectAccession.isEmpty())
+            filter.add("projectAccession=in=" + projectAccession);
+        if(usi != null && !usi.isEmpty())
+            filter.add("usi=in=" + usi);
+        if(unmodifiedPeptideSequence != null && !unmodifiedPeptideSequence.isEmpty())
+            filter.add("peptideSequence=regex=" + unmodifiedPeptideSequence);
+        if(modifiedPeptideSequence != null && !modifiedPeptideSequence.isEmpty())
+            filter.add("modifiedPeptideSequence=in=" + modifiedPeptideSequence);
+
+        List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters(filter.toString());
+        return psmMongoRepository.filterByAttributes(filters, page);
+
+    }
+
+
 }

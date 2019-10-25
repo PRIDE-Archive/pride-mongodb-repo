@@ -25,10 +25,6 @@ public class PrideMongoPsmSummaryEvidence implements PrideArchiveField{
     @Indexed(name = PrideArchiveField.USI, unique = true)
     String usi;
 
-    /** Reported File ID is the Identifier of the File mzTab in PRIDE **/
-    @Field(value = PrideArchiveField.PROTEIN_ACCESSION)
-    private String proteinAccession;
-
     /** Accession in Reported File **/
     @Field(value = PrideArchiveField.PROTEIN_ASSAY_ACCESSION)
     private String assayAccession;

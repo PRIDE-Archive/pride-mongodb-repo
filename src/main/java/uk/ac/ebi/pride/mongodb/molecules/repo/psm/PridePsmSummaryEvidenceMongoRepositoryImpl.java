@@ -51,29 +51,36 @@ public class PridePsmSummaryEvidenceMongoRepositoryImpl implements PridePsmSumma
                 mongoOperations.count(queryMongo,PrideMongoPsmSummaryEvidence.class));
     }
 
+//    @Override
+//    public List<PrideMongoPsmSummaryEvidence> findByIdAccessions(Collection<String> accessions, Sort sort) {
+//        Criteria queryCriteria = PrideMongoUtils.builQueryByAccessions(accessions);
+//        Query queryMongo = new Query().addCriteria(queryCriteria);
+//        queryMongo.with(sort);
+//        return mongoTemplate.find(queryMongo, PrideMongoPsmSummaryEvidence.class);
+//    }
+
     @Override
-    public List<PrideMongoPsmSummaryEvidence> findByIdAccessions(Collection<String> accessions, Sort sort) {
-        Criteria queryCriteria = PrideMongoUtils.builQueryByAccessions(accessions);
+    public Page<PrideMongoPsmSummaryEvidence> findPsmSummaryEvidencesByUsis(List<String> usis, Pageable page) {
+
+        Criteria queryCriteria = builQueryByUsis(usis);
         Query queryMongo = new Query().addCriteria(queryCriteria);
-        queryMongo.with(sort);
-        return mongoTemplate.find(queryMongo, PrideMongoPsmSummaryEvidence.class);
-    }
-
-    @Override
-    public Page<PrideMongoPsmSummaryEvidence> findPeptideEvidenceByProteinEvidence(String projectAccession, String assayAccession, String reportedProtein, Pageable page) {
-
-        Criteria criteria = new Criteria(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION)
-                .is(projectAccession)
-                .and(PrideArchiveField.PROTEIN_ASSAY_ACCESSION)
-                .is(assayAccession).and(PrideArchiveField.REPORTED_PROTEIN_ACCESSION)
-                .is(reportedProtein);
-        Query queryMongo = new Query().addCriteria(criteria);
         queryMongo.with(page);
         List<PrideMongoPsmSummaryEvidence> files =  mongoTemplate.find(queryMongo, PrideMongoPsmSummaryEvidence.class);
         return PageableExecutionUtils.getPage(files, page, () ->
                 mongoOperations.count(queryMongo, PrideMongoPsmSummaryEvidence.class));
 
     }
+
+    /**
+     * Search by Usis
+     * @param usis List of usis
+     * @return accessions.
+     */
+    public static Criteria builQueryByUsis(Collection<String> usis) {
+        return new Criteria(PrideArchiveField.USI).in(usis);
+    }
+
+
 
 //    @Override
 //    public List<String> findProteinAccessionByProjectAccessions(String projectAccession) {

@@ -75,7 +75,7 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
 
     /** Additional Attributes **/
     @Field(value = PrideArchiveField.ADDITIONAL_ATTRIBUTES)
-    private List<CvParamProvider> additionalAttributes;
+    private List<MongoCvParam> additionalAttributes;
 
     @Indexed(name = PSM_SPECTRUM_ACCESSIONS)
     private List<PeptideSpectrumOverview> psmAccessions;

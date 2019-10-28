@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.mongodb.molecules.model.protein;
 
 
+import com.mongodb.Mongo;
 import lombok.Builder;
 import lombok.Data;
 import org.bson.types.ObjectId;
@@ -71,13 +72,13 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
 
     /** Additional Attributes, Contains also scores**/
     @Field(PrideArchiveField.ADDITIONAL_ATTRIBUTES)
-    private List<CvParamProvider> additionalAttributes;
+    private List<MongoCvParam> additionalAttributes;
 
     @Field(PrideArchiveField.PROTEIN_MODIFICATIONS)
     private List<IdentifiedModificationProvider> ptms;
 
     @Field(PrideArchiveField.BEST_SEARCH_ENGINE)
-    private CvParamProvider bestSearchEngineScore;
+    private MongoCvParam bestSearchEngineScore;
 
     @Field(PrideArchiveField.QUALITY_ESTIMATION_METHOD)
     private List<MongoCvParam> qualityEstimationMethods;
@@ -150,7 +151,7 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
      * This method add an attribute as {@link CvParamProvider} to the list of attributes.
      * @param attribute Attribute in {@link CvParamProvider}
      */
-    public void addAttribute(CvParamProvider attribute){
+    public void addAttribute(MongoCvParam attribute){
         if(additionalAttributes == null)
             additionalAttributes = new ArrayList<>();
         additionalAttributes.add(attribute);

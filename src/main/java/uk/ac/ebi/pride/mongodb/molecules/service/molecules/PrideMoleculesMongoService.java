@@ -332,5 +332,7 @@ public class PrideMoleculesMongoService {
 
     }
 
-
+    public Page<PrideMongoPsmSummaryEvidence> listPsmSummaryEvidences(PageRequest pageRequest) {
+        return psmMongoRepository.findAll(pageRequest);
+    }
 }

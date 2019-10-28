@@ -9,6 +9,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
+import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
+
+import java.util.List;
 
 
 @Data
@@ -41,9 +44,9 @@ public class PrideMongoPsmSummaryEvidence implements PrideArchiveField{
     @Indexed(name = PrideArchiveField.MODIFIED_PEPTIDE_SEQUENCE)
     private String modifiedPeptideSequence;
 
-    /** Best Search engine scores **/
-    @Field(value = PrideArchiveField.BEST_PSM_SCORE)
-    CvParamProvider bestPSMScore;
+    /** Additional Attributes **/
+    @Field(value = PrideArchiveField.ADDITIONAL_ATTRIBUTES)
+    private List<MongoCvParam> additionalAttributes;
 
     @Field( value = PrideArchiveField.IS_DECOY)
     private Boolean isDecoy;

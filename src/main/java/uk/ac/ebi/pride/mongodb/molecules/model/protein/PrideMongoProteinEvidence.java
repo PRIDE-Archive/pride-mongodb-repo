@@ -14,8 +14,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.data.protein.ProteinDetailProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -72,16 +72,16 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
 
     /** Additional Attributes, Contains also scores**/
     @Field(PrideArchiveField.ADDITIONAL_ATTRIBUTES)
-    private List<MongoCvParam> additionalAttributes;
+    private List<DefaultCvParam> additionalAttributes;
 
     @Field(PrideArchiveField.PROTEIN_MODIFICATIONS)
     private List<IdentifiedModificationProvider> ptms;
 
     @Field(PrideArchiveField.BEST_SEARCH_ENGINE)
-    private MongoCvParam bestSearchEngineScore;
+    private DefaultCvParam bestSearchEngineScore;
 
     @Field(PrideArchiveField.QUALITY_ESTIMATION_METHOD)
-    private List<MongoCvParam> qualityEstimationMethods;
+    private List<DefaultCvParam> qualityEstimationMethods;
 
     @Indexed(name = PrideArchiveField.IS_VALIDATED)
     private Boolean isValid;
@@ -151,7 +151,7 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
      * This method add an attribute as {@link CvParamProvider} to the list of attributes.
      * @param attribute Attribute in {@link CvParamProvider}
      */
-    public void addAttribute(MongoCvParam attribute){
+    public void addAttribute(DefaultCvParam attribute){
         if(additionalAttributes == null)
             additionalAttributes = new ArrayList<>();
         additionalAttributes.add(attribute);

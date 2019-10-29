@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.archive.dataprovider.utils.ProjectFileCategoryConstants;
 import uk.ac.ebi.pride.data.exception.SubmissionFileException;
 import uk.ac.ebi.pride.data.io.SubmissionFileParser;
@@ -15,7 +16,6 @@ import uk.ac.ebi.pride.data.model.DataFile;
 import uk.ac.ebi.pride.data.model.Submission;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
-import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
 import uk.ac.ebi.pride.mongodb.archive.service.files.PrideFileMongoService;
@@ -103,7 +103,7 @@ public class PrideFongoProjectServiceTest {
             String accession = finalProject.get().getAccession();
             return MongoPrideFile.builder()
                     .fileName(dataFile.getFileName())
-                    .fileCategory(new MongoCvParam(ProjectFileCategoryConstants
+                    .fileCategory(new DefaultCvParam(ProjectFileCategoryConstants
                             .findCategory(dataFile.getFileType()
                                      .getName()).getCv()))
                     .projectAccessions(Collections.singleton(accession))
@@ -142,7 +142,7 @@ public class PrideFongoProjectServiceTest {
             String accession = finalProject.get().getAccession();
             return MongoPrideFile.builder()
                     .fileName(dataFile.getFileName())
-                    .fileCategory(new MongoCvParam(ProjectFileCategoryConstants
+                    .fileCategory(new DefaultCvParam(ProjectFileCategoryConstants
                             .findCategory(dataFile.getFileType()
                                     .getName()).getCv()))
                     .projectAccessions(Collections.singleton(accession))

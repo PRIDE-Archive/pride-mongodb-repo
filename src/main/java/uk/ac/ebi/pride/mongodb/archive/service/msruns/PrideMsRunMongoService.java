@@ -4,10 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.idsettings.IdSetting;
-import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.repo.msruns.PrideMSRunMongoRepository;
 import uk.ac.ebi.pride.mongodb.archive.transformers.MSRunTransfromer;
 import uk.ac.ebi.pride.utilities.obo.OBOMapper;
@@ -105,24 +105,24 @@ public class PrideMsRunMongoService implements IMSRunService {
     public Optional<MongoPrideMSRun> updateMSRunMetadataParts(String fieldName, MsRunProvider msRunFieldData, String accession) {
 
         Optional<MongoPrideMSRun> msRunOptional = msRunRepository.findMsRunByAccession(accession);
-        Set<MongoCvParam> mongoCvParams = new HashSet<>();
+        Set<DefaultCvParam> mongoCvParams = new HashSet<>();
         if(msRunOptional.isPresent()) {
             MongoPrideMSRun msRun = msRunOptional.get();
             switch (fieldName) {
                 case PrideArchiveField.MS_RUN_FILE_PROPERTIES:
-                    mongoCvParams = (Set<MongoCvParam>) msRunFieldData.getFileProperties();
+                    mongoCvParams = (Set<DefaultCvParam>) msRunFieldData.getFileProperties();
                     msRun.setFileProperties(mongoCvParams);
                     break;
                 case PrideArchiveField.MS_RUN_INSTRUMENT_PROPERTIES:
-                    mongoCvParams = (Set<MongoCvParam>) msRunFieldData.getInstrumentProperties();
+                    mongoCvParams = (Set<DefaultCvParam>) msRunFieldData.getInstrumentProperties();
                     msRun.setInstrumentProperties(mongoCvParams);
                     break;
                 case PrideArchiveField.MS_RUN_MS_DATA:
-                    mongoCvParams = (Set<MongoCvParam>) msRunFieldData.getMsData();
+                    mongoCvParams = (Set<DefaultCvParam>) msRunFieldData.getMsData();
                     msRun.setMsData(mongoCvParams);
                     break;
                 case PrideArchiveField.MS_RUN_SCAN_SETTINGS:
-                    mongoCvParams = (Set<MongoCvParam>) msRunFieldData.getScanSettings();
+                    mongoCvParams = (Set<DefaultCvParam>) msRunFieldData.getScanSettings();
                     msRun.setScanSettings(mongoCvParams);
                     break;
                 case PrideArchiveField.MS_RUN_ID_SETTINGS:
@@ -147,12 +147,12 @@ public class PrideMsRunMongoService implements IMSRunService {
     }
 
 
-    private List<MongoCvParam> processCVParams(Set<MongoCvParam> mongoCvParams) {
+    private List<DefaultCvParam> processCVParams(Set<DefaultCvParam> mongoCvParams) {
 
         return mongoCvParams
             .stream()
             .filter(x -> psiOBOMapper.getTermByAccession(x.getAccession()) != null)
-            .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
+            .map(x -> new DefaultCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
             .collect(Collectors.toList());
     }
 

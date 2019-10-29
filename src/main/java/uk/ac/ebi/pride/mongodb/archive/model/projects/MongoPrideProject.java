@@ -8,14 +8,14 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
+import uk.ac.ebi.pride.archive.dataprovider.reference.DefaultReference;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
+import uk.ac.ebi.pride.archive.dataprovider.user.DefaultContact;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
-import uk.ac.ebi.pride.mongodb.archive.model.reference.MongoReference;
-import uk.ac.ebi.pride.mongodb.archive.model.user.MongoContact;
 import uk.ac.ebi.pride.utilities.util.Triple;
 
 
@@ -55,10 +55,10 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     /** This property defines a relation between files in the Project.
      *  - The first value of the {@link Triple} defines the parent File Accession
      *  - The second value of the {@link Triple} defines the child File Accession
-     *  - The third value of the {@link Triple} is a {@link MongoCvParam} that defines the relation between files
+     *  - The third value of the {@link Triple} is a {@link DefaultCvParam} that defines the relation between files
      *  **/
     @Indexed(name = FILE_RELATIONS_IN_PROJECT)
-    List<Triple<String, String, MongoCvParam>> submittedFileRelations;
+    List<Triple<String, String, DefaultCvParam>> submittedFileRelations;
 
     /** Sample Processing **/
     @Field(value = PrideArchiveField.PROJECT_SAMPLE_PROTOCOL)
@@ -70,12 +70,12 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     /** This is using an abstraction of the User, in this case MongoDB only will retrieve the information related with the userContact **/
     @Indexed(name = PROJECT_SUBMITTER)
-    private Collection<MongoContact> submitters;
+    private Collection<DefaultContact> submitters;
 
     /** This returns a list of head of labs PIs ralted with the experiment **/
     @Indexed(name = PROJECT_PI_NAMES)
     @Getter(AccessLevel.NONE)
-    private Collection<MongoContact> headLab;
+    private Collection<DefaultContact> headLab;
 
     /** List of keywords added by the user **/
     @Indexed(name = PROJECT_KEYWORDS)
@@ -88,7 +88,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     /* This are CVParams to describe the type of the experiment */
     @Indexed(name = QUANTIFICATION_METHODS)
     @Getter(AccessLevel.NONE)
-    private Collection<MongoCvParam> quantificationMethods;
+    private Collection<DefaultCvParam> quantificationMethods;
 
     /** Submission Type for the experiment, defaults value can be read here {@link uk.ac.ebi.pride.archive.dataprovider.utils.SubmissionTypeConstants} */
     @Indexed( name = PROJECT_SUBMISSION_TYPE)
@@ -108,33 +108,33 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     /** List of PTMs for the corresponding Project, this PTMs are globally annotated by the user, it does'nt mean that they have been found in proteins of peptides. */
     @Indexed(name = PROJECT_IDENTIFIED_PTM)
-    private Collection<MongoCvParam> ptmList;
+    private Collection<DefaultCvParam> ptmList;
 
     /** Samples description is a generic information about all the samples in the experiment. */
     @Field(value = SAMPLE_ATTRIBUTES_NAMES)
-    private List<Tuple<MongoCvParam, List<MongoCvParam>>> samplesDescription;
+    private List<Tuple<DefaultCvParam, List<DefaultCvParam>>> samplesDescription;
 
     /** Experimental Factors **/
     @Field(value = EXPERIMENTAL_FACTORS)
-    private List<Tuple<MongoCvParam, List<MongoCvParam>>> experimentalFactors;
+    private List<Tuple<DefaultCvParam, List<DefaultCvParam>>> experimentalFactors;
 
     /** General description about the instruments used in the experiment. */
     @Indexed(name = INSTRUMENTS)
     @Getter(AccessLevel.NONE)
-    private Collection<MongoCvParam> instruments;
+    private Collection<DefaultCvParam> instruments;
 
     /** General software information in CVParams terms **/
     @Indexed(name = SOFTWARES)
-    private Collection<MongoCvParam> softwareList;
+    private Collection<DefaultCvParam> softwareList;
 
     /** References related with the dataset in manuscript and papers **/
     @Field(value = PROJECT_REFERENCES)
     @Getter(AccessLevel.NONE)
-    private Collection<MongoReference> references;
+    private Collection<DefaultReference> references;
 
     /** Additional Attributes **/
     @Indexed(name = ADDITIONAL_ATTRIBUTES)
-    private Collection<MongoCvParam> attributes;
+    private Collection<DefaultCvParam> attributes;
 
     /** Project DOI for complete Submissions */
     @Indexed(name = PROJECT_DOI)
@@ -176,7 +176,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     public Collection<? extends String> getSubmitters() {
         Collection<String> submitters = Collections.EMPTY_LIST;
         if(this.submitters != null && !this.submitters.isEmpty())
-            submitters = this.submitters.stream().map(MongoContact::getName).collect(Collectors.toList());
+            submitters = this.submitters.stream().map(DefaultContact::getName).collect(Collectors.toList());
         return submitters;
     }
 
@@ -184,7 +184,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     public Collection<? extends String> getPtms() {
         Collection<String> ptms = Collections.EMPTY_LIST;
         if(this.ptmList != null && !this.ptmList.isEmpty())
-            ptms = this.ptmList.stream().map(MongoCvParam::getName).collect(Collectors.toList());
+            ptms = this.ptmList.stream().map(DefaultCvParam::getName).collect(Collectors.toList());
         return ptms;
     }
 
@@ -192,7 +192,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     public Collection<? extends String> getSoftwares() {
         Collection<String> softList = Collections.EMPTY_LIST;
         if(this.softwareList != null && !this.softwareList.isEmpty())
-            softList = this.softwareList.stream().map(MongoCvParam::getName).collect(Collectors.toList());
+            softList = this.softwareList.stream().map(DefaultCvParam::getName).collect(Collectors.toList());
         return softList;
     }
 
@@ -233,9 +233,9 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     public Collection<String> getAllAffiliations() {
         Collection<String> affiliations = Collections.EMPTY_LIST;
         if(this.submitters != null && !this.submitters.isEmpty())
-            affiliations = this.submitters.stream().map(MongoContact::getAffiliation).collect(Collectors.toSet());
+            affiliations = this.submitters.stream().map(DefaultContact::getAffiliation).collect(Collectors.toSet());
         if(this.headLab != null && !this.headLab.isEmpty())
-            affiliations.addAll(headLab.stream().map(MongoContact::getAffiliation).collect(Collectors.toList()));
+            affiliations.addAll(headLab.stream().map(DefaultContact::getAffiliation).collect(Collectors.toList()));
         return affiliations;
     }
 
@@ -258,7 +258,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     public Collection<String> getHeadLab() {
         Collection<String> headLab = Collections.EMPTY_LIST;
         if(this.headLab != null && !this.headLab.isEmpty())
-            headLab =  this.headLab.stream().map(MongoContact::getName).collect(Collectors.toList());
+            headLab =  this.headLab.stream().map(DefaultContact::getName).collect(Collectors.toList());
         return headLab;
     }
 
@@ -266,7 +266,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     public Collection<String> getInstruments() {
         Collection<String> instruments = Collections.EMPTY_LIST;
         if(this.instruments != null && !this.instruments.isEmpty())
-            instruments = this.instruments.stream().map(MongoCvParam::getName).collect(Collectors.toList());
+            instruments = this.instruments.stream().map(DefaultCvParam::getName).collect(Collectors.toList());
         return instruments;
     }
 
@@ -274,7 +274,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     public Collection<String> getQuantificationMethods() {
         Collection<String> quantificationMethods = Collections.EMPTY_LIST;
         if(this.quantificationMethods != null && !this.quantificationMethods.isEmpty())
-            quantificationMethods = this.quantificationMethods.stream().map(MongoCvParam::getName).collect(Collectors.toList());
+            quantificationMethods = this.quantificationMethods.stream().map(DefaultCvParam::getName).collect(Collectors.toList());
         return quantificationMethods;
     }
 
@@ -282,7 +282,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     public Collection<String> getReferences() {
         Collection<String> references = Collections.EMPTY_LIST;
         if(this.references != null && !this.references.isEmpty())
-            references = this.references.stream().map(MongoReference::getReferenceLine).collect(Collectors.toList());
+            references = this.references.stream().map(DefaultReference::getReferenceLine).collect(Collectors.toList());
         return references;
     }
 
@@ -303,7 +303,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     }
 
     /**
-     * Get the Instruments in {@link MongoCvParam}
+     * Get the Instruments in {@link DefaultCvParam}
      * @return
      */
     public Collection<? extends CvParamProvider> getInstrumentsCvParams(){

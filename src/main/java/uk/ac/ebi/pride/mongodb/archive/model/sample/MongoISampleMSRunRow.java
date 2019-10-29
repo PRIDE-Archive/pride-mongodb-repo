@@ -5,8 +5,8 @@ import lombok.Data;
 import uk.ac.ebi.pride.archive.dataprovider.common.ITuple;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.archive.dataprovider.sample.ISampleMSRunRow;
-import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -61,12 +61,12 @@ public class MongoISampleMSRunRow implements ISampleMSRunRow {
     /**
      * Sample Metadata in {@link CvParamProvider}.
      */
-    List<Tuple<MongoCvParam, MongoCvParam>> sampleProperties;
+    List<Tuple<DefaultCvParam, DefaultCvParam>> sampleProperties;
 
     /**
      * MsRun Terms in {@link CvParamProvider}.
      */
-    List<Tuple<MongoCvParam, MongoCvParam>> msRunProperties;
+    List<Tuple<DefaultCvParam, DefaultCvParam>> msRunProperties;
 
     public MongoISampleMSRunRow() {
     }
@@ -84,13 +84,15 @@ public class MongoISampleMSRunRow implements ISampleMSRunRow {
         this.sampleProperties = sampleProperties.stream().map( x -> {
             CvParamProvider key = x.getKey();
             CvParamProvider value = x.getValue();
-            return new Tuple<>(new MongoCvParam(key.getCvLabel(), key.getAccession(), key.getName(), key.getValue()), new MongoCvParam(value.getCvLabel(), value.getAccession(), value.getName(), value.getValue()));
+            return new Tuple<>(new DefaultCvParam(key.getCvLabel(), key.getAccession(), key.getName(), key.getValue()),
+                    new DefaultCvParam(value.getCvLabel(), value.getAccession(), value.getName(), value.getValue()));
         }).collect(Collectors.toList());
 
         this.msRunProperties = (msRunProperties !=null)?msRunProperties.stream().map( x -> {
             CvParamProvider key = x.getKey();
             CvParamProvider value = x.getValue();
-            return new Tuple<>(new MongoCvParam(key.getCvLabel(), key.getAccession(), key.getName(), key.getValue()), new MongoCvParam(value.getCvLabel(), value.getAccession(), value.getName(), value.getValue()));
+            return new Tuple<>(new DefaultCvParam(key.getCvLabel(), key.getAccession(), key.getName(), key.getValue()),
+                    new DefaultCvParam(value.getCvLabel(), value.getAccession(), value.getName(), value.getValue()));
         }).collect(Collectors.toList()): Collections.emptyList();
 
     }
@@ -151,11 +153,4 @@ public class MongoISampleMSRunRow implements ISampleMSRunRow {
     }
 
 
-
-//    public Collection<? extends ITuple<? extends CvParamProvider, ? extends CvParamProvider>> getAdditionalProperties() {
-//        if(additionalProperties != null){
-//            return additionalProperties.stream().map( x-> new Tuple<>((CvParamProvider) x.getKey(), (CvParamProvider) x.getValue())).collect(Collectors.toList());
-//        }
-//        return null;
-//    }
 }

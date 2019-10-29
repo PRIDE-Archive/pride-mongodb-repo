@@ -14,8 +14,8 @@ import uk.ac.ebi.pride.archive.dataprovider.assay.AssayProvider;
 import uk.ac.ebi.pride.archive.dataprovider.assay.AssayType;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.utilities.term.CvTermReference;
 
 import java.util.*;
@@ -71,31 +71,31 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
     String assayDescription;
 
     @Field(value = ASSAY_DATA_ANALYSIS_SOFTWARE)
-    Set<MongoCvParam> dataAnalysisSoftwares;
+    Set<DefaultCvParam> dataAnalysisSoftwares;
 
     @Field(value = ASSAY_DATA_ANALYSIS_DATABASE)
-    MongoCvParam dataAnalysisDatabase;
+    DefaultCvParam dataAnalysisDatabase;
 
     @Field(value = ASSAY_DATA_ANALYSIS_RESULTS)
-    List<MongoCvParam> summaryResults;
+    List<DefaultCvParam> summaryResults;
 
     @Field(value = ASSAY_DATA_ANALYSIS_PROTOCOL)
-    List<MongoCvParam> dataAnalysisProperties;
+    List<DefaultCvParam> dataAnalysisProperties;
 
     @Field(value = ASSAY_DATA_ANALYSIS_PTMS)
-    List<Tuple<MongoCvParam, Integer>> ptmsResults;
+    List<Tuple<DefaultCvParam, Integer>> ptmsResults;
 
     @Field(value = ASSAY_FILES)
     List<MongoAssayFile> assayFiles;
 
     @Field(PrideArchiveField.QUALITY_ESTIMATION_METHOD)
-    private List<MongoCvParam> qualityEstimationMethods;
+    private List<DefaultCvParam> qualityEstimationMethods;
 
     @Indexed(name = PrideArchiveField.IS_VALIDATED)
     private Boolean isValid;
 
     @Override
-    public Collection<MongoCvParam> getAdditionalProperties() {
+    public Collection<DefaultCvParam> getAdditionalProperties() {
         return dataAnalysisProperties;
     }
 
@@ -138,7 +138,7 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
 
     private Optional<Integer> getSummaryResultProperty( String propertyAccession){
         if(summaryResults != null ){
-            Optional<MongoCvParam> numberPeptides = summaryResults.stream()
+            Optional<DefaultCvParam> numberPeptides = summaryResults.stream()
                     .filter(x -> x.getAccession().equalsIgnoreCase(propertyAccession))
                     .findFirst();
             if(numberPeptides.isPresent()){

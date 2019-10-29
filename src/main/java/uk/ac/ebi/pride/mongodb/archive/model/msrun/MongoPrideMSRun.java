@@ -12,10 +12,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.idsettings.IdSetting;
-import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -66,19 +66,19 @@ public class MongoPrideMSRun implements MsRunProvider, PrideArchiveField{
     protected long fileSizeBytes;
 
     @Field(PrideArchiveField.MS_RUN_FILE_PROPERTIES)
-    Set<MongoCvParam> fileProperties = new HashSet<>();
+    Set<DefaultCvParam> fileProperties = new HashSet<>();
 
     @Field(PrideArchiveField.MS_RUN_INSTRUMENT_PROPERTIES)
-    Set<MongoCvParam> instrumentProperties = new HashSet<>();
+    Set<DefaultCvParam> instrumentProperties = new HashSet<>();
 
     @Field(PrideArchiveField.MS_RUN_MS_DATA)
-    Set<MongoCvParam> msData = new HashSet<>();
+    Set<DefaultCvParam> msData = new HashSet<>();
 
     @Field(PrideArchiveField.MS_RUN_SCAN_SETTINGS)
-    Set<MongoCvParam> scanSettings = new HashSet<>();
+    Set<DefaultCvParam> scanSettings = new HashSet<>();
 
     @Field(PrideArchiveField.ADDITIONAL_ATTRIBUTES)
-    List<MongoCvParam> additionalAttributes;
+    List<DefaultCvParam> additionalAttributes;
 
     @Field(PrideArchiveField.MS_RUN_ID_SETTINGS)
     Set<IdSetting> idSettings = new HashSet<>();
@@ -115,7 +115,7 @@ public class MongoPrideMSRun implements MsRunProvider, PrideArchiveField{
      * @param additionalAttributes additional properties
      * @param idSettings idnetification Settings
      */
-    public MongoPrideMSRun(ObjectId id, Set<String> projectAccessions, Set<String> analysisAccessions, String accession, String fileName, long fileSizeBytes, Set<MongoCvParam> fileProperties, Set<MongoCvParam> instrumentProperties, Set<MongoCvParam> msData, Set<MongoCvParam> scanSettings, List<MongoCvParam> additionalAttributes, Set<IdSetting> idSettings) {
+    public MongoPrideMSRun(ObjectId id, Set<String> projectAccessions, Set<String> analysisAccessions, String accession, String fileName, long fileSizeBytes, Set<DefaultCvParam> fileProperties, Set<DefaultCvParam> instrumentProperties, Set<DefaultCvParam> msData, Set<DefaultCvParam> scanSettings, List<DefaultCvParam> additionalAttributes, Set<IdSetting> idSettings) {
         this.id = id;
         this.projectAccessions = projectAccessions;
         this.analysisAccessions = analysisAccessions;
@@ -156,19 +156,19 @@ public class MongoPrideMSRun implements MsRunProvider, PrideArchiveField{
         return Objects.hash(super.hashCode(), fileProperties, instrumentProperties, msData, scanSettings, idSettings);
     }
 
-    public void addFileProperties(Set<MongoCvParam> fileProperties) {
+    public void addFileProperties(Set<DefaultCvParam> fileProperties) {
         this.fileProperties.addAll(fileProperties);
     }
 
-    public void addInstrumentProperties(Set<MongoCvParam> instrumentProperties) {
+    public void addInstrumentProperties(Set<DefaultCvParam> instrumentProperties) {
         this.instrumentProperties.addAll(instrumentProperties);
     }
 
-    public void addMsData(Set<MongoCvParam> msData) {
+    public void addMsData(Set<DefaultCvParam> msData) {
         this.msData.addAll(msData);
     }
 
-    public void addScanSettings(Set<MongoCvParam> scanSettings) {
+    public void addScanSettings(Set<DefaultCvParam> scanSettings) {
         this.scanSettings.addAll(scanSettings);
     }
 
@@ -201,19 +201,19 @@ public class MongoPrideMSRun implements MsRunProvider, PrideArchiveField{
         return idSettings;
     }
 
-    public void setFileProperties(Set<MongoCvParam> fileProperties) {
+    public void setFileProperties(Set<DefaultCvParam> fileProperties) {
         this.fileProperties = fileProperties;
     }
 
-    public void setInstrumentProperties(Set<MongoCvParam> instrumentProperties) {
+    public void setInstrumentProperties(Set<DefaultCvParam> instrumentProperties) {
         this.instrumentProperties = instrumentProperties;
     }
 
-    public void setMsData(Set<MongoCvParam> msData) {
+    public void setMsData(Set<DefaultCvParam> msData) {
         this.msData = msData;
     }
 
-    public void setScanSettings(Set<MongoCvParam> scanSettings) {
+    public void setScanSettings(Set<DefaultCvParam> scanSettings) {
         this.scanSettings = scanSettings;
     }
 

@@ -1,7 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.model.msrun.idsettings;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
+import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 
 public class Enzyme {
 
@@ -14,7 +14,7 @@ public class Enzyme {
     @JsonProperty("SiteRegexp")
     private String SiteRegexp;
 
-    private MongoCvParam name;
+    private DefaultCvParam name;
 
     public String getId() {
         return id;
@@ -64,11 +64,11 @@ public class Enzyme {
         this.SiteRegexp = SiteRegexp;
     }
 
-    public MongoCvParam getName() {
+    public DefaultCvParam getName() {
         return name;
     }
 
-    public void setName(MongoCvParam name) {
+    public void setName(DefaultCvParam name) {
         this.name = name;
     }
 }

@@ -2,10 +2,10 @@ package uk.ac.ebi.pride.mongodb.archive.transformers;
 
 import lombok.extern.slf4j.Slf4j;
 import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.idsettings.IdSetting;
-import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.utilities.ols.web.service.cache.OntologyCacheService;
 
 import java.util.Set;
@@ -28,40 +28,40 @@ public class MSRunTransfromer {
     public static MongoPrideMSRun transformMetadata(MongoPrideMSRun msRunProvider, MsRunProvider metadata, OntologyCacheService ontologyCacheService){
         if(metadata != null){
             if(metadata.getInstrumentProperties() != null){
-                Set<MongoCvParam> mongoCvParams = metadata.getInstrumentProperties()
+                Set<DefaultCvParam> mongoCvParams = metadata.getInstrumentProperties()
                         .stream()
                         .filter(x -> ontologyCacheService.isTermExisting(x.getAccession(),x.getCvLabel()))
-                        .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
+                        .map(x -> new DefaultCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toSet());
                 if(mongoCvParams.isEmpty())
                     log.info("Non of the CVTerms provided in Instrument Properties are supported by PRIDE Database");
                 msRunProvider.addInstrumentProperties(mongoCvParams);
             }
             if(metadata.getFileProperties() != null){
-                Set<MongoCvParam> mongoCvParams = metadata.getFileProperties()
+                Set<DefaultCvParam> mongoCvParams = metadata.getFileProperties()
                         .stream()
                         .filter(x -> ontologyCacheService.isTermExisting(x.getAccession(),x.getCvLabel()))
-                        .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
+                        .map(x -> new DefaultCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toSet());
                 if(mongoCvParams.isEmpty())
                     log.info("Non of the CVTerms provided in File Properties are supported by PRIDE Database");
                 msRunProvider.addFileProperties(mongoCvParams);
             }
             if(metadata.getMsData() != null){
-                Set<MongoCvParam> mongoCvParams = metadata.getMsData()
+                Set<DefaultCvParam> mongoCvParams = metadata.getMsData()
                         .stream()
                         .filter(x -> ontologyCacheService.isTermExisting(x.getAccession(),x.getCvLabel()))
-                        .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
+                        .map(x -> new DefaultCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toSet());
                 if(mongoCvParams.isEmpty())
                     log.info("Non of the CVTerms provided in Ms Data are supported by PRIDE Database");
                 msRunProvider.addMsData(mongoCvParams);
             }
             if(metadata.getScanSettings() != null){
-                Set<MongoCvParam> mongoCvParams = metadata.getScanSettings()
+                Set<DefaultCvParam> mongoCvParams = metadata.getScanSettings()
                         .stream()
                         .filter(x -> ontologyCacheService.isTermExisting(x.getAccession(),x.getCvLabel()))
-                        .map(x -> new MongoCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
+                        .map(x -> new DefaultCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toSet());
                 msRunProvider.addScanSettings(mongoCvParams);
                 if(mongoCvParams.isEmpty())

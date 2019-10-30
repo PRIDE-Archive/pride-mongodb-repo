@@ -47,16 +47,16 @@ public class PrideMongoPsmSummaryEvidence implements PrideArchiveField{
     @Field(value = PrideArchiveField.ADDITIONAL_ATTRIBUTES)
     private List<DefaultCvParam> additionalAttributes;
 
-    @Field( value = PrideArchiveField.IS_DECOY)
+    @Indexed( name = PrideArchiveField.IS_DECOY)
     private Boolean isDecoy;
 
-    @Field(value = PrideArchiveField.IS_VALIDATED)
+    @Indexed(name = PrideArchiveField.IS_VALIDATED)
     private Boolean isValid;
 
-    @Field (value = PrideArchiveField.CHARGE)
+    @Indexed (name = PrideArchiveField.CHARGE)
     private Integer charge;
 
-    @Field( value = PrideArchiveField.PRECURSOR_MASS)
+    @Indexed( name = PrideArchiveField.PRECURSOR_MASS)
     private Double precursorMass;
 
     @Field (value = PrideArchiveField.PSM_SUMMARY_FILE)

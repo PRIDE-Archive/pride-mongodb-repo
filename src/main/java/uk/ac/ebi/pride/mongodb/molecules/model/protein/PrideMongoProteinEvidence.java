@@ -41,7 +41,7 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
 
 
     /** Reported File ID is the Identifier of the File mzTab in PRIDE **/
-    @Field(value = PrideArchiveField.PROTEIN_REPORTED_ACCESSION)
+    @Indexed(name = PrideArchiveField.PROTEIN_REPORTED_ACCESSION)
     private String reportedAccession;
 
     /** Accession in Reported File **/
@@ -58,11 +58,11 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
 
 
     /** Uniprot protein identifier mapper **/
-    @Field(PrideArchiveField.UNIPROT_MAPPED_PROTEIN_ACCESSION)
+    @Indexed(name = PrideArchiveField.UNIPROT_MAPPED_PROTEIN_ACCESSION)
     private String uniprotMappedProteinAccession;
 
     /** Ensembl protein identifier mapper **/
-    @Field(PrideArchiveField.ENSEMBL_MAPPED_PROTEIN_ACCESSION)
+    @Indexed( name = PrideArchiveField.ENSEMBL_MAPPED_PROTEIN_ACCESSION)
     private String ensemblMappedProteinAccession;
 
     /** Ensembl protein identifier mapper **/
@@ -89,16 +89,16 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
     @Indexed(name = PrideArchiveField.IS_VALIDATED)
     private Boolean isValid;
 
-    @Field(PrideArchiveField.IS_DECOY)
+    @Indexed( name = PrideArchiveField.IS_DECOY)
     private boolean isDecoy;
 
-    @Field(PrideArchiveField.NUMBER_PEPTIDEEVIDENCES)
+    @Indexed(name = PrideArchiveField.NUMBER_PEPTIDEEVIDENCES)
     private Integer numberPeptides;
 
-    @Field(PrideArchiveField.NUMBER_PSMS)
+    @Indexed( name = PrideArchiveField.NUMBER_PSMS)
     private Integer numberPSMs;
 
-    @Field(PrideArchiveField.PROTEIN_COVERAGE)
+    @Indexed( name = PrideArchiveField.PROTEIN_COVERAGE)
     private double sequenceCoverage;
 
     @Override

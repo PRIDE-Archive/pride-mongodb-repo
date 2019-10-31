@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.repo.assay;
 
-import org.apache.commons.lang3.tuple.Triple;
+
+import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
 import uk.ac.ebi.pride.mongodb.archive.model.assay.MongoPrideAssay;
 
 import java.util.List;

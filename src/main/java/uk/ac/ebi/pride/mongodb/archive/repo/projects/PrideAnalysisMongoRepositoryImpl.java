@@ -1,6 +1,5 @@
 package uk.ac.ebi.pride.mongodb.archive.repo.projects;
 
-import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -9,6 +8,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.repository.support.PageableExecutionUtils;
+import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideAnalysis;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 

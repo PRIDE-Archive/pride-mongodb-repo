@@ -50,7 +50,7 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
     String peptideAccession;
 
     /** Reported File ID is the Identifier of the File mzTab in PRIDE **/
-    @Field(value = PrideArchiveField.PROTEIN_ACCESSION)
+    @Indexed(name = PrideArchiveField.PROTEIN_ACCESSION)
     private String proteinAccession;
 
     /** Accession in Reported File **/

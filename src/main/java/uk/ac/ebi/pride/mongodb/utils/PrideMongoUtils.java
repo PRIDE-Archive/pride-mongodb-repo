@@ -1,7 +1,5 @@
 package uk.ac.ebi.pride.mongodb.utils;
 
-import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
@@ -9,6 +7,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.CounterCollection;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
@@ -57,13 +56,13 @@ public class PrideMongoUtils {
                         String[] filterString = filter.split("==");
                         Matcher matcher = composite.matcher(filter);
                         if(filterString.length == 2)
-                            filters.add(new ImmutableTriple<>(filterString[0], "in",filterString[1]));
+                            filters.add(new Triple<>(filterString[0], "in",filterString[1]));
                         else if(matcher.find()){
                             if(matcher.group(2).equalsIgnoreCase("in")) {
 //                                filters.add(new ImmutableTriple<>(matcher.group(1), matcher.group(2), matcher.group(3).replace("|", ",")));
-                                filters.add(new ImmutableTriple<>(matcher.group(1), matcher.group(2), matcher.group(3)));
+                                filters.add(new Triple<>(matcher.group(1), matcher.group(2), matcher.group(3)));
                             }else{
-                                filters.add(new ImmutableTriple<>(matcher.group(1), matcher.group(2), matcher.group(3)));
+                                filters.add(new Triple<>(matcher.group(1), matcher.group(2), matcher.group(3)));
                             }
                         } else
                             LOGGER.debug("The filter provided is not well-formatted, please format the filter in field:value -- " + filter);
@@ -84,7 +83,7 @@ public class PrideMongoUtils {
         Criteria filterCriteria = null;
         if(!filters.isEmpty()){
             for(Triple filter: filters){
-                filterCriteria = convertStringToCriteria(filterCriteria, (String)filter.getLeft(), (String)filter.getMiddle(), (String)filter.getRight());
+                filterCriteria = convertStringToCriteria(filterCriteria, (String)filter.getFirst(), (String)filter.getSecond(), (String)filter.getThird());
             }
         }
         return filterCriteria;
@@ -100,7 +99,7 @@ public class PrideMongoUtils {
         Query query = new Query();
         if(!filters.isEmpty()){
             for(Triple filter: filters){
-                filterCriteria.add(convertStringToCriteria((String)filter.getLeft(), (String)filter.getMiddle(), (String)filter.getRight()));
+                filterCriteria.add(convertStringToCriteria((String)filter.getFirst(), (String)filter.getSecond(), (String)filter.getThird()));
             }
         }
         if (filterCriteria.size() > 0){

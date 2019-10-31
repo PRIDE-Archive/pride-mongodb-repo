@@ -1,7 +1,8 @@
 package uk.ac.ebi.pride.mongodb.molecules.model.protein;
 
 
-import com.mongodb.Mongo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
 import org.bson.types.ObjectId;
@@ -28,12 +29,14 @@ import java.util.stream.Collectors;
         def = "{'" + PrideArchiveField.PROTEIN_ASSAY_ACCESSION + "' : 1, '"
                 + PrideArchiveField.PROTEIN_REPORTED_ACCESSION +"' : 1}")
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 
 public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDetailProvider {
 
     /** Generated accession **/
     @Id
     @Indexed(name = PrideArchiveField.ID)
+    @JsonIgnore
     private ObjectId id;
 
 
@@ -119,20 +122,19 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends IdentifiedModificationProvider> getIdentifiedModifications() {
         return ptms;
     }
 
     @Override
+    @JsonIgnore
     public String getAccession() {
         return reportedAccession;
     }
 
-    public String getAssayAccession() {
-        return assayAccession;
-    }
-
     @Override
+    @JsonIgnore
     public String getDescription() {
         return proteinDescription;
     }
@@ -143,6 +145,7 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends String> getAdditionalAttributesStrings() {
         return (additionalAttributes != null)? additionalAttributes.stream().map(CvParamProvider::getName).collect(Collectors.toList()): Collections.emptyList() ;
     }

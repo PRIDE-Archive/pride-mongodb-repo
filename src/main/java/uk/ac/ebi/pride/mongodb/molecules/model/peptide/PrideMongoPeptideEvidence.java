@@ -1,5 +1,7 @@
 package uk.ac.ebi.pride.mongodb.molecules.model.peptide;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
 import org.bson.types.ObjectId;
@@ -34,11 +36,13 @@ import java.util.stream.Collectors;
 @Builder
 @Document(collection = PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME)
 @CompoundIndexes({@CompoundIndex(name = "compound_peptide_accession", def = "{'assayAccession' : 1, 'proteinAccession': 1, 'peptideAccession':1}", unique = true)})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequenceProvider {
 
     /** Generated accession **/
     @Id
     @Indexed(name = PrideArchiveField.ID)
+    @JsonIgnore
     private ObjectId id;
 
     /** Accession Provided by PRIDE Pipelines **/
@@ -99,11 +103,13 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
     private Boolean isValid;
 
     @Override
+    @JsonIgnore
     public Collection<? extends IdentifiedModificationProvider> getModifications() {
         return null;
     }
 
     @Override
+    @JsonIgnore
     public Collection<String> getModificationNames() {
         List<String> ptms = Collections.EMPTY_LIST;
         if(this.ptmList != null && !this.ptmList.isEmpty())
@@ -112,6 +118,7 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
     }
 
     @Override
+    @JsonIgnore
     public Integer getNumberModifiedSites() {
         final int[] sites = {0};
         if(this.ptmList != null && !this.ptmList.isEmpty()){
@@ -127,11 +134,13 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
     }
 
     @Override
+    @JsonIgnore
     public Boolean isDecoy() {
         return isDecoy;
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends String> getAdditionalAttributesStrings() {
         List<String> attributes = Collections.EMPTY_LIST;
         if(this.additionalAttributes != null )

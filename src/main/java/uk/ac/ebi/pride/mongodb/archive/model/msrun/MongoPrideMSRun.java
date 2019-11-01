@@ -78,7 +78,7 @@ public class MongoPrideMSRun implements MsRunProvider, PrideArchiveField{
     Set<CvParam> scanSettings = new HashSet<>();
 
     @Field(PrideArchiveField.ADDITIONAL_ATTRIBUTES)
-    List<CvParam> additionalAttributes;
+    Set<CvParam> additionalAttributes;
 
     @Field(PrideArchiveField.MS_RUN_ID_SETTINGS)
     Set<IdSetting> idSettings = new HashSet<>();
@@ -115,7 +115,7 @@ public class MongoPrideMSRun implements MsRunProvider, PrideArchiveField{
      * @param additionalAttributes additional properties
      * @param idSettings idnetification Settings
      */
-    public MongoPrideMSRun(ObjectId id, Set<String> projectAccessions, Set<String> analysisAccessions, String accession, String fileName, long fileSizeBytes, Set<CvParam> fileProperties, Set<CvParam> instrumentProperties, Set<CvParam> msData, Set<CvParam> scanSettings, List<CvParam> additionalAttributes, Set<IdSetting> idSettings) {
+    public MongoPrideMSRun(ObjectId id, Set<String> projectAccessions, Set<String> analysisAccessions, String accession, String fileName, long fileSizeBytes, Set<CvParam> fileProperties, Set<CvParam> instrumentProperties, Set<CvParam> msData, Set<CvParam> scanSettings, Set<CvParam> additionalAttributes, Set<IdSetting> idSettings) {
         this.id = id;
         this.projectAccessions = projectAccessions;
         this.analysisAccessions = analysisAccessions;

@@ -64,7 +64,7 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
 
     /** Public File Locations in CVTerms**/
     @Indexed(name = FILE_PUBLIC_LOCATIONS)
-    List<CvParam> publicFileLocations;
+    Set<CvParam> publicFileLocations;
 
     @Indexed(name = FILE_SIZE_MB)
     protected long fileSizeBytes;
@@ -88,7 +88,7 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
     protected Date updatedDate;
 
     @Indexed(name = ADDITIONAL_ATTRIBUTES)
-    List<CvParam> additionalAttributes;
+    Set<CvParam> additionalAttributes;
 
     @Indexed(name = ACCESSION_SUBMISSION_FILE)
     Tuple<String, String> accessionSubmissionFile;
@@ -115,7 +115,7 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
     }
 
     @Override
-    public List<? extends CvParamProvider> getPublicFileLocation() {
+    public Set<? extends CvParamProvider> getPublicFileLocation() {
         return publicFileLocations;
     }
 

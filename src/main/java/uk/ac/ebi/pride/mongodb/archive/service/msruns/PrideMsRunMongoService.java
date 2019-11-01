@@ -147,13 +147,13 @@ public class PrideMsRunMongoService implements IMSRunService {
     }
 
 
-    private List<CvParam> processCVParams(Set<CvParam> mongoCvParams) {
+    private Set<CvParam> processCVParams(Set<CvParam> mongoCvParams) {
 
         return mongoCvParams
             .stream()
             .filter(x -> psiOBOMapper.getTermByAccession(x.getAccession()) != null)
             .map(x -> new CvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
-            .collect(Collectors.toList());
+            .collect(Collectors.toSet());
     }
 
     /**

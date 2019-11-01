@@ -11,6 +11,7 @@ import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -45,7 +46,7 @@ public class PrideMongoPsmSummaryEvidence implements PrideArchiveField{
 
     /** Additional Attributes **/
     @Field(value = PrideArchiveField.ADDITIONAL_ATTRIBUTES)
-    private List<CvParam> additionalAttributes;
+    private Set<CvParam> additionalAttributes;
 
     @Indexed( name = PrideArchiveField.IS_DECOY)
     private Boolean isDecoy;

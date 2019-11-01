@@ -77,10 +77,10 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
     CvParam dataAnalysisDatabase;
 
     @Field(value = ASSAY_DATA_ANALYSIS_RESULTS)
-    List<CvParam> summaryResults;
+    Set<CvParam> summaryResults;
 
     @Field(value = ASSAY_DATA_ANALYSIS_PROTOCOL)
-    List<CvParam> dataAnalysisProperties;
+    Set<CvParam> dataAnalysisProperties;
 
     @Field(value = ASSAY_DATA_ANALYSIS_PTMS)
     List<Tuple<CvParam, Integer>> ptmsResults;
@@ -89,7 +89,7 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
     List<MongoAssayFile> assayFiles;
 
     @Field(PrideArchiveField.QUALITY_ESTIMATION_METHOD)
-    private List<CvParam> qualityEstimationMethods;
+    private Set<CvParam> qualityEstimationMethods;
 
     @Indexed(name = PrideArchiveField.IS_VALIDATED)
     private Boolean isValid;

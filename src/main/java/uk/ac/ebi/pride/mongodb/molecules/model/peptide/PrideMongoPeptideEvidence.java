@@ -23,6 +23,7 @@ import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -80,7 +81,7 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
 
     /** Additional Attributes **/
     @Field(value = PrideArchiveField.ADDITIONAL_ATTRIBUTES)
-    private List<CvParam> additionalAttributes;
+    private Set<CvParam> additionalAttributes;
 
     @Indexed(name = PSM_SPECTRUM_ACCESSIONS)
     private List<PeptideSpectrumOverview> psmAccessions;
@@ -98,7 +99,7 @@ public class PrideMongoPeptideEvidence implements PrideArchiveField, PeptideSequ
     Integer missedCleavages;
 
     @Field(PrideArchiveField.QUALITY_ESTIMATION_METHOD)
-    private List<CvParam> qualityEstimationMethods;
+    private Set<CvParam> qualityEstimationMethods;
 
     @Indexed(name = PrideArchiveField.IS_VALIDATED)
     private Boolean isValid;

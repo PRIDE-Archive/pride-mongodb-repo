@@ -75,7 +75,7 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
 
     /** Additional Attributes, Contains also scores**/
     @Field(PrideArchiveField.ADDITIONAL_ATTRIBUTES)
-    private List<CvParam> additionalAttributes;
+    private Set<CvParam> additionalAttributes;
 
     @Field(PrideArchiveField.PROTEIN_MODIFICATIONS)
     private List<IdentifiedModificationProvider> ptms;
@@ -84,7 +84,7 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
     private CvParam bestSearchEngineScore;
 
     @Field(PrideArchiveField.QUALITY_ESTIMATION_METHOD)
-    private List<CvParam> qualityEstimationMethods;
+    private Set<CvParam> qualityEstimationMethods;
 
     @Indexed(name = PrideArchiveField.IS_VALIDATED)
     private Boolean isValid;
@@ -156,7 +156,7 @@ public class PrideMongoProteinEvidence implements PrideArchiveField, ProteinDeta
      */
     public void addAttribute(CvParam attribute){
         if(additionalAttributes == null)
-            additionalAttributes = new ArrayList<>();
+            additionalAttributes = new HashSet<>();
         additionalAttributes.add(attribute);
     }
 

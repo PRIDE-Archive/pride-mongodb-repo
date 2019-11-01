@@ -111,11 +111,11 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     /** Samples description is a generic information about all the samples in the experiment. */
     @Field(value = SAMPLE_ATTRIBUTES_NAMES)
-    private List<Tuple<CvParam, List<CvParam>>> samplesDescription;
+    private List<Tuple<CvParam, Set<CvParam>>> samplesDescription;
 
     /** Experimental Factors **/
     @Field(value = EXPERIMENTAL_FACTORS)
-    private List<Tuple<CvParam, List<CvParam>>> experimentalFactors;
+    private List<Tuple<CvParam, Set<CvParam>>> experimentalFactors;
 
     /** General description about the instruments used in the experiment. */
     @Indexed(name = INSTRUMENTS)

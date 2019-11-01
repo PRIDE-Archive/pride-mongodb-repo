@@ -53,7 +53,7 @@ public class MongoPsmMzTabBuilderTest {
 //        logger.debug("PSM Project Accession: " + psm.getProjectAccession());
 //       logger.debug("PSM Peptide sequence : " + psm.getPeptideSequence());
 //        List<CvParamProvider> cvParams = new ArrayList<>();
-//        CvParamProvider cvParam = new DefaultCvParam("label", "accession", "name", "value");
+//        CvParamProvider cvParam = new CvParam("label", "accession", "name", "value");
 //        cvParams.add(cvParam);
 //
 //      }

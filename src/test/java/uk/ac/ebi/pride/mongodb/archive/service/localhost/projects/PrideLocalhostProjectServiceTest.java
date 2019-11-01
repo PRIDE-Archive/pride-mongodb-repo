@@ -10,8 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.archive.dataprovider.utils.ProjectFileCategoryConstants;
 import uk.ac.ebi.pride.data.exception.SubmissionFileException;
 import uk.ac.ebi.pride.data.io.SubmissionFileParser;
@@ -117,7 +117,7 @@ public class PrideLocalhostProjectServiceTest {
             String accession = finalProject.get().getAccession();
             return MongoPrideFile.builder()
                     .fileName(dataFile.getFileName())
-                    .fileCategory(new DefaultCvParam(ProjectFileCategoryConstants
+                    .fileCategory(new CvParam(ProjectFileCategoryConstants
                             .findCategory(dataFile.getFileType()
                                      .getName()).getCv()))
                     .projectAccessions(Collections.singleton(accession))
@@ -156,7 +156,7 @@ public class PrideLocalhostProjectServiceTest {
             String accession = finalProject.get().getAccession();
             return MongoPrideFile.builder()
                     .fileName(dataFile.getFileName())
-                    .fileCategory(new DefaultCvParam(ProjectFileCategoryConstants
+                    .fileCategory(new CvParam(ProjectFileCategoryConstants
                             .findCategory(dataFile.getFileType()
                                     .getName()).getCv()))
                     .projectAccessions(Collections.singleton(accession))
@@ -172,16 +172,16 @@ public class PrideLocalhostProjectServiceTest {
             if(prideFile.getFileCategory().getAccession().equalsIgnoreCase(ProjectFileCategoryConstants.RAW.getCv().getAccession())){
                 MongoPrideMSRun msRun = new MongoPrideMSRun(prideFile);
                 msRun.addFileProperties(Arrays.stream(msRunJson.getFileProperties())
-                        .map(x -> new DefaultCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
+                        .map(x -> new CvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toSet()));
                 msRun.addInstrumentProperties(Arrays.stream(msRunJson.getInstrumentProperties())
-                        .map(x -> new DefaultCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
+                        .map(x -> new CvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toSet()));
                 msRun.addMsData(Arrays.stream(msRunJson.getMsData())
-                        .map(x -> new DefaultCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
+                        .map(x -> new CvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toSet()));
                 msRun.addScanSettings(Arrays.stream(msRunJson.getScanSeetings())
-                        .map(x -> new DefaultCvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
+                        .map(x -> new CvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
                         .collect(Collectors.toSet()));
 
                 prideMsRunMongoService.updateMSRun(msRun);

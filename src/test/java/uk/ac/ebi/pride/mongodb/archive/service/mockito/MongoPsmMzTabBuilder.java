@@ -41,7 +41,7 @@ public class MongoPsmMzTabBuilder {
 //              .psmAccessions(Collections.singletonList(createSpectrumId(mzTabPsm, projectAccession)))
 //              .peptideSequence(mzTabPsm.getSequence())
 //              .projectAccession(projectAccession)
-//              .database(new DefaultDatabase(mzTabPsm.getDatabase(), mzTabPsm.getDatabaseVersion()))
+//              .database(new Database(mzTabPsm.getDatabase(), mzTabPsm.getDatabaseVersion()))
 //              .projectAccession(projectAccession)
 //              .build();
 //      result.add(newPsm);

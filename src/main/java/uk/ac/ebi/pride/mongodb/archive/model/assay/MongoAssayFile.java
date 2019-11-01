@@ -2,7 +2,7 @@ package uk.ac.ebi.pride.mongodb.archive.model.assay;
 
 import lombok.Builder;
 import lombok.Data;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class MongoAssayFile {
 
     String fileName;
     String fileAccession;
-    DefaultCvParam fileCategory;
+    CvParam fileCategory;
     String fileSourceType;
     List<MongoAssayFile> relatedFiles;
 

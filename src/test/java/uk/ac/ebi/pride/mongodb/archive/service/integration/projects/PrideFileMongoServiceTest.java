@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.utils.MSFileTypeConstants;
 import uk.ac.ebi.pride.archive.repo.repos.file.ProjectFile;
 import uk.ac.ebi.pride.archive.repo.repos.file.ProjectFileRepository;
@@ -118,7 +118,7 @@ public class PrideFileMongoServiceTest {
                 }
             }
             MongoPrideFile file = MongoPrideFile.builder()
-                    .fileName(x.getFileName()).fileCategory(new DefaultCvParam(fileType.getFileType().getCv()))
+                    .fileName(x.getFileName()).fileCategory(new CvParam(fileType.getFileType().getCv()))
                     .projectAccessions(projectAccessions)
                     .fileSourceFolder(x.getFileSource().getFolderName())
                     .publicationDate(oracleProjectRepository.findById(x.getProjectId()).get().getPublicationDate())
@@ -154,7 +154,7 @@ public class PrideFileMongoServiceTest {
                 }
                 MongoPrideFile file = MongoPrideFile.builder()
                         .fileName(x.getFileName())
-                        .fileCategory(new DefaultCvParam(fileType.getFileType().getCv()))
+                        .fileCategory(new CvParam(fileType.getFileType().getCv()))
                         .projectAccessions(Collections.singleton(project.getAccession()))
                         .fileSourceFolder(x.getFileSource().getFolderName())
                         .publicationDate(project.getPublicationDate())

@@ -12,8 +12,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.archive.dataprovider.file.FileProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
 import java.util.*;
@@ -50,7 +50,7 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
 
     @Indexed(name = FILE_CATEGORY)
     @Getter(AccessLevel.NONE)
-    DefaultCvParam fileCategory;
+    CvParam fileCategory;
 
     @Indexed(name = FILE_SOURCE_TYPE)
     String fileSourceType;
@@ -64,7 +64,7 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
 
     /** Public File Locations in CVTerms**/
     @Indexed(name = FILE_PUBLIC_LOCATIONS)
-    List<DefaultCvParam> publicFileLocations;
+    List<CvParam> publicFileLocations;
 
     @Indexed(name = FILE_SIZE_MB)
     protected long fileSizeBytes;
@@ -88,7 +88,7 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
     protected Date updatedDate;
 
     @Indexed(name = ADDITIONAL_ATTRIBUTES)
-    List<DefaultCvParam> additionalAttributes;
+    List<CvParam> additionalAttributes;
 
     @Indexed(name = ACCESSION_SUBMISSION_FILE)
     Tuple<String, String> accessionSubmissionFile;

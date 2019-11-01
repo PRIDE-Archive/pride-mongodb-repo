@@ -74,10 +74,10 @@ public class PrideProteinEvidenceMongoServiceTest {
 //                .isDecoy(true)
 //                .build();
 //
-//        protein.addAttribute(new DefaultCvParam("MS", "MS:1001013", "database name", "phytophtora_infestans_rnd"));
-//        protein.addAttribute(new DefaultCvParam("MS", "MS:1001016", "database version", "20100422.fasta"));
+//        protein.addAttribute(new CvParam("MS", "MS:1001013", "database name", "phytophtora_infestans_rnd"));
+//        protein.addAttribute(new CvParam("MS", "MS:1001016", "database version", "20100422.fasta"));
 //
-//        DefaultIdentifiedModification mod = new DefaultIdentifiedModification(new DefaultCvParam("UNIMOD", "UNIMOD:35", "Oxidation", "15.994915"), null, null, null);
+//        IdentifiedModification mod = new IdentifiedModification(new CvParam("UNIMOD", "UNIMOD:35", "Oxidation", "15.994915"), null, null, null);
 //        protein.addIdentifiedModification(mod);
 //
 //        System.out.println(protein.toString());
@@ -139,10 +139,10 @@ public class PrideProteinEvidenceMongoServiceTest {
 //                .isDecoy(true)
 //                .build();
 //
-//        protein.addAttribute(new DefaultCvParam("MS", "MS:1001013", "database name", "phytophtora_infestans_rnd"));
-//        protein.addAttribute(new DefaultCvParam("MS", "MS:1001016", "database version", "20100422.fasta"));
+//        protein.addAttribute(new CvParam("MS", "MS:1001013", "database name", "phytophtora_infestans_rnd"));
+//        protein.addAttribute(new CvParam("MS", "MS:1001016", "database version", "20100422.fasta"));
 //
-//        DefaultIdentifiedModification mod = new DefaultIdentifiedModification(new DefaultCvParam("UNIMOD", "UNIMOD:35", "Oxidation", "15.994915"),null, null, null);
+//        IdentifiedModification mod = new IdentifiedModification(new CvParam("UNIMOD", "UNIMOD:35", "Oxidation", "15.994915"),null, null, null);
 //        protein.addIdentifiedModification(mod);
 //
 //        System.out.println(protein.toString());

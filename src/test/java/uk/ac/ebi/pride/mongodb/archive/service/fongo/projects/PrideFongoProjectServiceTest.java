@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.utils.ProjectFileCategoryConstants;
 import uk.ac.ebi.pride.data.exception.SubmissionFileException;
 import uk.ac.ebi.pride.data.io.SubmissionFileParser;
@@ -103,7 +103,7 @@ public class PrideFongoProjectServiceTest {
             String accession = finalProject.get().getAccession();
             return MongoPrideFile.builder()
                     .fileName(dataFile.getFileName())
-                    .fileCategory(new DefaultCvParam(ProjectFileCategoryConstants
+                    .fileCategory(new CvParam(ProjectFileCategoryConstants
                             .findCategory(dataFile.getFileType()
                                      .getName()).getCv()))
                     .projectAccessions(Collections.singleton(accession))
@@ -142,7 +142,7 @@ public class PrideFongoProjectServiceTest {
             String accession = finalProject.get().getAccession();
             return MongoPrideFile.builder()
                     .fileName(dataFile.getFileName())
-                    .fileCategory(new DefaultCvParam(ProjectFileCategoryConstants
+                    .fileCategory(new CvParam(ProjectFileCategoryConstants
                             .findCategory(dataFile.getFileType()
                                     .getName()).getCv()))
                     .projectAccessions(Collections.singleton(accession))

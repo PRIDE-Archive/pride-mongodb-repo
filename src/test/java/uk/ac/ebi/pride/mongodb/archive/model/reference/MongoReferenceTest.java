@@ -3,7 +3,7 @@ package uk.ac.ebi.pride.mongodb.archive.model.reference;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import uk.ac.ebi.pride.archive.dataprovider.reference.DefaultReference;
+import uk.ac.ebi.pride.archive.dataprovider.reference.Reference;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -18,11 +18,11 @@ import uk.ac.ebi.pride.archive.dataprovider.reference.DefaultReference;
  */
 public class MongoReferenceTest {
 
-    DefaultReference ref;
+    Reference ref;
 
     @Before
     public void setUp() {
-        ref = new DefaultReference("Uszkoreit, Julian, et al. \"PIA: An intuitive protein inference engine with a web-based user interface.\" Journal of proteome research 14.7 (2015): 2988-2997.",25938255,"10.1021/acs.jproteome.5b00121");
+        ref = new Reference("Uszkoreit, Julian, et al. \"PIA: An intuitive protein inference engine with a web-based user interface.\" Journal of proteome research 14.7 (2015): 2988-2997.",25938255,"10.1021/acs.jproteome.5b00121");
 
     }
 
@@ -34,7 +34,7 @@ public class MongoReferenceTest {
 
     @Test
     public void mongoRefTes(){
-        DefaultReference reference = new DefaultReference("Uszkoreit, Julian, et al. \"PIA: An intuitive protein inference engine with a web-based user interface.\" Journal of proteome research 14.7 (2015): 2988-2997.",25938255, "10.1021/acs.jproteome.5b00121" );
+        Reference reference = new Reference("Uszkoreit, Julian, et al. \"PIA: An intuitive protein inference engine with a web-based user interface.\" Journal of proteome research 14.7 (2015): 2988-2997.",25938255, "10.1021/acs.jproteome.5b00121" );
         System.out.println(reference.toString());
     }
 }

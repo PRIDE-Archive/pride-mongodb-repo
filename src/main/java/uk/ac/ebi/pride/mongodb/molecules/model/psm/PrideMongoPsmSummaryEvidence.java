@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
 import java.util.List;
@@ -45,7 +45,7 @@ public class PrideMongoPsmSummaryEvidence implements PrideArchiveField{
 
     /** Additional Attributes **/
     @Field(value = PrideArchiveField.ADDITIONAL_ATTRIBUTES)
-    private List<DefaultCvParam> additionalAttributes;
+    private List<CvParam> additionalAttributes;
 
     @Indexed( name = PrideArchiveField.IS_DECOY)
     private Boolean isDecoy;

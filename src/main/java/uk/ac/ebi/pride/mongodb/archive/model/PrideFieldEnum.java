@@ -1,8 +1,8 @@
 package uk.ac.ebi.pride.mongodb.archive.model;
 
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
-import uk.ac.ebi.pride.archive.dataprovider.user.DefaultContact;
+import uk.ac.ebi.pride.archive.dataprovider.user.Contact;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -16,7 +16,7 @@ public enum PrideFieldEnum {
 
     ACCESSION(PrideArchiveField.ACCESSION, new String[]{PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME, PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME}, String.class),
     PROJECT_TILE(PrideArchiveField.PROJECT_TILE, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, String.class),
-    ADDITIONAL_ATTRIBUTES(PrideArchiveField.ADDITIONAL_ATTRIBUTES, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME}, DefaultCvParam.class),
+    ADDITIONAL_ATTRIBUTES(PrideArchiveField.ADDITIONAL_ATTRIBUTES, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME}, CvParam.class),
     PROJECT_DESCRIPTION(PrideArchiveField.PROJECT_DESCRIPTION, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, String.class),
     PROJECT_SAMPLE_PROTOCOL(PrideArchiveField.PROJECT_SAMPLE_PROTOCOL, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, String.class),
     PROJECT_DATA_PROTOCOL(PrideArchiveField.PROJECT_DATA_PROTOCOL, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, String.class),
@@ -28,17 +28,17 @@ public enum PrideFieldEnum {
     PROJECT_SUBMISSION_DATE (PrideArchiveField.SUBMISSION_DATE, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME},Date.class),
     PROJECT_PUBLICATION_DATE (PrideArchiveField.PUBLICATION_DATE, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, Date.class),
     PROJECT_UPDATED_DATE (PrideArchiveField.UPDATED_DATE, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, Date.class),
-    PROJECT_SUBMITTER(PrideArchiveField.PROJECT_SUBMITTER, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, DefaultContact.class),
-    PROJECT_PI_NAMES (PrideArchiveField.PROJECT_PI_NAMES, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, DefaultCvParam.class),
-    INSTRUMENTS(PrideArchiveField.INSTRUMENTS, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, DefaultCvParam.class),
-    SOFTWARES (PrideArchiveField.SOFTWARES, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME},DefaultCvParam.class),
-    QUANTIFICATION_METHODS(PrideArchiveField.QUANTIFICATION_METHODS, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME},DefaultCvParam.class),
+    PROJECT_SUBMITTER(PrideArchiveField.PROJECT_SUBMITTER, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, Contact.class),
+    PROJECT_PI_NAMES (PrideArchiveField.PROJECT_PI_NAMES, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, CvParam.class),
+    INSTRUMENTS(PrideArchiveField.INSTRUMENTS, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, CvParam.class),
+    SOFTWARES (PrideArchiveField.SOFTWARES, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, CvParam.class),
+    QUANTIFICATION_METHODS(PrideArchiveField.QUANTIFICATION_METHODS, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, CvParam.class),
     COUNTRIES(PrideArchiveField.COUNTRIES, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, String.class),
     SAMPLE_ATTRIBUTES_NAMES(PrideArchiveField.SAMPLE_ATTRIBUTES_NAMES, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME},String.class),
     PROJECT_REFERENCES(PrideArchiveField.PROJECT_REFERENCES, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME},ReferenceProvider.class),
     PROJECT_IDENTIFIED_PTM (PrideArchiveField.PROJECT_IDENTIFIED_PTM, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME},String.class),
     PUBLIC_PROJECT (PrideArchiveField.PUBLIC_PROJECT, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, String.class),
-    EXPERIMENTAL_FACTORS(PrideArchiveField.EXPERIMENTAL_FACTORS, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, DefaultCvParam.class),
+    EXPERIMENTAL_FACTORS(PrideArchiveField.EXPERIMENTAL_FACTORS, new String[]{PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME}, CvParam.class),
     EXTERNAL_PROJECT_ACCESSIONS (PrideArchiveField.EXTERNAL_PROJECT_ACCESSIONS, new String[]{PrideArchiveField.PRIDE_FILE_COLLECTION_NAME}, String.class),
     EXTERNAL_ANALYSIS_ACCESSIONS(PrideArchiveField.EXTERNAL_ANALYSIS_ACCESSIONS, new String[]{PrideArchiveField.PRIDE_FILE_COLLECTION_NAME}, String.class),
     FILE_CATEGORY(PrideArchiveField.FILE_CATEGORY, new String[]{PrideArchiveField.PRIDE_FILE_COLLECTION_NAME}, String.class),

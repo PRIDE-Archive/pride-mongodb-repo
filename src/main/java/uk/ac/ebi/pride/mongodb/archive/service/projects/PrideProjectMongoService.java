@@ -6,8 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.assay.MongoPrideAssay;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
 import uk.ac.ebi.pride.mongodb.archive.repo.assay.PrideAssayMongoRepository;
@@ -78,7 +78,7 @@ public class PrideProjectMongoService {
     public Optional<MongoPrideProject> updateFileRelations(String projectAccession, List<Triple<String, String, CvParamProvider>> projectFileRelations) {
         Optional<MongoPrideProject> project = repository.findByAccession(projectAccession);
         List projectFiles = projectFileRelations.stream()
-                .map(x -> new Triple(x.getFirst(), x.getSecond(), new DefaultCvParam(x.getThird().getCvLabel(),
+                .map(x -> new Triple(x.getFirst(), x.getSecond(), new CvParam(x.getThird().getCvLabel(),
                         x.getThird().getAccession(), x.getThird().getName(), x.getThird().getValue())))
                 .collect(Collectors.toList());
         if (project.isPresent()) {

@@ -5,7 +5,7 @@ import lombok.Data;
 import uk.ac.ebi.pride.archive.dataprovider.common.ITuple;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.sample.ISampleMSRunRow;
 
 import java.util.Collection;
@@ -61,12 +61,12 @@ public class MongoISampleMSRunRow implements ISampleMSRunRow {
     /**
      * Sample Metadata in {@link CvParamProvider}.
      */
-    List<Tuple<DefaultCvParam, DefaultCvParam>> sampleProperties;
+    List<Tuple<CvParam, CvParam>> sampleProperties;
 
     /**
      * MsRun Terms in {@link CvParamProvider}.
      */
-    List<Tuple<DefaultCvParam, DefaultCvParam>> msRunProperties;
+    List<Tuple<CvParam, CvParam>> msRunProperties;
 
     public MongoISampleMSRunRow() {
     }
@@ -84,15 +84,15 @@ public class MongoISampleMSRunRow implements ISampleMSRunRow {
         this.sampleProperties = sampleProperties.stream().map( x -> {
             CvParamProvider key = x.getKey();
             CvParamProvider value = x.getValue();
-            return new Tuple<>(new DefaultCvParam(key.getCvLabel(), key.getAccession(), key.getName(), key.getValue()),
-                    new DefaultCvParam(value.getCvLabel(), value.getAccession(), value.getName(), value.getValue()));
+            return new Tuple<>(new CvParam(key.getCvLabel(), key.getAccession(), key.getName(), key.getValue()),
+                    new CvParam(value.getCvLabel(), value.getAccession(), value.getName(), value.getValue()));
         }).collect(Collectors.toList());
 
         this.msRunProperties = (msRunProperties !=null)?msRunProperties.stream().map( x -> {
             CvParamProvider key = x.getKey();
             CvParamProvider value = x.getValue();
-            return new Tuple<>(new DefaultCvParam(key.getCvLabel(), key.getAccession(), key.getName(), key.getValue()),
-                    new DefaultCvParam(value.getCvLabel(), value.getAccession(), value.getName(), value.getValue()));
+            return new Tuple<>(new CvParam(key.getCvLabel(), key.getAccession(), key.getName(), key.getValue()),
+                    new CvParam(value.getCvLabel(), value.getAccession(), value.getName(), value.getValue()));
         }).collect(Collectors.toList()): Collections.emptyList();
 
     }

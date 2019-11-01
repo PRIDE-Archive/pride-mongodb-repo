@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.project.ExperimentalDesignProvider;
-import uk.ac.ebi.pride.archive.dataprovider.sample.DefaultSample;
+import uk.ac.ebi.pride.archive.dataprovider.sample.Sample;
 import uk.ac.ebi.pride.archive.dataprovider.sample.ISampleMSRunRow;
 import uk.ac.ebi.pride.archive.dataprovider.sample.SampleProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
@@ -66,7 +66,7 @@ public class MongoPrideExperimentalDesign implements ExperimentalDesignProvider 
     public Collection<? extends SampleProvider> getSamples() {
         if(sampleMSRunTuples != null && !sampleMSRunTuples.isEmpty()){
             return sampleMSRunTuples.stream()
-                    .map(x -> new DefaultSample(x.getSampleAccession(), x.getSampleProperties()))
+                    .map(x -> new Sample(x.getSampleAccession(), x.getSampleProperties()))
                     .collect(Collectors.toList());
         }
         return null;

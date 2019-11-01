@@ -3,7 +3,7 @@ package uk.ac.ebi.pride.mongodb.archive.model.files;
 import org.junit.Before;
 import org.junit.Test;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.utils.ProjectFileCategoryConstants;
 
 import java.util.HashSet;
@@ -37,7 +37,7 @@ public class MongoPrideFileTest {
         file = MongoPrideFile
                 .builder()
                 .accession("PFD11111111")
-                .fileCategory(new DefaultCvParam(cvCategory.getCvLabel(),cvCategory.getAccession(),cvCategory.getName(), cvCategory.getValue()))
+                .fileCategory(new CvParam(cvCategory.getCvLabel(),cvCategory.getAccession(),cvCategory.getName(), cvCategory.getValue()))
                 .fileName("example_file.raw")
                 .projectAccessions(projects)
                 .analysisAccessions(analysisAccessions)

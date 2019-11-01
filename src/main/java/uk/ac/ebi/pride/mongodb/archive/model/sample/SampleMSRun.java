@@ -4,8 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import uk.ac.ebi.pride.archive.dataprovider.common.ITuple;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.archive.dataprovider.sample.SampleProvider;
 
 import java.util.Collection;
@@ -39,7 +39,7 @@ public class SampleMSRun {
     /**
      * Properties of the relation between the {@link uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider} and the {@link SampleProvider}
      */
-    Collection<Tuple<DefaultCvParam, DefaultCvParam>> properties;
+    Collection<Tuple<CvParam, CvParam>> properties;
 
     public Collection<ITuple<CvParamProvider, CvParamProvider>> getSampleProperties() {
         return properties

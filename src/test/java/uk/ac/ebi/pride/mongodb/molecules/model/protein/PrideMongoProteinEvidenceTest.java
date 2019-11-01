@@ -1,8 +1,8 @@
 package uk.ac.ebi.pride.mongodb.molecules.model.protein;
 
 import org.junit.Test;
-import uk.ac.ebi.pride.archive.dataprovider.data.ptm.DefaultIdentifiedModification;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
+import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModification;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 
 import java.util.Collections;
 
@@ -57,10 +57,10 @@ public class PrideMongoProteinEvidenceTest {
                 .isDecoy(true)
                 .build();
 
-        protein.addAttribute(new DefaultCvParam("MS", "MS:1001013", "database name", "phytophtora_infestans_rnd"));
-        protein.addAttribute(new DefaultCvParam("MS", "MS:1001016", "database version", "20100422.fasta"));
+        protein.addAttribute(new CvParam("MS", "MS:1001013", "database name", "phytophtora_infestans_rnd"));
+        protein.addAttribute(new CvParam("MS", "MS:1001016", "database version", "20100422.fasta"));
 
-        DefaultIdentifiedModification mod = new DefaultIdentifiedModification(new DefaultCvParam("UNIMOD", "UNIMOD:35", "Oxidation", "15.994915"), null, null, null);
+        IdentifiedModification mod = new IdentifiedModification(new CvParam("UNIMOD", "UNIMOD:35", "Oxidation", "15.994915"), null, null, null);
         protein.addIdentifiedModification(mod);
 
         System.out.println(protein.toString());

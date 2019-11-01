@@ -13,8 +13,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.assay.AssayProvider;
 import uk.ac.ebi.pride.archive.dataprovider.assay.AssayType;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.utilities.term.CvTermReference;
 
@@ -71,31 +71,31 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
     String assayDescription;
 
     @Field(value = ASSAY_DATA_ANALYSIS_SOFTWARE)
-    Set<DefaultCvParam> dataAnalysisSoftwares;
+    Set<CvParam> dataAnalysisSoftwares;
 
     @Field(value = ASSAY_DATA_ANALYSIS_DATABASE)
-    DefaultCvParam dataAnalysisDatabase;
+    CvParam dataAnalysisDatabase;
 
     @Field(value = ASSAY_DATA_ANALYSIS_RESULTS)
-    List<DefaultCvParam> summaryResults;
+    List<CvParam> summaryResults;
 
     @Field(value = ASSAY_DATA_ANALYSIS_PROTOCOL)
-    List<DefaultCvParam> dataAnalysisProperties;
+    List<CvParam> dataAnalysisProperties;
 
     @Field(value = ASSAY_DATA_ANALYSIS_PTMS)
-    List<Tuple<DefaultCvParam, Integer>> ptmsResults;
+    List<Tuple<CvParam, Integer>> ptmsResults;
 
     @Field(value = ASSAY_FILES)
     List<MongoAssayFile> assayFiles;
 
     @Field(PrideArchiveField.QUALITY_ESTIMATION_METHOD)
-    private List<DefaultCvParam> qualityEstimationMethods;
+    private List<CvParam> qualityEstimationMethods;
 
     @Indexed(name = PrideArchiveField.IS_VALIDATED)
     private Boolean isValid;
 
     @Override
-    public Collection<DefaultCvParam> getAdditionalProperties() {
+    public Collection<CvParam> getAdditionalProperties() {
         return dataAnalysisProperties;
     }
 
@@ -138,7 +138,7 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
 
     private Optional<Integer> getSummaryResultProperty( String propertyAccession){
         if(summaryResults != null ){
-            Optional<DefaultCvParam> numberPeptides = summaryResults.stream()
+            Optional<CvParam> numberPeptides = summaryResults.stream()
                     .filter(x -> x.getAccession().equalsIgnoreCase(propertyAccession))
                     .findFirst();
             if(numberPeptides.isPresent()){

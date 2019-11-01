@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.data.database.DatabaseProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PeptideSequenceProvider;
+import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PeptideSpectrumOverview;
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;

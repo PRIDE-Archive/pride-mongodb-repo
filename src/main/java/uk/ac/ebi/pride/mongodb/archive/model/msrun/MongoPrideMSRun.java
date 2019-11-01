@@ -15,7 +15,7 @@ import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
-import uk.ac.ebi.pride.mongodb.archive.model.msrun.idsettings.IdSetting;
+import uk.ac.ebi.pride.archive.dataprovider.msrun.idsettings.IdSetting;
 
 import java.util.*;
 import java.util.stream.Collectors;

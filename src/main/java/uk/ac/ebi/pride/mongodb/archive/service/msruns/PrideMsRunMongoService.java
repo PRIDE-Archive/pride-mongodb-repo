@@ -7,7 +7,7 @@ import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
-import uk.ac.ebi.pride.mongodb.archive.model.msrun.idsettings.IdSetting;
+import uk.ac.ebi.pride.archive.dataprovider.msrun.idsettings.IdSetting;
 import uk.ac.ebi.pride.mongodb.archive.repo.msruns.PrideMSRunMongoRepository;
 import uk.ac.ebi.pride.mongodb.archive.transformers.MSRunTransfromer;
 import uk.ac.ebi.pride.utilities.obo.OBOMapper;

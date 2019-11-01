@@ -5,7 +5,7 @@ import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
-import uk.ac.ebi.pride.mongodb.archive.model.msrun.idsettings.IdSetting;
+import uk.ac.ebi.pride.archive.dataprovider.msrun.idsettings.IdSetting;
 import uk.ac.ebi.pride.utilities.ols.web.service.cache.OntologyCacheService;
 
 import java.util.Set;

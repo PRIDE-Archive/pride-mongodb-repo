@@ -10,8 +10,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
-import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
+import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
 import uk.ac.ebi.pride.mongodb.archive.repo.files.PrideFileMongoRepository;
 import uk.ac.ebi.pride.mongodb.archive.repo.msruns.PrideMSRunMongoRepository;
@@ -39,26 +39,27 @@ public class PrideFileMongoService {
 
     @Autowired
     @Qualifier("archiveMongoTemplate")
-    public void setMongoOperations(MongoTemplate mongoTemplate){
+    public void setMongoOperations(MongoTemplate mongoTemplate) {
         this.mongoOperations = mongoTemplate;
     }
 
     @Autowired
-    public PrideFileMongoService(PrideFileMongoRepository fileRepository,PrideMSRunMongoRepository msRunMongoRepository) {
+    public PrideFileMongoService(PrideFileMongoRepository fileRepository, PrideMSRunMongoRepository msRunMongoRepository) {
         this.fileRepository = fileRepository;
         this.msRunMongoRepository = msRunMongoRepository;
     }
 
     /*
-    * Return an accession for inserting
-    * */
-    public int getNextAccessionNumber(int size){
+     * Return an accession for inserting
+     * */
+    public int getNextAccessionNumber(int size) {
         int finalNumber = PrideMongoUtils.getNextSizedSequence(mongoOperations, PrideArchiveField.PRIDE_FILE_COLLECTION_NAME, size) + 1;
         return finalNumber;
     }
 
     /**
      * Insert is allowing using to create a Accession for the File and insert the actual File into MongoDB.
+     *
      * @param prideFile MongoPrideFile
      * @return MongoPrideFile
      */
@@ -79,24 +80,24 @@ public class PrideFileMongoService {
      * Insert is allowing using to create a File Accession for the File and insert the actual File into MongoDB. The method return a List of Tuples
      * where the key is the submitted File and the value the inserted File.
      *
-     * @param prideFiles MongoPride File List
+     * @param prideFiles    MongoPride File List
      * @param msRunRawFiles MongoPrideMSRun File List
      * @return List of Tuple
      */
-    public List<Tuple<MongoPrideFile,MongoPrideFile>> insertAllFilesAndMsRuns(List<MongoPrideFile> prideFiles, List<MongoPrideMSRun> msRunRawFiles) {
+    public List<Tuple<MongoPrideFile, MongoPrideFile>> insertAllFilesAndMsRuns(List<MongoPrideFile> prideFiles, List<MongoPrideMSRun> msRunRawFiles) {
         List<Tuple<MongoPrideFile, MongoPrideFile>> insertedFiles = new ArrayList<>();
-        if(!prideFiles.isEmpty()){
-            if(msRunRawFiles != null) {
+        if (!prideFiles.isEmpty()) {
+            if (msRunRawFiles != null) {
                 for (MongoPrideMSRun msRunFile : msRunRawFiles) {
                     msRunMongoRepository.save(msRunFile);
                     log.info("A new MSRun has been saved into MongoDB database with Accession -- " + msRunFile.getAccession());
                 }
-            }else{
+            } else {
                 log.info("No MSRun files available to saveProteinEvidences");
             }
 
 
-            for (MongoPrideFile file: prideFiles){
+            for (MongoPrideFile file : prideFiles) {
                 insertedFiles.add(new Tuple<>(file, fileRepository.save(file)));
                 log.debug("A new project has been saved into MongoDB database with Accession -- " + file.getAccession());
             }
@@ -107,6 +108,7 @@ public class PrideFileMongoService {
 
     /**
      * Number of Files in the Mongo Repository.
+     *
      * @return Number of Files in the MongoDB database
      */
     public long count() {
@@ -117,13 +119,13 @@ public class PrideFileMongoService {
      * The current function add the following Project accession To the file Accession in the database. If the file is updated in the database
      * the function return true, if the file can't be updated in the database.
      *
-     * @param fileAccession File Accession
+     * @param fileAccession     File Accession
      * @param projectAccessions Project Archive Accession
      * @return True if the File can be updated.
      */
-    public boolean addProjectAccessions(String fileAccession, List<String> projectAccessions){
+    public boolean addProjectAccessions(String fileAccession, List<String> projectAccessions) {
         Optional<MongoPrideFile> prideFile = fileRepository.findPrideFileByAccession(fileAccession);
-        if(prideFile.isPresent()) {
+        if (prideFile.isPresent()) {
             Set<String> currentProjectAccesions = prideFile.get().getProjectAccessions();
             if (currentProjectAccesions == null)
                 currentProjectAccesions = new HashSet<>();
@@ -142,13 +144,13 @@ public class PrideFileMongoService {
      * The current function add the following Project accession To the file Accession in the database. If the file is updated in the database
      * the function return true, if the file can't be updated in the database.
      *
-     * @param fileAccession File Accession
+     * @param fileAccession      File Accession
      * @param analysisAccessions Project Archive Accession
      * @return True if the File can be updated.
      */
-    public boolean addAnalysisAccessions(String fileAccession, List<String> analysisAccessions){
+    public boolean addAnalysisAccessions(String fileAccession, List<String> analysisAccessions) {
         Optional<MongoPrideFile> prideFile = fileRepository.findPrideFileByAccession(fileAccession);
-        if(prideFile.isPresent()) {
+        if (prideFile.isPresent()) {
             Set<String> currentAnalysisAccesions = prideFile.get().getAnalysisAccessions();
             if (currentAnalysisAccesions == null)
                 currentAnalysisAccesions = new HashSet<>();
@@ -167,11 +169,12 @@ public class PrideFileMongoService {
      * This method provides a way to search Files by different properties. The search Allows only to Filter the File using different properties. in the Ffile
      * the structure of the filter is the following:
      * property: propertyValue, property2: propertyValue2
+     *
      * @param filterQuery Filter query.
-     * @param page Page to retrieve the Files.
+     * @param page        Page to retrieve the Files.
      * @return Page containing all the files.
      */
-    public Page<MongoPrideFile> searchFiles(String filterQuery, Pageable page){
+    public Page<MongoPrideFile> searchFiles(String filterQuery, Pageable page) {
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters(filterQuery);
         return fileRepository.filterByAttributes(filters, page);
 
@@ -179,58 +182,57 @@ public class PrideFileMongoService {
 
     /**
      * Find by Project Accession the following Files.
+     *
      * @param accession Find Files by Project Accession
      * @return Return File List
      */
-    public List<MongoPrideFile> findFilesByProjectAccession(String accession){
+    public List<MongoPrideFile> findFilesByProjectAccession(String accession) {
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("projectAccessions=all=" + accession);
         return fileRepository.filterByAttributes(filters);
     }
 
     /**
      * Find by Project Accession the following Files.
+     *
      * @param accession Find Files by Project Accession
      * @return Return File List
      */
-    public Page<MongoPrideFile> findFilesByProjectAccessionAndFiler(String accession, String filterQuery, Pageable page){
+    public Page<MongoPrideFile> findFilesByProjectAccessionAndFiler(String accession, String filterQuery, Pageable page) {
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("projectAccessions=all=" + accession, filterQuery);
         return fileRepository.filterByAttributes(filters, page);
     }
 
     /**
      * Find a PRIDE File by the accession of the File
+     *
      * @param fileAccession File accession
      * @return Optional
      */
-    public Optional<MongoPrideFile> findByFileAccession(String fileAccession){
+    public Optional<MongoPrideFile> findByFileAccession(String fileAccession) {
         return fileRepository.findPrideFileByAccession(fileAccession);
     }
 
     /**
      * Get all the files from PRIDE Archive
+     *
      * @param page Pageable
      * @return Page with all the Files
      */
-    public Page<MongoPrideFile> findAll(Pageable page){
+    public Page<MongoPrideFile> findAll(Pageable page) {
         return fileRepository.findAll(page);
     }
 
     /**
      * Delete all Files
      */
-    public void deleteAll(){
+    public void deleteAll() {
         fileRepository.deleteAll();
     }
 
-    public boolean deleteByAccession(String accession){
-        try{
-            List<MongoPrideFile> prideFilesList = fileRepository.findByProjectAccessions(Collections.singletonList(accession));
-            for(MongoPrideFile prideFile : prideFilesList){
-                fileRepository.delete(prideFile);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
+    public boolean deleteByAccession(String accession) {
+        List<MongoPrideFile> prideFilesList = fileRepository.findByProjectAccessions(Collections.singletonList(accession));
+        for (MongoPrideFile prideFile : prideFilesList) {
+            fileRepository.delete(prideFile);
         }
         return true;
     }
@@ -238,6 +240,7 @@ public class PrideFileMongoService {
 
     /**
      * Get the list of Files by {@link uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject} Accessions
+     *
      * @param accessions
      * @return List of Files
      */

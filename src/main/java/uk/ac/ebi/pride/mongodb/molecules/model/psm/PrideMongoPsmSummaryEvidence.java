@@ -1,5 +1,7 @@
 package uk.ac.ebi.pride.mongodb.molecules.model.psm;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
 import org.bson.types.ObjectId;
@@ -17,11 +19,13 @@ import java.util.Set;
 @Data
 @Builder
 @Document(collection = PrideArchiveField.PRIDE_PSM_COLLECTION_NAME)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PrideMongoPsmSummaryEvidence implements PrideArchiveField{
 
     /** Generated accession **/
     @Id
     @Indexed(name = PrideArchiveField.ID)
+    @JsonIgnore
     private ObjectId id;
 
     /** Accession Provided by PRIDE Pipelines **/

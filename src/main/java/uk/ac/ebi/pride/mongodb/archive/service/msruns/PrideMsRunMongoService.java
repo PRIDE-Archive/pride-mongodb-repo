@@ -4,10 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.msrun.MsRunProvider;
+import uk.ac.ebi.pride.archive.dataprovider.msrun.idsettings.IdSetting;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.msrun.MongoPrideMSRun;
-import uk.ac.ebi.pride.archive.dataprovider.msrun.idsettings.IdSetting;
 import uk.ac.ebi.pride.mongodb.archive.repo.msruns.PrideMSRunMongoRepository;
 import uk.ac.ebi.pride.mongodb.archive.transformers.MSRunTransfromer;
 import uk.ac.ebi.pride.utilities.obo.OBOMapper;
@@ -54,15 +54,16 @@ public class PrideMsRunMongoService implements IMSRunService {
 
     /**
      * We can update an existing {@link MongoPrideMSRun}
+     *
      * @param mongoPrideMSRun the new MongoPrideMSRun
      * @return Optional
      */
     @Override
-    public Optional<MongoPrideMSRun> updateMSRun(MongoPrideMSRun mongoPrideMSRun){
+    public Optional<MongoPrideMSRun> updateMSRun(MongoPrideMSRun mongoPrideMSRun) {
         Optional<MongoPrideMSRun> file = msRunRepository.findMsRunByAccession(mongoPrideMSRun.getAccession());
-        if(file.isPresent()){
+        if (file.isPresent()) {
             mongoPrideMSRun = msRunRepository.save(mongoPrideMSRun);
-        }else if(mongoPrideMSRun.getId() != null){
+        } else if (mongoPrideMSRun.getId() != null) {
             mongoPrideMSRun = msRunRepository.save(mongoPrideMSRun);
         }
         return Optional.of(mongoPrideMSRun);
@@ -70,25 +71,27 @@ public class PrideMsRunMongoService implements IMSRunService {
 
     /**
      * Find all the MSruns for an specific project accession
+     *
      * @param projectAccession Project Accession
      * @return List of {@link MongoPrideMSRun}
      */
     @Override
-    public List<MongoPrideMSRun> getMSRunsByProject(String projectAccession){
+    public List<MongoPrideMSRun> getMSRunsByProject(String projectAccession) {
         return msRunRepository.filterMSRunByProjectAccession(projectAccession);
     }
 
     /**
      * Set the metadata of the MSRun
+     *
      * @param msRunMetadata {@link MsRunProvider} msRun Metadata
-     * @param accession Accession of the {@link MongoPrideMSRun}
+     * @param accession     Accession of the {@link MongoPrideMSRun}
      * @return Optional
      */
     public Optional<MongoPrideMSRun> updateMSRunMetadata(MsRunProvider msRunMetadata, String accession) {
 
         Optional<MongoPrideMSRun> msRunOptional = msRunRepository.findMsRunByAccession(accession);
 
-        if(msRunOptional.isPresent()){
+        if (msRunOptional.isPresent()) {
             MongoPrideMSRun msRun = MSRunTransfromer.transformMetadata(msRunOptional.get(), msRunMetadata, ontologyCacheService);
             msRun = msRunRepository.save(msRun);
             return Optional.of(msRun);
@@ -98,15 +101,16 @@ public class PrideMsRunMongoService implements IMSRunService {
 
     /**
      * Set the metadata of the MSRun
+     *
      * @param msRunFieldData A JSON string with part of MSRun data
-     * @param accession Accession of the {@link MongoPrideMSRun}
+     * @param accession      Accession of the {@link MongoPrideMSRun}
      * @return Optional
      */
     public Optional<MongoPrideMSRun> updateMSRunMetadataParts(String fieldName, MsRunProvider msRunFieldData, String accession) {
 
         Optional<MongoPrideMSRun> msRunOptional = msRunRepository.findMsRunByAccession(accession);
         Set<CvParam> mongoCvParams = new HashSet<>();
-        if(msRunOptional.isPresent()) {
+        if (msRunOptional.isPresent()) {
             MongoPrideMSRun msRun = msRunOptional.get();
             switch (fieldName) {
                 case PrideArchiveField.MS_RUN_FILE_PROPERTIES:
@@ -127,7 +131,7 @@ public class PrideMsRunMongoService implements IMSRunService {
                     break;
                 case PrideArchiveField.MS_RUN_ID_SETTINGS:
                     msRun.setIdSettings(msRunFieldData.getIdSettings()
-                            .stream().map(x -> (IdSetting)x).collect(Collectors.toSet()));
+                            .stream().map(x -> (IdSetting) x).collect(Collectors.toSet()));
                     break;
             }
             msRun = msRunRepository.save(msRun);
@@ -139,6 +143,7 @@ public class PrideMsRunMongoService implements IMSRunService {
 
     /**
      * Find a corresponding msRun by the accession.
+     *
      * @param accession Accession of the msRuns
      * @return Optional MSRun
      */
@@ -150,28 +155,23 @@ public class PrideMsRunMongoService implements IMSRunService {
     private Set<CvParam> processCVParams(Set<CvParam> mongoCvParams) {
 
         return mongoCvParams
-            .stream()
-            .filter(x -> psiOBOMapper.getTermByAccession(x.getAccession()) != null)
-            .map(x -> new CvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
-            .collect(Collectors.toSet());
+                .stream()
+                .filter(x -> psiOBOMapper.getTermByAccession(x.getAccession()) != null)
+                .map(x -> new CvParam(x.getCvLabel(), x.getAccession(), x.getName(), x.getValue()))
+                .collect(Collectors.toSet());
     }
 
     /**
      * Delete all Files
      */
-    public void deleteAll(){
+    public void deleteAll() {
         msRunRepository.deleteAll();
     }
 
-    public boolean deleteByAccession(String accession){
-        try{
-            List<MongoPrideMSRun> prideMSRunFilesList = msRunRepository.findByProjectAccessions(Collections.singletonList(accession));
-            for(MongoPrideMSRun prideFile : prideMSRunFilesList){
-                msRunRepository.delete(prideFile);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
+    public boolean deleteByAccession(String accession) {
+        List<MongoPrideMSRun> prideMSRunFilesList = msRunRepository.findByProjectAccessions(Collections.singletonList(accession));
+        for (MongoPrideMSRun prideFile : prideMSRunFilesList) {
+            msRunRepository.delete(prideFile);
         }
         return true;
     }

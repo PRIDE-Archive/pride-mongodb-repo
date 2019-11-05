@@ -1,5 +1,7 @@
 package uk.ac.ebi.pride.mongodb.molecules.model.psm;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
 import org.bson.types.ObjectId;
@@ -19,6 +21,7 @@ import java.util.Set;
 @Data
 @Builder
 @Document(collection = PrideArchiveField.PRIDE_PSM_COLLECTION_NAME)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @CompoundIndexes({@CompoundIndex(name = "psm_project_assay_peptide_index",
         unique = false,
         def = "{'" + PrideArchiveField.EXTERNAL_PROJECT_ACCESSION + "' : 1, '" + PrideArchiveField.PROTEIN_ASSAY_ACCESSION +"' : 1, '" + PrideArchiveField.PEPTIDE_SEQUENCE + "' : 1 }")
@@ -28,6 +31,7 @@ public class PrideMongoPsmSummaryEvidence implements PrideArchiveField{
     /** Generated accession **/
     @Id
     @Indexed(name = PrideArchiveField.ID)
+    @JsonIgnore
     private ObjectId id;
 
     /** Accession Provided by PRIDE Pipelines **/

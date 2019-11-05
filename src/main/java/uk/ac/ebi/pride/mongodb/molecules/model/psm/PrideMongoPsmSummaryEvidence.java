@@ -14,7 +14,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
-import java.util.List;
 import java.util.Set;
 
 
@@ -23,8 +22,10 @@ import java.util.Set;
 @Document(collection = PrideArchiveField.PRIDE_PSM_COLLECTION_NAME)
 @CompoundIndexes({@CompoundIndex(name = "psm_project_assay_peptide_index",
         unique = false,
-        def = "{'" + PrideArchiveField.EXTERNAL_PROJECT_ACCESSION + "' : 1, '" + PrideArchiveField.PROTEIN_ASSAY_ACCESSION +"' : 1, '" + PrideArchiveField.PEPTIDE_SEQUENCE + "' : 1 }")
-})
+        def = "{'" + PrideArchiveField.EXTERNAL_PROJECT_ACCESSION + "' : 1, '" + PrideArchiveField.PROTEIN_ASSAY_ACCESSION +"' : 1, '" + PrideArchiveField.PEPTIDE_SEQUENCE + "' : 1 }"), @CompoundIndex(name = "project_inverse_psm", unique = false,
+        def = "{'" + PrideArchiveField.EXTERNAL_PROJECT_ACCESSION + "' : -1, '" + PrideArchiveField.PEPTIDE_SEQUENCE + "' : 1 }"
+)
+      })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PrideMongoPsmSummaryEvidence implements PrideArchiveField{
 

@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -17,6 +19,10 @@ import java.util.Set;
 @Data
 @Builder
 @Document(collection = PrideArchiveField.PRIDE_PSM_COLLECTION_NAME)
+@CompoundIndexes({@CompoundIndex(name = "psm_project_assay_peptide_index",
+        unique = false,
+        def = "{'" + PrideArchiveField.EXTERNAL_PROJECT_ACCESSION + "' : 1, '" + PrideArchiveField.PROTEIN_ASSAY_ACCESSION +"' : 1, '" + PrideArchiveField.PEPTIDE_SEQUENCE + "' : 1 }")
+})
 public class PrideMongoPsmSummaryEvidence implements PrideArchiveField{
 
     /** Generated accession **/

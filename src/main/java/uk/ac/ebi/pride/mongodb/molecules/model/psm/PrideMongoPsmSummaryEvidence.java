@@ -21,11 +21,11 @@ import java.util.Set;
 @Data
 @Builder
 @Document(collection = PrideArchiveField.PRIDE_PSM_COLLECTION_NAME)
-@JsonIgnoreProperties(ignoreUnknown = true)
 @CompoundIndexes({@CompoundIndex(name = "psm_project_assay_peptide_index",
         unique = false,
         def = "{'" + PrideArchiveField.EXTERNAL_PROJECT_ACCESSION + "' : 1, '" + PrideArchiveField.PROTEIN_ASSAY_ACCESSION +"' : 1, '" + PrideArchiveField.PEPTIDE_SEQUENCE + "' : 1 }")
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PrideMongoPsmSummaryEvidence implements PrideArchiveField{
 
     /** Generated accession **/

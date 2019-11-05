@@ -315,7 +315,7 @@ public class PrideMoleculesMongoService {
         if(projectAccession != null && !projectAccession.isEmpty())
             filter.add("projectAccession=in=" + projectAccession);
         if(unmodifiedPeptideSequence != null && !unmodifiedPeptideSequence.isEmpty())
-            filter.add("peptideSequence=regex=" + unmodifiedPeptideSequence);
+            filter.add("peptideSequence=in=" + unmodifiedPeptideSequence);
         if(modifiedPeptideSequence != null && !modifiedPeptideSequence.isEmpty())
             filter.add("modifiedPeptideSequence=in=" + modifiedPeptideSequence);
         if(assayAccession != null && !assayAccession.isEmpty())

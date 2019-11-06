@@ -6,9 +6,9 @@ import org.springframework.data.domain.Sort;
 import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
 import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
 
-
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author ypriverol
@@ -34,6 +34,6 @@ public interface PridePeptideEvidenceMongoRepositoryCustom {
     Page<PrideMongoPeptideEvidence> findPeptideEvidenceByProteinEvidence(String projectAccession, String assayAccession,
                                                                          String reportedProtein, Pageable page);
 
-    List<String> findProteinAccessionByProjectAccessions(String projectAccession);
-    List<String> findPeptideSequenceByProjectAccessions(String projectAccession);
+    Set<String> findProteinAccessionByProjectAccessions(String projectAccession);
+    Set<String> findPeptideSequenceByProjectAccessions(String projectAccession);
 }

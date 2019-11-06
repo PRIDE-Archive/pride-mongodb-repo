@@ -15,16 +15,16 @@ import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author ypriverol
  */
 public class PridePeptideEvidenceMongoRepositoryImpl implements PridePeptideEvidenceMongoRepositoryCustom {
 
-    MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
 
     @Autowired
     @Qualifier("moleculesMongoTemplate")
@@ -70,22 +70,28 @@ public class PridePeptideEvidenceMongoRepositoryImpl implements PridePeptideEvid
     }
 
     @Override
-    public List<String> findProteinAccessionByProjectAccessions(String projectAccession) {
+    public Set<String> findProteinAccessionByProjectAccessions(String projectAccession) {
         Query query = Query.query(Criteria.where(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(projectAccession));
+        query.fields().include(PrideArchiveField.PROTEIN_ACCESSION).exclude("_id");
 
-        ArrayList<String> proteinAccessions = mongoTemplate.getCollection(PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME)
-                .distinct(PrideArchiveField.PROTEIN_ACCESSION, query.getQueryObject(), String.class)
-                .into(new ArrayList<>());
-        return proteinAccessions;
+        Set<String> proteinAcessions = new HashSet<>();
+        List<Map> strings = mongoTemplate.find(query, Map.class, PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME);
+        Set<Collection> values = strings.stream().map((Function<Map, Collection>) Map::values).collect(Collectors.toSet());
+        values.forEach(proteinAcessions::addAll);
+
+        return proteinAcessions;
     }
 
     @Override
-    public List<String> findPeptideSequenceByProjectAccessions(String projectAccession) {
+    public Set<String> findPeptideSequenceByProjectAccessions(String projectAccession) {
         Query query = Query.query(Criteria.where(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(projectAccession));
+        query.fields().include(PrideArchiveField.PEPTIDE_SEQUENCE).exclude("_id");
 
-        ArrayList<String> peptideSequences = mongoTemplate.getCollection(PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME)
-                .distinct(PrideArchiveField.PEPTIDE_SEQUENCE, query.getQueryObject(), String.class)
-                .into(new ArrayList<>());
+        Set<String> peptideSequences = new HashSet<>();
+        List<Map> strings = mongoTemplate.find(query, Map.class, PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME);
+        Set<Collection> values = strings.stream().map((Function<Map, Collection>) Map::values).collect(Collectors.toSet());
+        values.forEach(peptideSequences::addAll);
+
         return peptideSequences;
     }
 

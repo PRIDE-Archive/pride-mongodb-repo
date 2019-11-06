@@ -16,9 +16,7 @@ import uk.ac.ebi.pride.mongodb.molecules.repo.protein.PrideProteinMongoRepositor
 import uk.ac.ebi.pride.mongodb.molecules.repo.psm.PridePsmSummaryEvidenceMongoRepository;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.StringJoiner;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -270,11 +268,11 @@ public class PrideMoleculesMongoService {
         return peptideMongoRepository.findPeptideByProteinAndAssayAccession(reportedProtein, assayAccession, peptideAccession);
     }
 
-    public List<String> findProteinAccessionByProjectAccessions(String projectAccession) {
+    public Set<String> findProteinAccessionByProjectAccessions(String projectAccession) {
         return peptideMongoRepository.findProteinAccessionByProjectAccessions(projectAccession);
     }
 
-    public List<String> findPeptideSequenceByProjectAccessions(String projectAccession) {
+    public Set<String> findPeptideSequenceByProjectAccessions(String projectAccession) {
         return peptideMongoRepository.findPeptideSequenceByProjectAccessions(projectAccession);
     }
 

@@ -24,6 +24,10 @@ import java.util.stream.Collectors;
  */
 public class PridePeptideEvidenceMongoRepositoryImpl implements PridePeptideEvidenceMongoRepositoryCustom {
 
+    private final Criteria additionalAttributesCriteria = Criteria.where(PrideArchiveField.ADDITIONAL_ATTRIBUTES)
+            .elemMatch(Criteria.where(PrideArchiveField.ACCESSION).is("PRIDE:0000511").and(PrideArchiveField.VALUE).is("true"));
+    private final Criteria validatedCriteria = Criteria.where(PrideArchiveField.IS_VALIDATED).is(true);
+
     private MongoTemplate mongoTemplate;
 
     @Autowired
@@ -71,7 +75,13 @@ public class PridePeptideEvidenceMongoRepositoryImpl implements PridePeptideEvid
 
     @Override
     public Set<String> findProteinAccessionByProjectAccessions(String projectAccession) {
-        Query query = Query.query(Criteria.where(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(projectAccession));
+        // { "$and" : [{ "projectAccession" : "PRD000016" }, { "$or" : [{ "isValid" : true }, { "additionalAttributes" : { "$elemMatch" : { "accession" : "PRIDE:0000511", "value" : "true" } } }] }] }
+        Criteria criteria = new Criteria().andOperator(
+                Criteria.where(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(projectAccession)
+                ,new Criteria().orOperator(validatedCriteria, additionalAttributesCriteria)
+        );
+
+        Query query = Query.query(criteria);
         String proteinAccessionFld = PrideArchiveField.PROTEIN_ACCESSION;
         query.fields().include(proteinAccessionFld).exclude("_id");
 
@@ -82,7 +92,13 @@ public class PridePeptideEvidenceMongoRepositoryImpl implements PridePeptideEvid
 
     @Override
     public Set<String> findPeptideSequenceByProjectAccessions(String projectAccession) {
-        Query query = Query.query(Criteria.where(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(projectAccession));
+        // { "$and" : [{ "projectAccession" : "PRD000016" }, { "$or" : [{ "isValid" : true }, { "additionalAttributes" : { "$elemMatch" : { "accession" : "PRIDE:0000511", "value" : "true" } } }] }] }
+        Criteria criteria = new Criteria().andOperator(
+                Criteria.where(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(projectAccession)
+                ,new Criteria().orOperator(validatedCriteria, additionalAttributesCriteria)
+        );
+
+        Query query = Query.query(criteria);
         String peptideSequenceFld = PrideArchiveField.PEPTIDE_SEQUENCE;
         query.fields().include(peptideSequenceFld).exclude("_id");
 

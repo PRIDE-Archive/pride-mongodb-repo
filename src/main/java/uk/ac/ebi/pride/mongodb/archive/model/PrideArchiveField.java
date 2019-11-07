@@ -206,6 +206,7 @@ public interface PrideArchiveField {
     String PROTEIN_ACCESSION = "proteinAccession";
     String QUALITY_ESTIMATION_METHOD = "qualityEstimationMethods";
     String IS_VALIDATED = "isValid";
+    String VALUE = "value";
 
     String NUMBER_PEPTIDEEVIDENCES = "numberPeptides";
     String NUMBER_PSMS = "numberPSMs";

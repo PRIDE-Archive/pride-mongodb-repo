@@ -72,27 +72,23 @@ public class PridePeptideEvidenceMongoRepositoryImpl implements PridePeptideEvid
     @Override
     public Set<String> findProteinAccessionByProjectAccessions(String projectAccession) {
         Query query = Query.query(Criteria.where(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(projectAccession));
-        query.fields().include(PrideArchiveField.PROTEIN_ACCESSION).exclude("_id");
+        String proteinAccessionFld = PrideArchiveField.PROTEIN_ACCESSION;
+        query.fields().include(proteinAccessionFld).exclude("_id");
 
-        Set<String> proteinAcessions = new HashSet<>();
         List<Map> strings = mongoTemplate.find(query, Map.class, PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME);
-        Set<Collection> values = strings.stream().map((Function<Map, Collection>) Map::values).collect(Collectors.toSet());
-        values.forEach(proteinAcessions::addAll);
 
-        return proteinAcessions;
+        return strings.stream().map(s -> (String)s.get(proteinAccessionFld)).collect(Collectors.toSet());
     }
 
     @Override
     public Set<String> findPeptideSequenceByProjectAccessions(String projectAccession) {
         Query query = Query.query(Criteria.where(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(projectAccession));
-        query.fields().include(PrideArchiveField.PEPTIDE_SEQUENCE).exclude("_id");
+        String peptideSequenceFld = PrideArchiveField.PEPTIDE_SEQUENCE;
+        query.fields().include(peptideSequenceFld).exclude("_id");
 
-        Set<String> peptideSequences = new HashSet<>();
         List<Map> strings = mongoTemplate.find(query, Map.class, PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME);
-        Set<Collection> values = strings.stream().map((Function<Map, Collection>) Map::values).collect(Collectors.toSet());
-        values.forEach(peptideSequences::addAll);
 
-        return peptideSequences;
+        return strings.stream().map(s -> (String)s.get(peptideSequenceFld)).collect(Collectors.toSet());
     }
 
 }

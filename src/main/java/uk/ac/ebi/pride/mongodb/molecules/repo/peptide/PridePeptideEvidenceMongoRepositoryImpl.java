@@ -15,16 +15,20 @@ import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author ypriverol
  */
 public class PridePeptideEvidenceMongoRepositoryImpl implements PridePeptideEvidenceMongoRepositoryCustom {
 
-    MongoTemplate mongoTemplate;
+    private final Criteria additionalAttributesCriteria = Criteria.where(PrideArchiveField.ADDITIONAL_ATTRIBUTES)
+            .elemMatch(Criteria.where(PrideArchiveField.ACCESSION).is("PRIDE:0000511").and(PrideArchiveField.VALUE).is("true"));
+    private final Criteria validatedCriteria = Criteria.where(PrideArchiveField.IS_VALIDATED).is(true);
+
+    private MongoTemplate mongoTemplate;
 
     @Autowired
     @Qualifier("moleculesMongoTemplate")
@@ -70,23 +74,37 @@ public class PridePeptideEvidenceMongoRepositoryImpl implements PridePeptideEvid
     }
 
     @Override
-    public List<String> findProteinAccessionByProjectAccessions(String projectAccession) {
-        Query query = Query.query(Criteria.where(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(projectAccession));
+    public Set<String> findProteinAccessionByProjectAccessions(String projectAccession) {
+        // { "$and" : [{ "projectAccession" : "PRD000016" }, { "$or" : [{ "isValid" : true }, { "additionalAttributes" : { "$elemMatch" : { "accession" : "PRIDE:0000511", "value" : "true" } } }] }] }
+        Criteria criteria = new Criteria().andOperator(
+                Criteria.where(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(projectAccession)
+                ,new Criteria().orOperator(validatedCriteria, additionalAttributesCriteria)
+        );
 
-        ArrayList<String> proteinAccessions = mongoTemplate.getCollection(PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME)
-                .distinct(PrideArchiveField.PROTEIN_ACCESSION, query.getQueryObject(), String.class)
-                .into(new ArrayList<>());
-        return proteinAccessions;
+        Query query = Query.query(criteria);
+        String proteinAccessionFld = PrideArchiveField.PROTEIN_ACCESSION;
+        query.fields().include(proteinAccessionFld).exclude("_id");
+
+        List<Map> strings = mongoTemplate.find(query, Map.class, PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME);
+
+        return strings.stream().map(s -> (String)s.get(proteinAccessionFld)).collect(Collectors.toSet());
     }
 
     @Override
-    public List<String> findPeptideSequenceByProjectAccessions(String projectAccession) {
-        Query query = Query.query(Criteria.where(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(projectAccession));
+    public Set<String> findPeptideSequenceByProjectAccessions(String projectAccession) {
+        // { "$and" : [{ "projectAccession" : "PRD000016" }, { "$or" : [{ "isValid" : true }, { "additionalAttributes" : { "$elemMatch" : { "accession" : "PRIDE:0000511", "value" : "true" } } }] }] }
+        Criteria criteria = new Criteria().andOperator(
+                Criteria.where(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(projectAccession)
+                ,new Criteria().orOperator(validatedCriteria, additionalAttributesCriteria)
+        );
 
-        ArrayList<String> peptideSequences = mongoTemplate.getCollection(PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME)
-                .distinct(PrideArchiveField.PEPTIDE_SEQUENCE, query.getQueryObject(), String.class)
-                .into(new ArrayList<>());
-        return peptideSequences;
+        Query query = Query.query(criteria);
+        String peptideSequenceFld = PrideArchiveField.PEPTIDE_SEQUENCE;
+        query.fields().include(peptideSequenceFld).exclude("_id");
+
+        List<Map> strings = mongoTemplate.find(query, Map.class, PrideArchiveField.PRIDE_PEPTIDE_COLLECTION_NAME);
+
+        return strings.stream().map(s -> (String)s.get(peptideSequenceFld)).collect(Collectors.toSet());
     }
 
 }

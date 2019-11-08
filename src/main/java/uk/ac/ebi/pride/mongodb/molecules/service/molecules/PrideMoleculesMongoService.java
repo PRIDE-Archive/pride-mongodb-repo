@@ -335,4 +335,16 @@ public class PrideMoleculesMongoService {
     public Page<PrideMongoPsmSummaryEvidence> listPsmSummaryEvidences(PageRequest pageRequest) {
         return psmMongoRepository.findAll(pageRequest);
     }
+
+    public long getNumberProteinEvidences() {
+        return  proteinMongoRepository.count();
+    }
+
+    public long getNumberPeptideEvidences() {
+        return peptideMongoRepository.count();
+    }
+
+    public long getNumberPSMEvidecnes() {
+        return psmMongoRepository.count();
+    }
 }

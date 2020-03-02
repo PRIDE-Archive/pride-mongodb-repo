@@ -61,7 +61,7 @@ public class PrideProjectMongoService {
     public Optional<MongoPrideProject> update(MongoPrideProject project) {
         if (repository.findByAccession(project.getAccession()).isPresent()) {
             project = repository.save(project);
-            log.info("A new project has been updated in MongoDB with accession -- " + project.getAccession());
+            log.info("project has been updated in MongoDB with accession -- " + project.getAccession());
         } else
             log.info("The project do not exists in the database the insert function should be used -- " + project.getAccession());
         return Optional.of(project);

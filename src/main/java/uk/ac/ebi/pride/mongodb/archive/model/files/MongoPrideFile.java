@@ -59,6 +59,9 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
     String fileSourceFolder;
 
     /** Checksum for the specific File provided by the submission tool **/
+    @Indexed(name = SUBMITTER_FILE_MD5_CHECKSUM)
+    String submitterFileMD5Checksum;
+
     @Indexed(name = FILE_MD5_CHECKSUM)
     String md5Checksum;
 

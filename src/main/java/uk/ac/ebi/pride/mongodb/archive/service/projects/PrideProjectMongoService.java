@@ -69,6 +69,20 @@ public class PrideProjectMongoService {
 
 
     /**
+     * This function insert a project in the Mongo Database, if the project already exist in the database, the function will update the record
+     *
+     * @param project {@link MongoPrideProject}
+     * @return MongoPrideProject
+     */
+    public Optional<MongoPrideProject> upsert(MongoPrideProject project) {
+
+            project = repository.save(project);
+            log.info("project has been Inserted or updated in MongoDB with accession -- " + project.getAccession());
+        return Optional.of(project);
+    }
+
+
+    /**
      * This method add projectFiles with the corresponding type of relations defined as {@link CvParamProvider}.
      *
      * @param projectAccession     project accession

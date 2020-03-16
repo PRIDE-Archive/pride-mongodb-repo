@@ -56,8 +56,8 @@ public class PrideLocalhostProjectServiceTest {
 
     @Before
     public void setup(){
-        prideProjectService.deleteAll();
-        prideFileMongoService.deleteAll();
+//        prideProjectService.deleteAll();
+//        prideFileMongoService.deleteAll();
     }
 
     /**

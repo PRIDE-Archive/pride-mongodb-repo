@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.service.projects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -64,6 +65,23 @@ public class PrideProjectMongoService {
             log.info("project has been updated in MongoDB with accession -- " + project.getAccession());
         } else
             log.info("The project do not exists in the database the insert function should be used -- " + project.getAccession());
+        return Optional.of(project);
+    }
+
+
+    /**
+     * This function insert a project in the Mongo Database, if the project already exist in the database, the function will update the record
+     *
+     * @param project {@link MongoPrideProject}
+     * @return MongoPrideProject
+     */
+    public Optional<MongoPrideProject> upsert(MongoPrideProject project) {
+        Optional<MongoPrideProject> optionalProject = repository.findByAccession(project.getAccession());
+        if(optionalProject.isPresent()){
+            project.setId((ObjectId) optionalProject.get().getId());
+        }
+            project = repository.save(project);
+            log.info("project has been Inserted or updated in MongoDB with accession -- " + project.getAccession());
         return Optional.of(project);
     }
 

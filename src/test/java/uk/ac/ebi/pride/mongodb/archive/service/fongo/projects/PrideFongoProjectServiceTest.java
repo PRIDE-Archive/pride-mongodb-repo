@@ -52,8 +52,6 @@ public class PrideFongoProjectServiceTest {
 
     @Before
     public void setUp(){
-        prideProjectService.deleteAll();
-        prideFileMongoService.deleteAll();
     }
 
     /**

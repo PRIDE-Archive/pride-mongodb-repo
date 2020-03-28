@@ -59,11 +59,11 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
     String fileSourceFolder;
 
     /** Checksum for the specific File provided by the submission tool **/
-    @Indexed(name = SUBMITTER_FILE_MD5_CHECKSUM)
-    String submitterFileMD5Checksum;
+    @Indexed(name = SUBMITTER_FILE_CHECKSUM)
+    String submitterFileChecksum;
 
-    @Indexed(name = FILE_MD5_CHECKSUM)
-    String md5Checksum;
+    @Indexed(name = FILE_CHECKSUM)
+    String checksum;
 
     /** Public File Locations in CVTerms**/
     @Indexed(name = FILE_PUBLIC_LOCATIONS)
@@ -138,8 +138,8 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
     }
 
     @Override
-    public String getMd5Checksum() {
-        return md5Checksum;
+    public String getChecksum() {
+        return checksum;
     }
 
     @Override

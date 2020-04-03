@@ -109,6 +109,7 @@ public interface PrideArchiveField {
     String FILE_SOURCE_TYPE = "fileSourceType";
     String FILE_SOURCE_FOLDER = "fileSourceFolder";
     String FILE_CHECKSUM = "fileChecksum";
+    String CHECKSUM = "checksum";
     String SUBMITTER_FILE_CHECKSUM = "submitterFileChecksum";
     String FILE_PUBLIC_LOCATIONS = "filePublicLocations";
     String FILE_SIZE_MB = "fileSizeMB";

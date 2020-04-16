@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
+import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
 import uk.ac.ebi.pride.mongodb.molecules.model.protein.PrideMongoProteinEvidence;
 import uk.ac.ebi.pride.mongodb.molecules.model.psm.PrideMongoPsmSummaryEvidence;
@@ -15,8 +17,12 @@ import uk.ac.ebi.pride.mongodb.molecules.repo.peptide.PridePeptideEvidenceMongoR
 import uk.ac.ebi.pride.mongodb.molecules.repo.protein.PrideProteinMongoRepository;
 import uk.ac.ebi.pride.mongodb.molecules.repo.psm.PridePsmSummaryEvidenceMongoRepository;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
+import uk.ac.ebi.pride.utilities.util.StringUtils;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.StringJoiner;
 
 @Service
 @Slf4j
@@ -37,30 +43,32 @@ public class PrideMoleculesMongoService {
 
     /**
      * This function is to find all the {@link PrideMongoProteinEvidence}
+     *
      * @param projectAccession Project Accession
-     * @param page Page Number of Proteins to be retrieve .
+     * @param page             Page Number of Proteins to be retrieve .
      * @return List of {@link PrideMongoProteinEvidence}
      */
-    public Page<PrideMongoProteinEvidence> findProteinsByProjectAccession(String projectAccession, Pageable page){
+    public Page<PrideMongoProteinEvidence> findProteinsByProjectAccession(String projectAccession, Pageable page) {
 
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("projectAccession=in=" + projectAccession);
-        Page<PrideMongoProteinEvidence> proteins =  proteinMongoRepository.filterByAttributes(filters, page);
+        Page<PrideMongoProteinEvidence> proteins = proteinMongoRepository.filterByAttributes(filters, page);
         log.debug("The number of Proteins for the Project Accession -- " + projectAccession + " and Page -- " + page.getPageNumber() + " is -- " + proteins.getTotalElements());
         return proteins;
     }
 
     /**
      * Save an specific Protein in MongoDB
+     *
      * @param protein {@link PrideMongoProteinEvidence}
      */
-    public void saveProteinEvidences(PrideMongoProteinEvidence protein){
+    public void saveProteinEvidences(PrideMongoProteinEvidence protein) {
         Optional<PrideMongoProteinEvidence> currentProtein = proteinMongoRepository
                 .findByAccessionAndAssayAccession(protein.getReportedAccession(), protein.getAssayAccession());
-        if(currentProtein.isPresent()){
+        if (currentProtein.isPresent()) {
             protein.setId((ObjectId) currentProtein.get().getId());
             log.debug("The protein will be updated -- Assay: " + protein.getAssayAccession() + " Protein: "
                     + protein.getReportedAccession());
-        }else{
+        } else {
             log.debug("New protein will be added to the database -- Assay: " + protein.getAssayAccession()
                     + " Protein: " + protein.getReportedAccession());
         }
@@ -69,9 +77,10 @@ public class PrideMoleculesMongoService {
 
     /**
      * This method not not find for present of the protein in the database, only try to insert it.
+     *
      * @param protein {@link PrideMongoProteinEvidence}
      */
-    public void insertProteinEvidences(PrideMongoProteinEvidence protein){
+    public void insertProteinEvidences(PrideMongoProteinEvidence protein) {
         proteinMongoRepository.save(protein);
     }
 
@@ -84,8 +93,9 @@ public class PrideMoleculesMongoService {
 
     /**
      * Search Proteins by specific properties in the filter Query.
+     *
      * @param filterQuery Query properties
-     * @param page Page to be retrieved
+     * @param page        Page to be retrieved
      * @return Page containing the {@link PrideMongoProteinEvidence}.
      */
     public Page<PrideMongoProteinEvidence> searchProteins(String filterQuery, Pageable page) {
@@ -96,8 +106,9 @@ public class PrideMoleculesMongoService {
 
     /**
      * Find all {@link PrideMongoProteinEvidence}. This method should be executed using the Pagination.
-     * @return List of {@link PrideMongoProteinEvidence}
+     *
      * @param page a {@link PageRequest}
+     * @return List of {@link PrideMongoProteinEvidence}
      */
     public Page<PrideMongoProteinEvidence> findAllProteinEvidences(PageRequest page) {
         return proteinMongoRepository.findAll(page);
@@ -105,17 +116,18 @@ public class PrideMoleculesMongoService {
 
     /**
      * Find all {@link PrideMongoProteinEvidence}. This method should be executed using the Pagination.
-     * @return List of {@link PrideMongoProteinEvidence}
+     *
      * @param page a {@link PageRequest}
+     * @return List of {@link PrideMongoProteinEvidence}
      */
     public Page<PrideMongoProteinEvidence> findAllProteinEvidences(String projectAccession, String assayAccession, String reportedAccession, PageRequest page) {
 
         StringJoiner filter = new StringJoiner(",");
-        if(projectAccession != null && !projectAccession.isEmpty())
+        if (projectAccession != null && !projectAccession.isEmpty())
             filter.add("projectAccession=in=" + projectAccession);
-        if(assayAccession != null && !assayAccession.isEmpty())
+        if (assayAccession != null && !assayAccession.isEmpty())
             filter.add("assayAccession=in=" + assayAccession);
-        if(reportedAccession != null && !reportedAccession.isEmpty())
+        if (reportedAccession != null && !reportedAccession.isEmpty())
             filter.add("reportedAccession=in=" + reportedAccession);
 
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters(filter.toString());
@@ -125,27 +137,29 @@ public class PrideMoleculesMongoService {
 
     /**
      * This functions allows to find all the Peptides for an specific project Accession
+     *
      * @param projectAccession Project Accession
-     * @param page Page to be retrieve
+     * @param page             Page to be retrieve
      * @return List of Peptides
      */
-    public Page<PrideMongoPeptideEvidence> findPeptideEvidencesByProjectAccession(String projectAccession, Pageable page){
+    public Page<PrideMongoPeptideEvidence> findPeptideEvidencesByProjectAccession(String projectAccession, Pageable page) {
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("projectAccession=in=" + projectAccession);
-        Page<PrideMongoPeptideEvidence> psms =  peptideMongoRepository.filterByAttributes(filters, page);
-        log.debug("The number of PSMs for the Project Accession -- " + projectAccession + " -- "+ psms.getTotalElements());
+        Page<PrideMongoPeptideEvidence> psms = peptideMongoRepository.filterByAttributes(filters, page);
+        log.debug("The number of PSMs for the Project Accession -- " + projectAccession + " -- " + psms.getTotalElements());
         return psms;
     }
 
     /**
      * This functions allows to find all the PSMs for an specific project Accession
+     *
      * @param analysisAccession Analysis Accession
-     * @param page Page to be retrieve
+     * @param page              Page to be retrieve
      * @return List of PSMs
      */
-    public Page<PrideMongoPeptideEvidence> findPeptideEvidencesByAssayAccession(String analysisAccession, Pageable page){
+    public Page<PrideMongoPeptideEvidence> findPeptideEvidencesByAssayAccession(String analysisAccession, Pageable page) {
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("analysisAccession=in=" + analysisAccession);
         Page<PrideMongoPeptideEvidence> psms = peptideMongoRepository.filterByAttributes(filters, page);
-        log.debug("The number of PSMs for the Analysis Accession -- " + analysisAccession + " -- "+ psms.getTotalElements());
+        log.debug("The number of PSMs for the Analysis Accession -- " + analysisAccession + " -- " + psms.getTotalElements());
         return psms;
     }
 
@@ -157,7 +171,7 @@ public class PrideMoleculesMongoService {
      * @return the number of PSMs corresponding to the provided project accession
      */
     public long countByProjectAccession(String projectAccession) {
-        return findPeptideEvidencesByProjectAccession(projectAccession, PageRequest.of(0,10)).getTotalElements();
+        return findPeptideEvidencesByProjectAccession(projectAccession, PageRequest.of(0, 10)).getTotalElements();
     }
 
     /**
@@ -167,29 +181,31 @@ public class PrideMoleculesMongoService {
      * @return the number of PSMs corresponding to the provided project accession
      */
     public long countByAssayAccession(String assayAccession) {
-        return findPeptideEvidencesByProjectAccession(assayAccession, PageRequest.of(0,10)).getTotalElements();
+        return findPeptideEvidencesByProjectAccession(assayAccession, PageRequest.of(0, 10)).getTotalElements();
     }
 
     /**
      * Save an specific PSM in MongoDB
+     *
      * @param peptideEvidence {@link PrideMongoPeptideEvidence}
      */
-    public void savePeptideEvidence(PrideMongoPeptideEvidence peptideEvidence){
+    public void savePeptideEvidence(PrideMongoPeptideEvidence peptideEvidence) {
         Optional<PrideMongoPeptideEvidence> currentPeptide = peptideMongoRepository
                 .findPeptideByProteinAndAssayAccession(peptideEvidence.getProteinAccession(),
                         peptideEvidence.getAssayAccession(),
                         peptideEvidence.getPeptideAccession());
-        if(currentPeptide.isPresent())
+        if (currentPeptide.isPresent())
             peptideEvidence.setId(currentPeptide.get().getId());
 
-         peptideMongoRepository.save(peptideEvidence);
+        peptideMongoRepository.save(peptideEvidence);
     }
 
     /**
      * Save an specific Peptide Evidence in MongoDB
+     *
      * @param peptideEvidence {@link PrideMongoPeptideEvidence}
      */
-    public void insertPeptideEvidence(PrideMongoPeptideEvidence peptideEvidence){
+    public void insertPeptideEvidence(PrideMongoPeptideEvidence peptideEvidence) {
         peptideMongoRepository.save(peptideEvidence);
     }
 
@@ -210,16 +226,17 @@ public class PrideMoleculesMongoService {
                                                                                  String projectAccession,
                                                                                  String assayAccession, PageRequest page) {
 
-        Page<PrideMongoPeptideEvidence> peptides = peptideMongoRepository.findPeptideEvidenceByProteinEvidence(projectAccession,assayAccession,proteinAccession, page);
+        Page<PrideMongoPeptideEvidence> peptides = peptideMongoRepository.findPeptideEvidenceByProteinEvidence(projectAccession, assayAccession, proteinAccession, page);
 
         return peptides;
     }
 
     /**
      * Return one {@link PrideMongoProteinEvidence} protein evidence for an specific project and assay.
+     *
      * @param projectAccession Protect Accession
-     * @param assayAccession Assay Accession
-     * @param reportedProtein Reported protein accession
+     * @param assayAccession   Assay Accession
+     * @param reportedProtein  Reported protein accession
      * @return
      */
     public Optional<PrideMongoProteinEvidence> findProteinsEvidence(String projectAccession, String assayAccession,
@@ -228,18 +245,18 @@ public class PrideMoleculesMongoService {
     }
 
     public Page<PrideMongoPeptideEvidence> findPeptideEvidences(String projectAccession, String assayAccession, String peptideSequence, String reportedProtein, String peptideAccession,
-           PageRequest page){
+                                                                PageRequest page) {
 
         StringJoiner filter = new StringJoiner(",");
-        if(projectAccession != null && !projectAccession.isEmpty())
+        if (projectAccession != null && !projectAccession.isEmpty())
             filter.add("projectAccession=in=" + projectAccession);
-        if(assayAccession != null && !assayAccession.isEmpty())
+        if (assayAccession != null && !assayAccession.isEmpty())
             filter.add("assayAccession=in=" + assayAccession);
-        if(peptideSequence != null && !peptideSequence.isEmpty())
+        if (peptideSequence != null && !peptideSequence.isEmpty())
             filter.add("peptideSequence=regex=" + peptideSequence);
-        if(peptideAccession != null && !peptideAccession.isEmpty())
+        if (peptideAccession != null && !peptideAccession.isEmpty())
             filter.add("peptideAcccesion=regex=" + peptideAccession);
-        if(reportedProtein != null && !reportedProtein.isEmpty())
+        if (reportedProtein != null && !reportedProtein.isEmpty())
             filter.add("proteinAccession=in=" + reportedProtein);
 
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters(filter.toString());
@@ -249,14 +266,15 @@ public class PrideMoleculesMongoService {
 
     /**
      * Search {@link PrideMongoPeptideEvidence} peptide evidences by USI or project accession
-     * @param usi USI
+     *
+     * @param usi       USI
      * @param accession project accession
-     * @param page Page
+     * @param page      Page
      * @return
      */
-    public Page<PrideMongoPeptideEvidence> findPeptideEvidences(String usi, String accession,  PageRequest page){
+    public Page<PrideMongoPeptideEvidence> findPeptideEvidences(String usi, String accession, PageRequest page) {
         StringJoiner filter = new StringJoiner(",");
-        if(accession != null && !accession.isEmpty())
+        if (accession != null && !accession.isEmpty())
             filter.add("projectAccession=in=" + accession);
 
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters(filter.toString());
@@ -278,25 +296,27 @@ public class PrideMoleculesMongoService {
 
     /**
      * List all the peptide Evidecnes.
+     *
      * @param page
      * @return
      */
-    public Page<PrideMongoPeptideEvidence> listPeptideEvidences(PageRequest page){
+    public Page<PrideMongoPeptideEvidence> listPeptideEvidences(PageRequest page) {
         return peptideMongoRepository.findAll(page);
     }
 
     /**
      * This method not not find for present of the protein in the database, only try to insert it.
+     *
      * @param psmSummaryEvidence {@link PrideMongoPsmSummaryEvidence}
      */
-    public void insertPsmSummaryEvidence(PrideMongoPsmSummaryEvidence psmSummaryEvidence){
+    public void insertPsmSummaryEvidence(PrideMongoPsmSummaryEvidence psmSummaryEvidence) {
         psmMongoRepository.save(psmSummaryEvidence);
     }
 
-    public void savePsmSummaryEvidence(PrideMongoPsmSummaryEvidence psmMongo){
+    public void savePsmSummaryEvidence(PrideMongoPsmSummaryEvidence psmMongo) {
         Optional<PrideMongoPeptideEvidence> currentPSM = psmMongoRepository
                 .findPsmSummaryByUsi(psmMongo.getUsi());
-        if(currentPSM.isPresent())
+        if (currentPSM.isPresent())
             psmMongo.setId(currentPSM.get().getId());
 
         psmMongoRepository.save(psmMongo);
@@ -307,25 +327,57 @@ public class PrideMoleculesMongoService {
                                                                       String assayAccession,
                                                                       String unmodifiedPeptideSequence,
                                                                       String modifiedPeptideSequence,
-                                                                PageRequest page){
+                                                                      PageRequest page) {
 
         StringJoiner filter = new StringJoiner(",");
-        if(projectAccession != null && !projectAccession.isEmpty())
-            filter.add("projectAccession=in=" + projectAccession);
-        if(unmodifiedPeptideSequence != null && !unmodifiedPeptideSequence.isEmpty())
-            filter.add("peptideSequence=in=" + unmodifiedPeptideSequence);
-        if(modifiedPeptideSequence != null && !modifiedPeptideSequence.isEmpty())
-            filter.add("modifiedPeptideSequence=in=" + modifiedPeptideSequence);
-        if(assayAccession != null && !assayAccession.isEmpty())
-            filter.add("assayAccession=in=" + assayAccession);
+        if (!StringUtils.isEmpty(projectAccession))
+            filter.add(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION + "==" + projectAccession);
+        if (!StringUtils.isEmpty(unmodifiedPeptideSequence))
+            filter.add(PrideArchiveField.PEPTIDE_SEQUENCE + "==" + unmodifiedPeptideSequence);
+        if (!StringUtils.isEmpty(modifiedPeptideSequence))
+            filter.add(PrideArchiveField.MODIFIED_PEPTIDE_SEQUENCE + "==" + modifiedPeptideSequence);
+        if (!StringUtils.isEmpty(assayAccession))
+            filter.add(PrideArchiveField.PROTEIN_ASSAY_ACCESSION + "==" + assayAccession);
 
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters(filter.toString());
         return psmMongoRepository.filterByAttributes(filters, page);
 
     }
 
+    public Page<PrideMongoPsmSummaryEvidence> findPsmSummaryEvidences(String projectAccession,
+                                                                      String fileName,
+                                                                      String scan,
+                                                                      String peptideSequence,
+                                                                      Integer charge,
+                                                                      String modification,
+                                                                      String peptidoform,
+                                                                      PageRequest page) {
+
+
+        Criteria criteria = new Criteria();
+
+        StringJoiner filter = new StringJoiner(",");
+        if (!StringUtils.isEmpty(projectAccession))
+            criteria = criteria.andOperator(new Criteria(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(projectAccession));
+        if (!StringUtils.isEmpty(fileName))
+            criteria = criteria.andOperator(new Criteria(PrideArchiveField.FILE_NAME).regex(fileName));
+        if (!StringUtils.isEmpty(scan))
+            criteria = criteria.andOperator(new Criteria(PrideArchiveField.USI).regex("scan:" + scan + ":"));
+        if (!StringUtils.isEmpty(peptideSequence))
+            criteria = criteria.andOperator(new Criteria(PrideArchiveField.PEPTIDE_SEQUENCE).is(peptideSequence));
+        filter.add(PrideArchiveField.PEPTIDE_SEQUENCE + "=in=" + peptideSequence);
+        if (charge != null)
+            criteria = criteria.andOperator(new Criteria(PrideArchiveField.CHARGE).is(charge));
+        if (!StringUtils.isEmpty(modification))
+            criteria = criteria.andOperator(new Criteria(PrideArchiveField.USI).regex("\\[" + modification + "]"));
+        if (!StringUtils.isEmpty(peptidoform))
+            criteria = criteria.andOperator(new Criteria(PrideArchiveField.USI).regex(peptidoform.replaceAll("\\[", "\\\\[")));
+
+        return psmMongoRepository.filterByAttributes(criteria, page);
+    }
+
     public Page<PrideMongoPsmSummaryEvidence> findPsmSummaryEvidences(List<String> usis,
-                                                                      PageRequest page){
+                                                                      PageRequest page) {
         return psmMongoRepository.findPsmSummaryEvidencesByUsis(usis, page);
 
     }
@@ -335,7 +387,7 @@ public class PrideMoleculesMongoService {
     }
 
     public long getNumberProteinEvidences() {
-        return  proteinMongoRepository.count();
+        return proteinMongoRepository.count();
     }
 
     public long getNumberPeptideEvidences() {

@@ -14,7 +14,6 @@ import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.molecules.model.psm.PrideMongoPsmSummaryEvidence;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -44,9 +43,18 @@ public class PridePsmSummaryEvidenceMongoRepositoryImpl implements PridePsmSumma
     public Page<PrideMongoPsmSummaryEvidence> filterByAttributes(List<Triple<String, String, String>> filters, Pageable page) {
         Query queryMongo = PrideMongoUtils.buildQuery(filters);
         queryMongo.with(page);
-        List<PrideMongoPsmSummaryEvidence> files =  mongoTemplate.find(queryMongo, PrideMongoPsmSummaryEvidence.class);
+        List<PrideMongoPsmSummaryEvidence> files = mongoTemplate.find(queryMongo, PrideMongoPsmSummaryEvidence.class);
         return PageableExecutionUtils.getPage(files, page, () ->
-                mongoOperations.count(queryMongo,PrideMongoPsmSummaryEvidence.class));
+                mongoOperations.count(queryMongo, PrideMongoPsmSummaryEvidence.class));
+    }
+
+    @Override
+    public Page<PrideMongoPsmSummaryEvidence> filterByAttributes(Criteria criteria, Pageable page) {
+        Query queryMongo = new Query();
+        queryMongo.addCriteria(criteria);
+        queryMongo.with(page);
+        List<PrideMongoPsmSummaryEvidence> psms = mongoTemplate.find(queryMongo, PrideMongoPsmSummaryEvidence.class);
+        return PageableExecutionUtils.getPage(psms, page, psms::size);
     }
 
 //    @Override

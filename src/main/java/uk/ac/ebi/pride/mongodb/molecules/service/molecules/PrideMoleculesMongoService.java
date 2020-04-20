@@ -369,9 +369,9 @@ public class PrideMoleculesMongoService {
         if (charge != null)
             criteria = criteria.andOperator(new Criteria(PrideArchiveField.CHARGE).is(charge));
         if (!StringUtils.isEmpty(modification))
-            criteria = criteria.andOperator(new Criteria(PrideArchiveField.USI).regex("\\[" + modification + "]"));
-        if (!StringUtils.isEmpty(peptidoform))
-            criteria = criteria.andOperator(new Criteria(PrideArchiveField.USI).regex(peptidoform.replaceAll("\\[", "\\\\[")));
+            criteria = criteria.andOperator(new Criteria(PrideArchiveField.USI).regex(modification));
+//        if (!StringUtils.isEmpty(peptidoform)) //TODO peptidoform should be a separate field in DB..regex is too slow
+//            criteria = criteria.andOperator(new Criteria(PrideArchiveField.USI).regex(peptidoform.replaceAll("\\[", "\\\\[")));
 
         return psmMongoRepository.filterByAttributes(criteria, page);
     }

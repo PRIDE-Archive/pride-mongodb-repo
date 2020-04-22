@@ -356,7 +356,6 @@ public class PrideMoleculesMongoService {
 
         Criteria criteria = new Criteria();
 
-        StringJoiner filter = new StringJoiner(",");
         if (!StringUtils.isEmpty(projectAccession))
             criteria = criteria.andOperator(new Criteria(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(projectAccession));
         if (!StringUtils.isEmpty(fileName))
@@ -365,7 +364,6 @@ public class PrideMoleculesMongoService {
             criteria = criteria.andOperator(new Criteria(PrideArchiveField.USI).regex("scan:" + scan + ":"));
         if (!StringUtils.isEmpty(peptideSequence))
             criteria = criteria.andOperator(new Criteria(PrideArchiveField.PEPTIDE_SEQUENCE).is(peptideSequence));
-        filter.add(PrideArchiveField.PEPTIDE_SEQUENCE + "=in=" + peptideSequence);
         if (charge != null)
             criteria = criteria.andOperator(new Criteria(PrideArchiveField.CHARGE).is(charge));
         if (!StringUtils.isEmpty(modification))

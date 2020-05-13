@@ -92,6 +92,7 @@ public interface PrideArchiveField {
     String PRIDE_EXPERIMENTAL_DESIGN_COLLECTION_NAME = "pride_experimental_design";
     String PRIDE_FILE_COLLECTION_NAME = "pride_files";
     String PRIDE_MSRUN_COLLECTION_NAME = "pride_msruns";
+    String PRIDE_REANALYSIS_COLLECTION_NAME = "pride_reanalysis_collection";
 
     String PUBLIC_PROJECT = "public_project";
 
@@ -146,6 +147,8 @@ public interface PrideArchiveField {
     /** PRIDE Analysis Collection **/
     String PRIDE_ANALYSIS_COLLECTION = "pride_analysis_collection";
 
+    /** PRIDE Re-analysis Fields*/
+    String PRIDE_REFERENCES = "pride_reanalysis_references";
 
     /** PRIDE Stats Fields*/
     String PRIDE_STATS_COLLECTION = "pride_stats_collection";

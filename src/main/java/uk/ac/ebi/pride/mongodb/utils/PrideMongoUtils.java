@@ -9,9 +9,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
-import uk.ac.ebi.pride.mongodb.archive.model.projects.CounterCollection;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideFieldEnum;
+import uk.ac.ebi.pride.mongodb.archive.model.projects.CounterCollection;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,7 +56,7 @@ public class PrideMongoUtils {
                         String[] filterString = filter.split("==");
                         Matcher matcher = composite.matcher(filter);
                         if(filterString.length == 2)
-                            filters.add(new Triple<>(filterString[0], "in",filterString[1]));
+                            filters.add(new Triple<>(filterString[0], "is", filterString[1]));
                         else if(matcher.find()){
                             if(matcher.group(2).equalsIgnoreCase("in")) {
 //                                filters.add(new ImmutableTriple<>(matcher.group(1), matcher.group(2), matcher.group(3).replace("|", ",")));
@@ -110,27 +110,29 @@ public class PrideMongoUtils {
 
     private static Criteria convertStringToCriteria(Criteria filterCriteria, String filterField, String operator, String valueFilter) {
         if(filterCriteria == null){
-            if(operator.equalsIgnoreCase("in"))
+            if (operator.equalsIgnoreCase("in"))
                 filterCriteria = new Criteria(filterField).in(valueFilter.split(","));
-            else if(operator.equalsIgnoreCase("all"))
+            else if (operator.equalsIgnoreCase("is"))
+                filterCriteria = new Criteria(filterField).is(valueFilter);
+            else if (operator.equalsIgnoreCase("all"))
                 filterCriteria = new Criteria(filterField).all(valueFilter);
-            else if(operator.equalsIgnoreCase("range")){
+            else if (operator.equalsIgnoreCase("range")) {
                 Tuple<Object, Object> betweenClass = parseBetweenObjects(parseFilterBetween(valueFilter), filterField);
                 filterCriteria = Criteria.where(filterField).gte(betweenClass.getKey()).lt(betweenClass.getValue());
-            }
-            else if(operator.equalsIgnoreCase("regex")){
+            } else if (operator.equalsIgnoreCase("regex")) {
                 filterCriteria = Criteria.where(filterField).regex(valueFilter);
             }
         }else{
-            if(operator.equalsIgnoreCase("in"))
+            if (operator.equalsIgnoreCase("in"))
                 filterCriteria = filterCriteria.andOperator(new Criteria(filterField).in(valueFilter.split(",")));
-            else if(operator.equalsIgnoreCase("all"))
+            else if (operator.equalsIgnoreCase("is"))
+                filterCriteria = filterCriteria.andOperator(new Criteria(filterField).is(valueFilter));
+            else if (operator.equalsIgnoreCase("all"))
                 filterCriteria = filterCriteria.andOperator(new Criteria(filterField).all(valueFilter));
-            else if(operator.equalsIgnoreCase("range")){
+            else if (operator.equalsIgnoreCase("range")) {
                 Tuple<Object, Object> betweenClass = parseBetweenObjects(parseFilterBetween(valueFilter), filterField);
                 filterCriteria = Criteria.where(filterField).gte(betweenClass.getKey()).lt(betweenClass.getValue());
-            }
-            else if(operator.equalsIgnoreCase("regex")){
+            } else if (operator.equalsIgnoreCase("regex")) {
                 filterCriteria = filterCriteria.andOperator(new Criteria(filterField).regex(valueFilter));
             }
 
@@ -140,15 +142,16 @@ public class PrideMongoUtils {
 
     private static Criteria convertStringToCriteria(String filterField, String operator, String valueFilter) {
         Criteria filterCriteria = null;
-        if(operator.equalsIgnoreCase("in"))
+        if (operator.equalsIgnoreCase("in"))
             filterCriteria = new Criteria(filterField).in(valueFilter.split(","));
-        else if(operator.equalsIgnoreCase("all"))
+        else if (operator.equalsIgnoreCase("is"))
+            filterCriteria = new Criteria(filterField).is(valueFilter);
+        else if (operator.equalsIgnoreCase("all"))
             filterCriteria = new Criteria(filterField).all(valueFilter);
-        else if(operator.equalsIgnoreCase("range")){
+        else if (operator.equalsIgnoreCase("range")) {
             Tuple<Object, Object> betweenClass = parseBetweenObjects(parseFilterBetween(valueFilter), filterField);
             filterCriteria = Criteria.where(filterField).gte(betweenClass.getKey()).lt(betweenClass.getValue());
-        }
-        else if(operator.equalsIgnoreCase("regex")){
+        } else if (operator.equalsIgnoreCase("regex")) {
             filterCriteria = Criteria.where(filterField).regex(valueFilter);
         }
         return filterCriteria;

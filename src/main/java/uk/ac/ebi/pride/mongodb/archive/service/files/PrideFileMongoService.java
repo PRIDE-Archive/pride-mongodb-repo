@@ -96,7 +96,6 @@ public class PrideFileMongoService {
                 log.info("No MSRun files available to saveProteinEvidences");
             }
 
-
             for (MongoPrideFile file : prideFiles) {
                 insertedFiles.add(new Tuple<>(file, fileRepository.save(file)));
                 log.debug("A new project has been saved into MongoDB database with Accession -- " + file.getAccession());
@@ -189,6 +188,10 @@ public class PrideFileMongoService {
     public List<MongoPrideFile> findFilesByProjectAccession(String accession) {
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("projectAccessions=all=" + accession);
         return fileRepository.filterByAttributes(filters);
+    }
+
+    public List<String> findProjectAccessionsWhereChecksumIsNull() {
+        return fileRepository.findProjectAccessionsWhereChecksumIsNull();
     }
 
     /**

@@ -92,6 +92,7 @@ public interface PrideArchiveField {
     String PRIDE_EXPERIMENTAL_DESIGN_COLLECTION_NAME = "pride_experimental_design";
     String PRIDE_FILE_COLLECTION_NAME = "pride_files";
     String PRIDE_MSRUN_COLLECTION_NAME = "pride_msruns";
+    String PRIDE_MOLECULES_COLLECTION_NAME = "pride_molecules";
 
     String PUBLIC_PROJECT = "public_project";
 
@@ -108,8 +109,9 @@ public interface PrideArchiveField {
     String FILE_CATEGORY = "fileCategory";
     String FILE_SOURCE_TYPE = "fileSourceType";
     String FILE_SOURCE_FOLDER = "fileSourceFolder";
-    String FILE_MD5_CHECKSUM = "fileMD5Checksum";
-    String SUBMITTER_FILE_MD5_CHECKSUM = "submitterFileMD5Checksum";
+    String FILE_CHECKSUM = "fileChecksum";
+    String CHECKSUM = "checksum";
+    String SUBMITTER_FILE_CHECKSUM = "submitterFileChecksum";
     String FILE_PUBLIC_LOCATIONS = "filePublicLocations";
     String FILE_SIZE_MB = "fileSizeMB";
     String FILE_EXTENSION = "fileExtension";
@@ -205,6 +207,8 @@ public interface PrideArchiveField {
 
     String PEPTIDE_ACCESSION = "peptideAccession";
     String PROTEIN_ACCESSION = "proteinAccession";
+    String PEPTIDE_ACCESSIONS = "peptideAccessions";
+    String PROTEIN_ACCESSIONS = "proteinAccessions";
     String QUALITY_ESTIMATION_METHOD = "qualityEstimationMethods";
     String IS_VALIDATED = "isValid";
     String VALUE = "value";

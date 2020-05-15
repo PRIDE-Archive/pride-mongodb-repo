@@ -19,4 +19,6 @@ public interface PrideFileMongoRepositoryCustom {
     List<MongoPrideFile> filterByAttributes(List<Triple<String, String, String>> filters);
 
     List<MongoPrideFile> findByProjectAccessions(List<String> accessions);
+
+    List<String> findProjectAccessionsWhereChecksumIsNull();
 }

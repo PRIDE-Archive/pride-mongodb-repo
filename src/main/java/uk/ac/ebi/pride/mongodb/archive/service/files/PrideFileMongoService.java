@@ -89,19 +89,36 @@ public class PrideFileMongoService {
         if (!prideFiles.isEmpty()) {
             if (msRunRawFiles != null) {
                 for (MongoPrideMSRun msRunFile : msRunRawFiles) {
-                    msRunMongoRepository.save(msRunFile);
-                    log.info("A new MSRun has been saved into MongoDB database with Accession -- " + msRunFile.getAccession());
+                    try {
+                        msRunMongoRepository.save(msRunFile);
+                        log.info("A new MSRun has been saved into MongoDB database with Accession -- " + msRunFile.getAccession());
+                    } catch (org.springframework.dao.DuplicateKeyException ex) {
+                        Optional<MongoPrideMSRun> dbMsRun = msRunMongoRepository.findMsRunByAccession(msRunFile.getAccession());
+                        if (dbMsRun.isPresent() && dbMsRun.get().getFileSizeBytes() == msRunFile.getFileSizeBytes()) {
+                            log.info("This msRunFile already exists. Accession : " + msRunFile.getAccession());
+                        } else {
+                            throw ex;
+                        }
+                    }
                 }
             } else {
                 log.info("No MSRun files available to saveProteinEvidences");
             }
 
             for (MongoPrideFile file : prideFiles) {
-                insertedFiles.add(new Tuple<>(file, fileRepository.save(file)));
-                log.debug("A new project has been saved into MongoDB database with Accession -- " + file.getAccession());
+                try {
+                    insertedFiles.add(new Tuple<>(file, fileRepository.save(file)));
+                    log.debug("A new file has been saved into MongoDB database with Accession -- " + file.getAccession());
+                } catch (org.springframework.dao.DuplicateKeyException ex) {
+                    Optional<MongoPrideFile> dbFile = fileRepository.findPrideFileByAccession(file.getAccession());
+                    if (dbFile.isPresent() && dbFile.get().getChecksum().equals(file.getChecksum())) {
+                        log.info("This File already exists. Accession : " + file.getAccession());
+                    } else {
+                        throw ex;
+                    }
+                }
             }
         }
-
         return insertedFiles;
     }
 
@@ -200,7 +217,8 @@ public class PrideFileMongoService {
      * @param accession Find Files by Project Accession
      * @return Return File List
      */
-    public Page<MongoPrideFile> findFilesByProjectAccessionAndFiler(String accession, String filterQuery, Pageable page) {
+    public Page<MongoPrideFile> findFilesByProjectAccessionAndFiler(String accession, String filterQuery, Pageable
+            page) {
         List<Triple<String, String, String>> filters = PrideMongoUtils.parseFilterParameters("projectAccessions=all=" + accession, filterQuery);
         return fileRepository.filterByAttributes(filters, page);
     }

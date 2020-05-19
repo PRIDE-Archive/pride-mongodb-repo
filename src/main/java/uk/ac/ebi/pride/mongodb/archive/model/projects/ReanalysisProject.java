@@ -1,16 +1,15 @@
 package uk.ac.ebi.pride.mongodb.archive.model.projects;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * @author Suresh Hewapathirana
@@ -18,17 +17,18 @@ import java.util.Set;
 @Document(collection = PrideArchiveField.PRIDE_REANALYSIS_COLLECTION_NAME)
 @Data
 @Builder
-public class ReanalysisProject {
+public class ReanalysisProject implements PrideArchiveField {
 
     @Id
-    @Indexed(name = PrideArchiveField.ID)
+    @Indexed(name = ID)
     ObjectId id;
 
     /** Project Accession in PRIDE**/
-    @Indexed(unique = true, name = PrideArchiveField.ACCESSION)
+    @Indexed(unique = true, name = ACCESSION)
     String accession;
 
-    /** re-analysed Pubmed references **/
-    @Field(value = PrideArchiveField.PRIDE_REFERENCES)
-    Set<String> references;
+    /** References related with the re-analysed dataset in manuscript and papers **/
+    @Field(value = PROJECT_REFERENCES)
+    @Getter(AccessLevel.NONE)
+    private Collection<ReferenceProvider> references;
 }

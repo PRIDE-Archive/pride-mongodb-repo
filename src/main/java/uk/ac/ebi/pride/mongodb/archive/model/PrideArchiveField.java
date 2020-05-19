@@ -147,9 +147,6 @@ public interface PrideArchiveField {
     /** PRIDE Analysis Collection **/
     String PRIDE_ANALYSIS_COLLECTION = "pride_analysis_collection";
 
-    /** PRIDE Re-analysis Fields*/
-    String PRIDE_REFERENCES = "pride_reanalysis_references";
-
     /** PRIDE Stats Fields*/
     String PRIDE_STATS_COLLECTION = "pride_stats_collection";
     String STATS_SUBMISSION_COUNTS = "pride_submission_counts";

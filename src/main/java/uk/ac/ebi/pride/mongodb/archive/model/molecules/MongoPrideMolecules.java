@@ -26,8 +26,8 @@ public class MongoPrideMolecules {
     String projectAccession;
 
     @Field(value = PrideArchiveField.PROTEIN_ACCESSIONS)
-    Set<String> proteinAccessions;
+    String proteinAccessions;
 
     @Field(value = PrideArchiveField.PEPTIDE_ACCESSIONS)
-    Set<String> peptideAccessions;
+    String peptideAccessions;
 }

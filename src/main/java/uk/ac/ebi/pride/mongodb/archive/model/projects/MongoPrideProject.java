@@ -285,6 +285,10 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
         return references;
     }
 
+    public Collection<Reference> getReferencesWithPubmed() {
+        return this.references;
+    }
+
     /**
      * Return the Lab heads.
      * @return ContactProvider for all Lab Heads

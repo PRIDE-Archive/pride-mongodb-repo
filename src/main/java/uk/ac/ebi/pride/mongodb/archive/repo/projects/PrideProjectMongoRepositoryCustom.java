@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
 
-import java.util.List;
+import java.util.Set;
 
 
 public interface PrideProjectMongoRepositoryCustom {
@@ -18,6 +18,6 @@ public interface PrideProjectMongoRepositoryCustom {
                                                      String[] instruments, String contact, String ptmList,
                                                      String[] publications, String[] keywords);
 
-    List<String> getAllProjectAccessions();
+    Set<String> getAllProjectAccessions();
 
 }

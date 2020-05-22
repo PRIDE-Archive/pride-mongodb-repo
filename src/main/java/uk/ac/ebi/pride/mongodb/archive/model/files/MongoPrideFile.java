@@ -16,6 +16,8 @@ import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -162,11 +164,25 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
     @Override
     public String toString() {
         return "MongoPrideFile{" +
-                "projectAccessions=" + projectAccessions +
+                "id=" + id +
+                ", projectAccessions=" + projectAccessions +
                 ", analysisAccessions=" + analysisAccessions +
                 ", accession='" + accession + '\'' +
                 ", fileCategory=" + fileCategory +
+                ", fileSourceType='" + fileSourceType + '\'' +
+                ", fileSourceFolder='" + fileSourceFolder + '\'' +
+                ", submitterFileChecksum='" + submitterFileChecksum + '\'' +
+                ", checksum='" + checksum + '\'' +
+                ", publicFileLocations=" + publicFileLocations +
+                ", fileSizeBytes=" + fileSizeBytes +
+                ", fileExtension='" + fileExtension + '\'' +
                 ", fileName='" + fileName + '\'' +
+                ", compress=" + compress +
+                ", submissionDate=" + submissionDate +
+                ", publicationDate=" + publicationDate +
+                ", updatedDate=" + updatedDate +
+                ", additionalAttributes=" + additionalAttributes +
+                ", accessionSubmissionFile=" + accessionSubmissionFile +
                 '}';
     }
 
@@ -188,9 +204,9 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
                 Objects.equals(publicFileLocations, that.publicFileLocations) &&
                 Objects.equals(fileExtension, that.fileExtension) &&
                 Objects.equals(fileName, that.fileName) &&
-                equalsDate(publicationDate, that.publicationDate) &&
-                equalsDate(submissionDate, that.submissionDate) &&
-                equalsDate(updatedDate, that.updatedDate) &&
+                equalsDatePartOnly(publicationDate, that.publicationDate) &&
+                equalsDatePartOnly(submissionDate, that.submissionDate) &&
+                equalsDatePartOnly(updatedDate, that.updatedDate) &&
                 Objects.equals(additionalAttributes, that.additionalAttributes) &&
                 Objects.equals(accessionSubmissionFile, that.accessionSubmissionFile);
     }
@@ -200,7 +216,15 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
         return Objects.hash(projectAccessions, analysisAccessions, accession, fileCategory, fileSourceType, fileSourceFolder, submitterFileChecksum, checksum, publicFileLocations, fileSizeBytes, fileExtension, fileName, compress, submissionDate, publicationDate, updatedDate, additionalAttributes, accessionSubmissionFile);
     }
 
-    private boolean equalsDate(Date a, Date b) {
-        return  ((a == b) || (a != null && b != null && a.getTime() == b.getTime()));
+    private static final DateFormat DATE_FORMAT_DATE_PART = new SimpleDateFormat("yyyy-mm-dd");
+
+//    public static boolean equalsDate(Date a, Date b) {
+//        return  ((a == b) || (a != null && b != null && a.getTime() == b.getTime()));
+//    }
+
+    public static boolean equalsDatePartOnly(Date a, Date b) {
+        String aStr = DATE_FORMAT_DATE_PART.format(a);
+        String bStr = DATE_FORMAT_DATE_PART.format(b);
+        return  ((a == b) || (a != null && b != null && aStr.equals(bStr)));
     }
 }

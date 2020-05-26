@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
+import uk.ac.ebi.pride.archive.dataprovider.reference.Reference;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
 import java.util.Collection;
@@ -29,6 +29,5 @@ public class ReanalysisProject implements PrideArchiveField {
 
     /** References related with the re-analysed dataset in manuscript and papers **/
     @Field(value = PROJECT_REFERENCES)
-    @Getter(AccessLevel.NONE)
-    private Collection<ReferenceProvider> references;
+    private Collection<Reference> references;
 }

@@ -17,7 +17,7 @@ import java.util.Collection;
 @Document(collection = PrideArchiveField.PRIDE_REANALYSIS_COLLECTION_NAME)
 @Data
 @Builder
-public class ReanalysisProject implements PrideArchiveField {
+public class MongoPrideReanalysisProject implements PrideArchiveField {
 
     @Id
     @Indexed(name = ID)

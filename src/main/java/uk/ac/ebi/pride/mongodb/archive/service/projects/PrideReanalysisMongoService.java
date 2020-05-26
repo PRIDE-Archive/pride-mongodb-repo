@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.ac.ebi.pride.mongodb.archive.model.projects.ReanalysisProject;
+import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideReanalysisProject;
 import uk.ac.ebi.pride.mongodb.archive.repo.projects.PrideReanalysisMongoRepository;
 
 import java.util.Optional;
@@ -33,10 +33,10 @@ public class PrideReanalysisMongoService {
     /**
      * This function insert a reanalysis project in the Mongo Database. If the project already exist in the database, the function will skip the function.
      *
-     * @param project {@link ReanalysisProject}
-     * @return ReanalysisProject
+     * @param project {@link MongoPrideReanalysisProject}
+     * @return MongoPrideReanalysisProject
      */
-    public Optional<ReanalysisProject> insert(ReanalysisProject project) {
+    public Optional<MongoPrideReanalysisProject> insert(MongoPrideReanalysisProject project) {
         if (!repository.findByAccession(project.getAccession()).isPresent()) {
             project = repository.save(project);
             log.info("A new reanalysis project has been saved into MongoDB database with Accession -- " + project.getAccession());
@@ -48,10 +48,10 @@ public class PrideReanalysisMongoService {
     /**
      * This function update a reanalysis project in the Mongo Database. if the project is not already exist in the database, the function will skip the function.
      *
-     * @param project {@link ReanalysisProject}
-     * @return ReanalysisProject
+     * @param project {@link MongoPrideReanalysisProject}
+     * @return MongoPrideReanalysisProject
      */
-    public Optional<ReanalysisProject> update(ReanalysisProject project) {
+    public Optional<MongoPrideReanalysisProject> update(MongoPrideReanalysisProject project) {
         if (repository.findByAccession(project.getAccession()).isPresent()) {
             project = repository.save(project);
             log.info("project has been updated in MongoDB with accession -- " + project.getAccession());
@@ -64,11 +64,11 @@ public class PrideReanalysisMongoService {
     /**
      * This function insert a renalysis project in the Mongo Database. If the project already exist in the database, the function will update the record
      *
-     * @param project {@link ReanalysisProject}
-     * @return ReanalysisProject
+     * @param project {@link MongoPrideReanalysisProject}
+     * @return MongoPrideReanalysisProject
      */
-    public Optional<ReanalysisProject> upsert(ReanalysisProject project) {
-        Optional<ReanalysisProject> optionalProject = repository.findByAccession(project.getAccession());
+    public Optional<MongoPrideReanalysisProject> upsert(MongoPrideReanalysisProject project) {
+        Optional<MongoPrideReanalysisProject> optionalProject = repository.findByAccession(project.getAccession());
         if(optionalProject.isPresent()){
             project.setId((ObjectId) optionalProject.get().getId());
         }
@@ -84,7 +84,7 @@ public class PrideReanalysisMongoService {
      * @param accession PX accession
      * @return Optional
      */
-    public Optional<ReanalysisProject> findByAccession(String accession) {
+    public Optional<MongoPrideReanalysisProject> findByAccession(String accession) {
         return repository.findByAccession(accession);
     }
 

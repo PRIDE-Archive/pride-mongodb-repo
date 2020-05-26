@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
-import uk.ac.ebi.pride.mongodb.archive.model.projects.ReanalysisProject;
+import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideReanalysisProject;
 
 import java.util.Optional;
 
@@ -23,8 +23,8 @@ import java.util.Optional;
  * Created by Suresh Hewapathirana (sureshhewabi@gmail.com) on 12/06/2020.
  */
 @Repository
-public interface PrideReanalysisMongoRepository extends MongoRepository<ReanalysisProject, ObjectId> {
+public interface PrideReanalysisMongoRepository extends MongoRepository<MongoPrideReanalysisProject, ObjectId> {
 
     @Query("{'" + PrideArchiveField.ACCESSION + "' : ?0}")
-    Optional<ReanalysisProject> findByAccession(String accession);
+    Optional<MongoPrideReanalysisProject> findByAccession(String accession);
 }

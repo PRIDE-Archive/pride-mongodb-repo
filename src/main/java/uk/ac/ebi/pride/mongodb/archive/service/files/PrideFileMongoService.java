@@ -57,6 +57,10 @@ public class PrideFileMongoService {
         return finalNumber;
     }
 
+    public MongoPrideFile save(MongoPrideFile prideFile) {
+        return fileRepository.save(prideFile);
+    }
+
     /**
      * Insert is allowing using to create a Accession for the File and insert the actual File into MongoDB.
      *

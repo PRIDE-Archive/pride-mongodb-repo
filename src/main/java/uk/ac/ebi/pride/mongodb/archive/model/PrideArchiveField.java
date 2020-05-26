@@ -92,6 +92,7 @@ public interface PrideArchiveField {
     String PRIDE_EXPERIMENTAL_DESIGN_COLLECTION_NAME = "pride_experimental_design";
     String PRIDE_FILE_COLLECTION_NAME = "pride_files";
     String PRIDE_MSRUN_COLLECTION_NAME = "pride_msruns";
+    String PRIDE_MOLECULES_COLLECTION_NAME = "pride_molecules";
 
     String PUBLIC_PROJECT = "public_project";
 
@@ -206,6 +207,8 @@ public interface PrideArchiveField {
 
     String PEPTIDE_ACCESSION = "peptideAccession";
     String PROTEIN_ACCESSION = "proteinAccession";
+    String PEPTIDE_ACCESSIONS = "peptideAccessions";
+    String PROTEIN_ACCESSIONS = "proteinAccessions";
     String QUALITY_ESTIMATION_METHOD = "qualityEstimationMethods";
     String IS_VALIDATED = "isValid";
     String VALUE = "value";

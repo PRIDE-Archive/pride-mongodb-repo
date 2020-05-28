@@ -12,7 +12,9 @@ import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class PrideProjectMongoRepositoryCustomImpl implements PrideProjectMongoRepositoryCustom {
@@ -54,10 +56,10 @@ public class PrideProjectMongoRepositoryCustomImpl implements PrideProjectMongoR
     }
 
     @Override
-    public List<String> getAllProjectAccessions() {
+    public Set<String> getAllProjectAccessions() {
 
-        ArrayList<String> projectAccessions = mongoTemplate.getCollection(PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME)
-                .distinct(PrideArchiveField.ACCESSION, String.class).into(new ArrayList<>());
+        Set<String> projectAccessions = mongoTemplate.getCollection(PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME)
+                .distinct(PrideArchiveField.ACCESSION, String.class).into(new HashSet<>());
 
         return projectAccessions;
     }

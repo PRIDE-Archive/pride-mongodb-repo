@@ -1,6 +1,9 @@
 package uk.ac.ebi.pride.mongodb.archive.model.projects;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
@@ -8,6 +11,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
+import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
@@ -15,7 +19,6 @@ import uk.ac.ebi.pride.archive.dataprovider.reference.Reference;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.user.Contact;
 import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
-import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
 import java.util.*;
@@ -27,7 +30,6 @@ import java.util.stream.Collectors;
  * read the specification of a PRIDE project here:
  *
  * @author Yasset Perez-Riverol
- *
  */
 @Document(collection = PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME)
 @Data
@@ -39,48 +41,67 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Indexed(name = PrideArchiveField.ID)
     ObjectId id;
 
-    /** Project Accession in PRIDE**/
+    /**
+     * Project Accession in PRIDE
+     **/
     @Indexed(unique = true, name = PrideArchiveField.ACCESSION)
     String accession;
 
-    /** Title of the Project **/
+    /**
+     * Title of the Project
+     **/
     @Field(value = PrideArchiveField.PROJECT_TILE)
     String title;
 
-    /** PRIDE Project short description **/
+    /**
+     * PRIDE Project short description
+     **/
     @Field(value = PrideArchiveField.PROJECT_DESCRIPTION)
     private String description;
 
-    /** This property defines a relation between files in the Project.
-     *  - The first value of the {@link Triple} defines the parent File Accession
-     *  - The second value of the {@link Triple} defines the child File Accession
-     *  - The third value of the {@link Triple} is a {@link CvParam} that defines the relation between files
-     *  **/
+    /**
+     * This property defines a relation between files in the Project.
+     * - The first value of the {@link Triple} defines the parent File Accession
+     * - The second value of the {@link Triple} defines the child File Accession
+     * - The third value of the {@link Triple} is a {@link CvParam} that defines the relation between files
+     **/
     @Indexed(name = FILE_RELATIONS_IN_PROJECT)
     List<Triple<String, String, CvParam>> submittedFileRelations;
 
-    /** Sample Processing **/
+    /**
+     * Sample Processing
+     **/
     @Field(value = PrideArchiveField.PROJECT_SAMPLE_PROTOCOL)
     private String sampleProcessing;
 
-    /** Data Processing Protocol **/
+    /**
+     * Data Processing Protocol
+     **/
     @Field(value = PrideArchiveField.PROJECT_DATA_PROTOCOL)
     private String dataProcessing;
 
-    /** This is using an abstraction of the User, in this case MongoDB only will retrieve the information related with the userContact **/
+    /**
+     * This is using an abstraction of the User, in this case MongoDB only will retrieve the information related with the userContact
+     **/
     @Indexed(name = PROJECT_SUBMITTER)
     private Collection<Contact> submitters;
 
-    /** This returns a list of head of labs PIs ralted with the experiment **/
+    /**
+     * This returns a list of head of labs PIs ralted with the experiment
+     **/
     @Indexed(name = PROJECT_PI_NAMES)
     @Getter(AccessLevel.NONE)
     private Collection<Contact> headLab;
 
-    /** List of keywords added by the user **/
+    /**
+     * List of keywords added by the user
+     **/
     @Indexed(name = PROJECT_KEYWORDS)
     private Collection<String> keywords;
 
-    /** This are tags provided by the curator of PRIDE **/
+    /**
+     * This are tags provided by the curator of PRIDE
+     **/
     @Indexed(name = PROJECT_TAGS)
     private Collection<String> projectTags;
 
@@ -89,65 +110,95 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Getter(AccessLevel.NONE)
     private Collection<CvParam> quantificationMethods;
 
-    /** Submission Type for the experiment, defaults value can be read here {@link uk.ac.ebi.pride.archive.dataprovider.utils.SubmissionTypeConstants} */
-    @Indexed( name = PROJECT_SUBMISSION_TYPE)
+    /**
+     * Submission Type for the experiment, defaults value can be read here {@link uk.ac.ebi.pride.archive.dataprovider.utils.SubmissionTypeConstants}
+     */
+    @Indexed(name = PROJECT_SUBMISSION_TYPE)
     private String submissionType;
 
-    /** Publication Date **/
+    /**
+     * Publication Date
+     **/
     @Indexed(name = PUBLICATION_DATE)
     private Date publicationDate;
 
-    /** Submission Date **/
+    /**
+     * Submission Date
+     **/
     @Indexed(name = SUBMISSION_DATE)
     private Date submissionDate;
 
-    /** Updated date **/
+    /**
+     * Updated date
+     **/
     @Indexed(name = UPDATED_DATE)
     private Date updatedDate;
 
-    /** List of PTMs for the corresponding Project, this PTMs are globally annotated by the user, it does'nt mean that they have been found in proteins of peptides. */
+    /**
+     * List of PTMs for the corresponding Project, this PTMs are globally annotated by the user, it does'nt mean that they have been found in proteins of peptides.
+     */
     @Indexed(name = PROJECT_IDENTIFIED_PTM)
     private Collection<CvParam> ptmList;
 
-    /** Samples description is a generic information about all the samples in the experiment. */
+    /**
+     * Samples description is a generic information about all the samples in the experiment.
+     */
     @Field(value = SAMPLE_ATTRIBUTES_NAMES)
     private List<Tuple<CvParam, Set<CvParam>>> samplesDescription;
 
-    /** Experimental Factors **/
+    /**
+     * Experimental Factors
+     **/
     @Field(value = EXPERIMENTAL_FACTORS)
     private List<Tuple<CvParam, Set<CvParam>>> experimentalFactors;
 
-    /** General description about the instruments used in the experiment. */
+    /**
+     * General description about the instruments used in the experiment.
+     */
     @Indexed(name = INSTRUMENTS)
     @Getter(AccessLevel.NONE)
     private Collection<CvParam> instruments;
 
-    /** General software information in CVParams terms **/
+    /**
+     * General software information in CVParams terms
+     **/
     @Indexed(name = SOFTWARES)
     private Collection<CvParam> softwareList;
 
-    /** References related with the dataset in manuscript and papers **/
+    /**
+     * References related with the dataset in manuscript and papers
+     **/
     @Field(value = PROJECT_REFERENCES)
     @Getter(AccessLevel.NONE)
     private Collection<Reference> references;
 
-    /** Additional Attributes **/
+    /**
+     * Additional Attributes
+     **/
     @Indexed(name = ADDITIONAL_ATTRIBUTES)
     private Collection<CvParam> attributes;
 
-    /** Project DOI for complete Submissions */
+    /**
+     * Project DOI for complete Submissions
+     */
     @Indexed(name = PROJECT_DOI)
     private String doi;
 
-    /** Other Omics Type **/
+    /**
+     * Other Omics Type
+     **/
     @Indexed(name = PROJECT_OMICS_LINKS)
     private List<String> omicsLinks;
 
-    /** Countries involve in the Submission **/
+    /**
+     * Countries involve in the Submission
+     **/
     @Indexed(name = COUNTRIES)
     private List<String> countries;
 
-    /** Type of Project: True if is Public, False if is Private **/
+    /**
+     * Type of Project: True if is Public, False if is Private
+     **/
     @Indexed(name = PUBLIC_PROJECT)
     private boolean publicProject;
 
@@ -174,7 +225,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Override
     public Collection<? extends String> getSubmitters() {
         Collection<String> submitters = Collections.EMPTY_LIST;
-        if(this.submitters != null && !this.submitters.isEmpty())
+        if (this.submitters != null && !this.submitters.isEmpty())
             submitters = this.submitters.stream().map(Contact::getName).collect(Collectors.toList());
         return submitters;
     }
@@ -182,7 +233,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Override
     public Collection<? extends String> getPtms() {
         Collection<String> ptms = Collections.EMPTY_LIST;
-        if(this.ptmList != null && !this.ptmList.isEmpty())
+        if (this.ptmList != null && !this.ptmList.isEmpty())
             ptms = this.ptmList.stream().map(CvParam::getName).collect(Collectors.toList());
         return ptms;
     }
@@ -190,7 +241,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Override
     public Collection<? extends String> getSoftwares() {
         Collection<String> softList = Collections.EMPTY_LIST;
-        if(this.softwareList != null && !this.softwareList.isEmpty())
+        if (this.softwareList != null && !this.softwareList.isEmpty())
             softList = this.softwareList.stream().map(CvParam::getName).collect(Collectors.toList());
         return softList;
     }
@@ -223,7 +274,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Override
     public Collection<String> getCountries() {
         Collection<String> countries = Collections.EMPTY_LIST;
-        if(this.countries != null && !this.countries.isEmpty())
+        if (this.countries != null && !this.countries.isEmpty())
             countries = this.countries;
         return countries;
     }
@@ -231,9 +282,9 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Override
     public Collection<String> getAllAffiliations() {
         Collection<String> affiliations = Collections.EMPTY_LIST;
-        if(this.submitters != null && !this.submitters.isEmpty())
+        if (this.submitters != null && !this.submitters.isEmpty())
             affiliations = this.submitters.stream().map(Contact::getAffiliation).collect(Collectors.toSet());
-        if(this.headLab != null && !this.headLab.isEmpty())
+        if (this.headLab != null && !this.headLab.isEmpty())
             affiliations.addAll(headLab.stream().map(Contact::getAffiliation).collect(Collectors.toList()));
         return affiliations;
     }
@@ -256,15 +307,15 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Override
     public Collection<String> getHeadLab() {
         Collection<String> headLab = Collections.EMPTY_LIST;
-        if(this.headLab != null && !this.headLab.isEmpty())
-            headLab =  this.headLab.stream().map(Contact::getName).collect(Collectors.toList());
+        if (this.headLab != null && !this.headLab.isEmpty())
+            headLab = this.headLab.stream().map(Contact::getName).collect(Collectors.toList());
         return headLab;
     }
 
     @Override
     public Collection<String> getInstruments() {
         Collection<String> instruments = Collections.EMPTY_LIST;
-        if(this.instruments != null && !this.instruments.isEmpty())
+        if (this.instruments != null && !this.instruments.isEmpty())
             instruments = this.instruments.stream().map(CvParam::getName).collect(Collectors.toList());
         return instruments;
     }
@@ -272,7 +323,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Override
     public Collection<String> getQuantificationMethods() {
         Collection<String> quantificationMethods = Collections.EMPTY_LIST;
-        if(this.quantificationMethods != null && !this.quantificationMethods.isEmpty())
+        if (this.quantificationMethods != null && !this.quantificationMethods.isEmpty())
             quantificationMethods = this.quantificationMethods.stream().map(CvParam::getName).collect(Collectors.toList());
         return quantificationMethods;
     }
@@ -280,70 +331,145 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Override
     public Collection<String> getReferences() {
         Collection<String> references = Collections.EMPTY_LIST;
-        if(this.references != null && !this.references.isEmpty())
+        if (this.references != null && !this.references.isEmpty())
             references = this.references.stream().map(Reference::getReferenceLine).collect(Collectors.toList());
         return references;
     }
 
+    public Collection<Reference> getReferencesWithPubmed() {
+        return this.references;
+    }
+
     /**
      * Return the Lab heads.
+     *
      * @return ContactProvider for all Lab Heads
      */
-    public Collection<? extends ContactProvider> getLabHeadContacts(){
+    public Collection<? extends ContactProvider> getLabHeadContacts() {
         return headLab;
     }
 
     /**
      * Return the Submitters
+     *
      * @return ContactProvider for all Submitters
      */
-    public Collection<? extends ContactProvider> getSubmittersContacts(){
+    public Collection<? extends ContactProvider> getSubmittersContacts() {
         return submitters;
     }
 
     /**
      * Get the Instruments in {@link CvParam}
+     *
      * @return
      */
-    public Collection<? extends CvParamProvider> getInstrumentsCvParams(){
+    public Collection<? extends CvParamProvider> getInstrumentsCvParams() {
         return instruments;
     }
 
     /**
      * Get quantification parameters using the Cvterms
+     *
      * @return
      */
-    public Collection<? extends CvParamProvider> getQuantificationParams(){ return quantificationMethods; }
+    public Collection<? extends CvParamProvider> getQuantificationParams() {
+        return quantificationMethods;
+    }
 
     /**
      * Get complete references in Cvterms
+     *
      * @return
      */
-    public Collection<? extends ReferenceProvider> getCompleteReferences(){
+    public Collection<? extends ReferenceProvider> getCompleteReferences() {
         return references;
     }
 
     /**
      * Get te list of softwares in CvParams
+     *
      * @return software list
      */
-    public Collection<? extends CvParamProvider> getSoftwareParams(){
+    public Collection<? extends CvParamProvider> getSoftwareParams() {
         return softwareList;
     }
 
     @Override
     public String toString() {
         return "MongoPrideProject{" +
-                "id=" + getId() +
-                ", accession='" + getAccession() + '\'' +
-                ", title='" + getTitle() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", keywords=" + getKeywords() +
-                ", projectTags=" + getProjectTags() +
-                ", quantificationMethods=" + getQuantificationMethods() +
-                ", submissionType='" + getSubmissionType() + '\'' +
-                ", submissionDate=" + getSubmissionDate() +
-                ", publicProject=" + isPublicProject() +
+                "id=" + id +
+                ", accession='" + accession + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", submittedFileRelations=" + submittedFileRelations +
+                ", sampleProcessing='" + sampleProcessing + '\'' +
+                ", dataProcessing='" + dataProcessing + '\'' +
+                ", submitters=" + submitters +
+                ", headLab=" + headLab +
+                ", keywords=" + keywords +
+                ", projectTags=" + projectTags +
+                ", quantificationMethods=" + quantificationMethods +
+                ", submissionType='" + submissionType + '\'' +
+                ", publicationDate=" + publicationDate +
+                ", submissionDate=" + submissionDate +
+                ", updatedDate=" + updatedDate +
+                ", ptmList=" + ptmList +
+                ", samplesDescription=" + samplesDescription +
+                ", experimentalFactors=" + experimentalFactors +
+                ", instruments=" + instruments +
+                ", softwareList=" + softwareList +
+                ", references=" + references +
+                ", attributes=" + attributes +
+                ", doi='" + doi + '\'' +
+                ", omicsLinks=" + omicsLinks +
+                ", countries=" + countries +
+                ", publicProject=" + publicProject +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MongoPrideProject that = (MongoPrideProject) o;
+        return publicProject == that.publicProject &&
+                Objects.equals(accession, that.accession) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(description, that.description) &&
+                equalsCollection(submittedFileRelations, that.submittedFileRelations) &&
+                Objects.equals(sampleProcessing, that.sampleProcessing) &&
+                Objects.equals(dataProcessing, that.dataProcessing) &&
+                equalsCollection(submitters, that.submitters) &&
+                equalsCollection(headLab, that.headLab) &&
+                equalsCollection(keywords, that.keywords) &&
+                equalsCollection(projectTags, that.projectTags) &&
+                equalsCollection(quantificationMethods, that.quantificationMethods) &&
+                Objects.equals(submissionType, that.submissionType) &&
+                equalsDate(publicationDate, that.publicationDate) &&
+                equalsDate(submissionDate, that.submissionDate) &&
+                equalsDate(updatedDate, that.updatedDate) &&
+                equalsCollection(ptmList, that.ptmList) &&
+                equalsCollection(samplesDescription, that.samplesDescription) &&
+                equalsCollection(experimentalFactors, that.experimentalFactors) &&
+                equalsCollection(instruments, that.instruments) &&
+                equalsCollection(softwareList, that.softwareList) &&
+                equalsCollection(references, that.references) &&
+                equalsCollection(attributes, that.attributes) &&
+                Objects.equals(doi, that.doi) &&
+                equalsCollection(omicsLinks, that.omicsLinks) &&
+                equalsCollection(getCountries() , that.getCountries());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accession, title, description, submittedFileRelations, sampleProcessing, dataProcessing, submitters, headLab, keywords, projectTags, quantificationMethods, submissionType, publicationDate, submissionDate, updatedDate, ptmList, samplesDescription, experimentalFactors, instruments, softwareList, references, attributes, doi, omicsLinks, countries, publicProject);
+    }
+
+    private boolean equalsCollection(Collection a, Collection b) {
+        return (a == b) || (a != null && b!= null && Objects.equals(new HashSet<>(a), new HashSet<>(b)));
+    }
+
+    private boolean equalsDate(Date a, Date b) {
+        return  ((a == b) || (a != null && b != null && a.getTime() == b.getTime()));
     }
 }

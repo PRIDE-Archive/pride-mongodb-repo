@@ -312,6 +312,10 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
         return headLab;
     }
 
+    public Collection<Contact> getHeadLabContacts() {
+        return this.headLab;
+    }
+
     @Override
     public Collection<String> getInstruments() {
         Collection<String> instruments = Collections.EMPTY_LIST;

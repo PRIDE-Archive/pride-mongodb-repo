@@ -204,9 +204,9 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
                 Objects.equals(publicFileLocations, that.publicFileLocations) &&
                 Objects.equals(fileExtension, that.fileExtension) &&
                 Objects.equals(fileName, that.fileName) &&
-                equalsDatePartOnly(publicationDate, that.publicationDate) &&
-                equalsDatePartOnly(submissionDate, that.submissionDate) &&
-                equalsDatePartOnly(updatedDate, that.updatedDate) &&
+                Objects.equals(publicationDate, that.publicationDate) &&
+                Objects.equals(submissionDate, that.submissionDate) &&
+                Objects.equals(updatedDate, that.updatedDate) &&
                 Objects.equals(additionalAttributes, that.additionalAttributes) &&
                 Objects.equals(accessionSubmissionFile, that.accessionSubmissionFile);
     }
@@ -214,17 +214,5 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
     @Override
     public int hashCode() {
         return Objects.hash(projectAccessions, analysisAccessions, accession, fileCategory, fileSourceType, fileSourceFolder, submitterFileChecksum, checksum, publicFileLocations, fileSizeBytes, fileExtension, fileName, compress, submissionDate, publicationDate, updatedDate, additionalAttributes, accessionSubmissionFile);
-    }
-
-    private static final DateFormat DATE_FORMAT_DATE_PART = new SimpleDateFormat("yyyy-mm-dd");
-
-//    public static boolean equalsDate(Date a, Date b) {
-//        return  ((a == b) || (a != null && b != null && a.getTime() == b.getTime()));
-//    }
-
-    public static boolean equalsDatePartOnly(Date a, Date b) {
-        String aStr = DATE_FORMAT_DATE_PART.format(a);
-        String bStr = DATE_FORMAT_DATE_PART.format(b);
-        return  ((a == b) || (a != null && b != null && aStr.equals(bStr)));
     }
 }

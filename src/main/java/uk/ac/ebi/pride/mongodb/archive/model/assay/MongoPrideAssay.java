@@ -46,7 +46,7 @@ public class MongoPrideAssay implements PrideArchiveField, AssayProvider {
     @Indexed(name = EXTERNAL_PROJECT_ACCESSIONS)
     Set<String> projectAccessions;
 
-    /** The analysis accessions are releated with the following File **/
+    /** The analysis accessions are related with the following File **/
     @Indexed(name = EXTERNAL_ANALYSIS_ACCESSIONS)
     Set<String> analysisAccessions;
 

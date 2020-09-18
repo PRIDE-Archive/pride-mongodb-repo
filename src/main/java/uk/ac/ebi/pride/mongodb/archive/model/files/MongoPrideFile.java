@@ -16,6 +16,8 @@ import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -162,11 +164,55 @@ public class MongoPrideFile implements PrideArchiveField, FileProvider {
     @Override
     public String toString() {
         return "MongoPrideFile{" +
-                "projectAccessions=" + projectAccessions +
+                "id=" + id +
+                ", projectAccessions=" + projectAccessions +
                 ", analysisAccessions=" + analysisAccessions +
                 ", accession='" + accession + '\'' +
                 ", fileCategory=" + fileCategory +
+                ", fileSourceType='" + fileSourceType + '\'' +
+                ", fileSourceFolder='" + fileSourceFolder + '\'' +
+                ", submitterFileChecksum='" + submitterFileChecksum + '\'' +
+                ", checksum='" + checksum + '\'' +
+                ", publicFileLocations=" + publicFileLocations +
+                ", fileSizeBytes=" + fileSizeBytes +
+                ", fileExtension='" + fileExtension + '\'' +
                 ", fileName='" + fileName + '\'' +
+                ", compress=" + compress +
+                ", submissionDate=" + submissionDate +
+                ", publicationDate=" + publicationDate +
+                ", updatedDate=" + updatedDate +
+                ", additionalAttributes=" + additionalAttributes +
+                ", accessionSubmissionFile=" + accessionSubmissionFile +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MongoPrideFile that = (MongoPrideFile) o;
+        return fileSizeBytes == that.fileSizeBytes &&
+                compress == that.compress &&
+                Objects.equals(projectAccessions, that.projectAccessions) &&
+                Objects.equals(analysisAccessions, that.analysisAccessions) &&
+                Objects.equals(accession, that.accession) &&
+                Objects.equals(fileCategory, that.fileCategory) &&
+                Objects.equals(fileSourceType, that.fileSourceType) &&
+                Objects.equals(fileSourceFolder, that.fileSourceFolder) &&
+                Objects.equals(submitterFileChecksum, that.submitterFileChecksum) &&
+                Objects.equals(checksum, that.checksum) &&
+                Objects.equals(publicFileLocations, that.publicFileLocations) &&
+                Objects.equals(fileExtension, that.fileExtension) &&
+                Objects.equals(fileName, that.fileName) &&
+                Objects.equals(publicationDate, that.publicationDate) &&
+                Objects.equals(submissionDate, that.submissionDate) &&
+                Objects.equals(updatedDate, that.updatedDate) &&
+                Objects.equals(additionalAttributes, that.additionalAttributes) &&
+                Objects.equals(accessionSubmissionFile, that.accessionSubmissionFile);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(projectAccessions, analysisAccessions, accession, fileCategory, fileSourceType, fileSourceFolder, submitterFileChecksum, checksum, publicFileLocations, fileSizeBytes, fileExtension, fileName, compress, submissionDate, publicationDate, updatedDate, additionalAttributes, accessionSubmissionFile);
     }
 }

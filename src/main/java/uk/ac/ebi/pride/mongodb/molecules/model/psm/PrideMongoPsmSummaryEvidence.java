@@ -40,7 +40,7 @@ public class PrideMongoPsmSummaryEvidence implements PrideArchiveField{
     String usi;
 
     /** Accession Provided by PRIDE Pipelines **/
-    @Indexed(name = PrideArchiveField.SPECTRA_USI)
+    @Field(value = PrideArchiveField.SPECTRA_USI)
     String spectraUsi;
 
     /** Accession in Reported File **/

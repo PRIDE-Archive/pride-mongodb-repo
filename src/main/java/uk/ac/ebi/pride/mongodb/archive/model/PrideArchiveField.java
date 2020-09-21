@@ -219,5 +219,6 @@ public interface PrideArchiveField {
     String PROTEIN_COVERAGE = "sequenceCoverage";
 
     String USI = "usi";
+    String SPECTRA_USI = "spectraUsi";
     String PSM_SUMMARY_FILE = "fileName";
 }

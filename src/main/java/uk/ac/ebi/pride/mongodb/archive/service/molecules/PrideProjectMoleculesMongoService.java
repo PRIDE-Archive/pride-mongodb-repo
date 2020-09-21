@@ -8,12 +8,12 @@ import uk.ac.ebi.pride.mongodb.archive.repo.molecules.PrideMoleculesMongoReposit
 import java.util.Optional;
 
 @Slf4j
-public class PrideMoleculesMongoService {
+public class PrideProjectMoleculesMongoService {
 
     final PrideMoleculesMongoRepository repository;
 
     @Autowired
-    public PrideMoleculesMongoService(PrideMoleculesMongoRepository repository) {
+    public PrideProjectMoleculesMongoService(PrideMoleculesMongoRepository repository) {
         this.repository = repository;
     }
 

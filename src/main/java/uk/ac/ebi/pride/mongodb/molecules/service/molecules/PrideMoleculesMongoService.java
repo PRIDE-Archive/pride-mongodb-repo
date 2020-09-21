@@ -316,8 +316,7 @@ public class PrideMoleculesMongoService {
     public void savePsmSummaryEvidence(PrideMongoPsmSummaryEvidence psmMongo) {
         Optional<PrideMongoPeptideEvidence> currentPSM = psmMongoRepository
                 .findPsmSummaryByUsi(psmMongo.getUsi());
-        if (currentPSM.isPresent())
-            psmMongo.setId(currentPSM.get().getId());
+        currentPSM.ifPresent(prideMongoPeptideEvidence -> psmMongo.setId(prideMongoPeptideEvidence.getId()));
 
         psmMongoRepository.save(psmMongo);
 

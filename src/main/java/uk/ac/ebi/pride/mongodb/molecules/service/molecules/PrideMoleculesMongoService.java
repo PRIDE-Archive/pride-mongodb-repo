@@ -19,10 +19,8 @@ import uk.ac.ebi.pride.mongodb.molecules.repo.psm.PridePsmSummaryEvidenceMongoRe
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 import uk.ac.ebi.pride.utilities.util.StringUtils;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.StringJoiner;
+import java.util.*;
+import java.util.concurrent.*;
 
 @Service
 @Slf4j
@@ -393,5 +391,62 @@ public class PrideMoleculesMongoService {
 
     public long getNumberPSMEvidecnes() {
         return psmMongoRepository.count();
+    }
+
+    public void addSpectraUsi() throws InterruptedException, ExecutionException {
+        int nThreads = 100;
+        ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
+        int i = 0;
+        List<Callable<PsmUpdater>> psmUpdaters = new ArrayList<>(nThreads);
+        while (true) {
+            int size = 1000;
+            Page<PrideMongoPsmSummaryEvidence> prideMongoPsmSummaryEvidences = listPsmSummaryEvidences(PageRequest.of(i++, size));
+            List<PrideMongoPsmSummaryEvidence> psms = prideMongoPsmSummaryEvidences.getContent();
+            if (psms.isEmpty()) {
+                break;
+            }
+            log.info("Page number : " + i);
+            Map<ObjectId, String> map = new HashMap<>();
+            psms.forEach(p -> {
+                String usi = p.getUsi();
+                String spectraUsi = usi.substring(0, org.apache.commons.lang3.StringUtils.ordinalIndexOf(usi, ":", 5));
+                if (p.getSpectraUsi() == null || !p.getSpectraUsi().equals(spectraUsi)) {
+                    p.setSpectraUsi(spectraUsi);
+                    map.put(p.getId(), spectraUsi);
+                }
+            });
+            if (map.size() > 0) {
+                psmUpdaters.add(new PsmUpdater(map));
+            }
+            if (psmUpdaters.size() == nThreads) {
+                List<Future<PsmUpdater>> fFutures = executorService.invokeAll(psmUpdaters);
+                for (Future<PsmUpdater> future : fFutures) {
+                    PsmUpdater psmUpdater = future.get();
+                    log.info("Updated records: " + psmUpdater.getUpdatedRecords());
+                }
+                psmUpdaters.clear();
+            }
+        }
+    }
+
+    class PsmUpdater implements Callable {
+
+        private Map<ObjectId, String> map;
+        private long updatedRecords;
+
+        public long getUpdatedRecords() {
+            return updatedRecords;
+        }
+
+        PsmUpdater(Map<ObjectId, String> map) {
+            this.map = map;
+        }
+
+        @Override
+        public Object call() throws Exception {
+            psmMongoRepository.bulkupdatePsms(map);
+            updatedRecords = psmMongoRepository.bulkupdatePsms(map);
+            return this;
+        }
     }
 }

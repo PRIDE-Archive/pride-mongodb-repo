@@ -393,32 +393,38 @@ public class PrideMoleculesMongoService {
         return psmMongoRepository.count();
     }
 
-    public void addSpectraUsi() throws InterruptedException, ExecutionException {
+    public void addSpectraUsi(String projectAccession) throws InterruptedException, ExecutionException {
         int nThreads = 100;
         ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
         int i = 0;
         List<Callable<PsmUpdater>> psmUpdaters = new ArrayList<>(nThreads);
+        int size = 1000;
+        boolean breakLoop = false;
         while (true) {
-            int size = 1000;
-            Page<PrideMongoPsmSummaryEvidence> prideMongoPsmSummaryEvidences = listPsmSummaryEvidences(PageRequest.of(i++, size));
-            List<PrideMongoPsmSummaryEvidence> psms = prideMongoPsmSummaryEvidences.getContent();
-            if (psms.isEmpty()) {
-                break;
-            }
             log.info("Page number : " + i);
-            Map<ObjectId, String> map = new HashMap<>();
+//            Page<PrideMongoPsmSummaryEvidence> prideMongoPsmSummaryEvidences = listPsmSummaryEvidences(PageRequest.of(i, size));
+//            List<PrideMongoPsmSummaryEvidence> psms = prideMongoPsmSummaryEvidences.getContent();
+//            String s = "mzspec:PXD000966:CPTAC_CompRef_00_iTRAQ_12_5Feb12_Cougar_11-10-11.mzML:scan:11850:[UNIMOD:214]YYWGGLYSWDMSK[UNIMOD:214]/2";
+//            List<String> strings = Collections.singletonList(s);
+//            List<PrideMongoPsmSummaryEvidence> psms = psmMongoRepository.findPsmSummaryEvidencesByUsis(strings, PageRequest.of(0, 100)).getContent();
+            List<PrideMongoPsmSummaryEvidence> psms = psmMongoRepository.findPsmSummaryEvidencesByProjectAccession(projectAccession, PageRequest.of(i, size));
+            i++;
+            if (psms.isEmpty()) {
+                breakLoop = true;
+            }
+            Map<String, String> map = new HashMap<>();
             psms.forEach(p -> {
                 String usi = p.getUsi();
                 String spectraUsi = usi.substring(0, org.apache.commons.lang3.StringUtils.ordinalIndexOf(usi, ":", 5));
                 if (p.getSpectraUsi() == null || !p.getSpectraUsi().equals(spectraUsi)) {
                     p.setSpectraUsi(spectraUsi);
-                    map.put(p.getId(), spectraUsi);
+                    map.put(p.getUsi(), spectraUsi);
                 }
             });
             if (map.size() > 0) {
                 psmUpdaters.add(new PsmUpdater(map));
             }
-            if (psmUpdaters.size() == nThreads) {
+            if (breakLoop || psmUpdaters.size() == nThreads) {
                 List<Future<PsmUpdater>> fFutures = executorService.invokeAll(psmUpdaters);
                 for (Future<PsmUpdater> future : fFutures) {
                     PsmUpdater psmUpdater = future.get();
@@ -426,19 +432,22 @@ public class PrideMoleculesMongoService {
                 }
                 psmUpdaters.clear();
             }
+            if (breakLoop) {
+                break;
+            }
         }
     }
 
     class PsmUpdater implements Callable {
 
-        private Map<ObjectId, String> map;
+        private Map<String, String> map;
         private long updatedRecords;
 
         public long getUpdatedRecords() {
             return updatedRecords;
         }
 
-        PsmUpdater(Map<ObjectId, String> map) {
+        PsmUpdater(Map<String, String> map) {
             this.map = map;
         }
 

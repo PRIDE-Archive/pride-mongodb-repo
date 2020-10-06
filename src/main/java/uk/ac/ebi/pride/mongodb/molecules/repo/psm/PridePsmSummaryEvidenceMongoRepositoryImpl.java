@@ -84,12 +84,21 @@ public class PridePsmSummaryEvidenceMongoRepositoryImpl implements PridePsmSumma
     }
 
     @Override
-    public long bulkupdatePsms(Map<ObjectId, String> map) {
+    public List<PrideMongoPsmSummaryEvidence> findPsmSummaryEvidencesByProjectAccession(String prjAccession, Pageable page) {
+
+        Criteria queryCriteria = new Criteria(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(prjAccession);
+        Query queryMongo = new Query().addCriteria(queryCriteria).with(page);
+        return mongoTemplate.find(queryMongo, PrideMongoPsmSummaryEvidence.class);
+
+    }
+
+    @Override
+    public long bulkupdatePsms(Map<String, String> map) {
         BulkOperations bulkOperations = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, PrideMongoPsmSummaryEvidence.class);
         List<Pair<Query, Update>> list = new ArrayList<>();
         map.forEach((k,v) -> {
             Update update = Update.update(PrideArchiveField.SPECTRA_USI, v);
-            Query query = Query.query(Criteria.where("_id").is(k));
+            Query query = Query.query(Criteria.where(PrideArchiveField.USI).is(k));
             list.add(Pair.of(query, update));
         });
         return bulkOperations.updateMulti(list).execute().getModifiedCount();

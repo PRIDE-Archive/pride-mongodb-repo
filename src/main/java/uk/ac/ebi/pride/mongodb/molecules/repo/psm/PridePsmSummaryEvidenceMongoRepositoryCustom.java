@@ -1,6 +1,5 @@
 package uk.ac.ebi.pride.mongodb.molecules.repo.psm;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -28,5 +27,7 @@ public interface PridePsmSummaryEvidenceMongoRepositoryCustom {
 
     Page<PrideMongoPsmSummaryEvidence> findPsmSummaryEvidencesByUsis(List<String> usis, Pageable page);
 
-    long bulkupdatePsms(Map<ObjectId, String> map);
+    List<PrideMongoPsmSummaryEvidence> findPsmSummaryEvidencesByProjectAccession(String prjAccession, Pageable page);
+
+    long bulkupdatePsms(Map<String, String> map);
 }

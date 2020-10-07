@@ -13,4 +13,9 @@ public interface PridePsmSummaryEvidenceMongoRepository extends MongoRepository<
 
     @Query("{'"+ PrideArchiveField.USI + "' : ?0}")
     Optional<PrideMongoPeptideEvidence> findPsmSummaryByUsi(String usi);
+
+    @Query("{'"+ PrideArchiveField.SPECTRA_USI + "' : ?0}")
+    Optional<PrideMongoPsmSummaryEvidence> findPsmSummaryBySpectraUsi(String usi);
+
+
 }

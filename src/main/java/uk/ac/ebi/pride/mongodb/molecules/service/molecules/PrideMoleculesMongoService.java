@@ -438,6 +438,10 @@ public class PrideMoleculesMongoService {
         }
     }
 
+    public Optional<PrideMongoPsmSummaryEvidence> findPsmSummaryEvidencesSpectraUsi(String spectraUSI) {
+        return psmMongoRepository.findPsmSummaryBySpectraUsi(spectraUSI);
+    }
+
     class PsmUpdater implements Callable {
 
         private Map<String, String> map;

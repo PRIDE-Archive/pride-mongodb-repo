@@ -19,10 +19,8 @@ import uk.ac.ebi.pride.mongodb.molecules.repo.psm.PridePsmSummaryEvidenceMongoRe
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 import uk.ac.ebi.pride.utilities.util.StringUtils;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.StringJoiner;
+import java.util.*;
+import java.util.concurrent.*;
 
 @Service
 @Slf4j
@@ -316,8 +314,7 @@ public class PrideMoleculesMongoService {
     public void savePsmSummaryEvidence(PrideMongoPsmSummaryEvidence psmMongo) {
         Optional<PrideMongoPeptideEvidence> currentPSM = psmMongoRepository
                 .findPsmSummaryByUsi(psmMongo.getUsi());
-        if (currentPSM.isPresent())
-            psmMongo.setId(currentPSM.get().getId());
+        currentPSM.ifPresent(prideMongoPeptideEvidence -> psmMongo.setId(prideMongoPeptideEvidence.getId()));
 
         psmMongoRepository.save(psmMongo);
 
@@ -394,5 +391,71 @@ public class PrideMoleculesMongoService {
 
     public long getNumberPSMEvidecnes() {
         return psmMongoRepository.count();
+    }
+
+    public void addSpectraUsi(String projectAccession) throws InterruptedException, ExecutionException {
+        int nThreads = 100;
+        ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
+        int i = 0;
+        List<Callable<PsmUpdater>> psmUpdaters = new ArrayList<>(nThreads);
+        int size = 1000;
+        boolean breakLoop = false;
+        while (true) {
+            log.info("Page number : " + i);
+//            Page<PrideMongoPsmSummaryEvidence> prideMongoPsmSummaryEvidences = listPsmSummaryEvidences(PageRequest.of(i, size));
+//            List<PrideMongoPsmSummaryEvidence> psms = prideMongoPsmSummaryEvidences.getContent();
+//            String s = "mzspec:PXD000966:CPTAC_CompRef_00_iTRAQ_12_5Feb12_Cougar_11-10-11.mzML:scan:11850:[UNIMOD:214]YYWGGLYSWDMSK[UNIMOD:214]/2";
+//            List<String> strings = Collections.singletonList(s);
+//            List<PrideMongoPsmSummaryEvidence> psms = psmMongoRepository.findPsmSummaryEvidencesByUsis(strings, PageRequest.of(0, 100)).getContent();
+            List<PrideMongoPsmSummaryEvidence> psms = psmMongoRepository.findPsmSummaryEvidencesByProjectAccession(projectAccession, PageRequest.of(i, size));
+            i++;
+            if (psms.isEmpty()) {
+                breakLoop = true;
+            }
+            Map<String, String> map = new HashMap<>();
+            psms.forEach(p -> {
+                String usi = p.getUsi();
+                String spectraUsi = usi.substring(0, org.apache.commons.lang3.StringUtils.ordinalIndexOf(usi, ":", 5));
+                if (p.getSpectraUsi() == null || !p.getSpectraUsi().equals(spectraUsi)) {
+                    p.setSpectraUsi(spectraUsi);
+                    map.put(p.getUsi(), spectraUsi);
+                }
+            });
+            if (map.size() > 0) {
+                psmUpdaters.add(new PsmUpdater(map));
+            }
+            if (breakLoop || psmUpdaters.size() == nThreads) {
+                List<Future<PsmUpdater>> fFutures = executorService.invokeAll(psmUpdaters);
+                for (Future<PsmUpdater> future : fFutures) {
+                    PsmUpdater psmUpdater = future.get();
+                    log.info("Updated records: " + psmUpdater.getUpdatedRecords());
+                }
+                psmUpdaters.clear();
+            }
+            if (breakLoop) {
+                break;
+            }
+        }
+    }
+
+    class PsmUpdater implements Callable {
+
+        private Map<String, String> map;
+        private long updatedRecords;
+
+        public long getUpdatedRecords() {
+            return updatedRecords;
+        }
+
+        PsmUpdater(Map<String, String> map) {
+            this.map = map;
+        }
+
+        @Override
+        public Object call() throws Exception {
+            psmMongoRepository.bulkupdatePsms(map);
+            updatedRecords = psmMongoRepository.bulkupdatePsms(map);
+            return this;
+        }
     }
 }

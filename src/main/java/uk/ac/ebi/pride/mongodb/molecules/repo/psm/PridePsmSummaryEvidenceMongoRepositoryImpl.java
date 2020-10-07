@@ -1,21 +1,27 @@
 package uk.ac.ebi.pride.mongodb.molecules.repo.psm;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.repository.support.PageableExecutionUtils;
+import org.springframework.data.util.Pair;
 import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.molecules.model.psm.PrideMongoPsmSummaryEvidence;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ypriverol
@@ -75,6 +81,27 @@ public class PridePsmSummaryEvidenceMongoRepositoryImpl implements PridePsmSumma
         return PageableExecutionUtils.getPage(files, page, () ->
                 mongoOperations.count(queryMongo, PrideMongoPsmSummaryEvidence.class));
 
+    }
+
+    @Override
+    public List<PrideMongoPsmSummaryEvidence> findPsmSummaryEvidencesByProjectAccession(String prjAccession, Pageable page) {
+
+        Criteria queryCriteria = new Criteria(PrideArchiveField.EXTERNAL_PROJECT_ACCESSION).is(prjAccession);
+        Query queryMongo = new Query().addCriteria(queryCriteria).with(page);
+        return mongoTemplate.find(queryMongo, PrideMongoPsmSummaryEvidence.class);
+
+    }
+
+    @Override
+    public long bulkupdatePsms(Map<String, String> map) {
+        BulkOperations bulkOperations = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, PrideMongoPsmSummaryEvidence.class);
+        List<Pair<Query, Update>> list = new ArrayList<>();
+        map.forEach((k,v) -> {
+            Update update = Update.update(PrideArchiveField.SPECTRA_USI, v);
+            Query query = Query.query(Criteria.where(PrideArchiveField.USI).is(k));
+            list.add(Pair.of(query, update));
+        });
+        return bulkOperations.updateMulti(list).execute().getModifiedCount();
     }
 
     /**

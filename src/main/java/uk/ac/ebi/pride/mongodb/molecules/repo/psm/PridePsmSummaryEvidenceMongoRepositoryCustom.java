@@ -7,6 +7,7 @@ import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
 import uk.ac.ebi.pride.mongodb.molecules.model.psm.PrideMongoPsmSummaryEvidence;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ypriverol
@@ -25,4 +26,8 @@ public interface PridePsmSummaryEvidenceMongoRepositoryCustom {
     Page<PrideMongoPsmSummaryEvidence> filterByAttributes(Criteria criteria, Pageable page);
 
     Page<PrideMongoPsmSummaryEvidence> findPsmSummaryEvidencesByUsis(List<String> usis, Pageable page);
+
+    List<PrideMongoPsmSummaryEvidence> findPsmSummaryEvidencesByProjectAccession(String prjAccession, Pageable page);
+
+    long bulkupdatePsms(Map<String, String> map);
 }

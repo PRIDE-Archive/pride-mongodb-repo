@@ -39,6 +39,10 @@ public class PrideMongoPsmSummaryEvidence implements PrideArchiveField{
     @Indexed(name = PrideArchiveField.USI, unique = true)
     String usi;
 
+    /** Accession Provided by PRIDE Pipelines **/
+    @Field(value = PrideArchiveField.SPECTRA_USI)
+    String spectraUsi;
+
     /** Accession in Reported File **/
     @Field(value = PrideArchiveField.PROTEIN_ASSAY_ACCESSION)
     private String assayAccession;

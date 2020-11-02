@@ -35,9 +35,6 @@ public interface PrideArchiveField {
     /** SDRF **/
     String SDRF = "sdrf";
 
-    /** SDRF_FILES_CHECKSUM **/
-    String SDRF_FILES_CHECKSUM = "sdrf_file_checksums";
-
     /** Sample Protocol **/
     String PROJECT_SAMPLE_PROTOCOL = "sampleProtocol";
 

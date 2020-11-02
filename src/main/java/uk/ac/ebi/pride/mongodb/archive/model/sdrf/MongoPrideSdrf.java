@@ -39,12 +39,5 @@ public class MongoPrideSdrf {
      * PRIDE Project sdrfs
      **/
     @Field(value = PrideArchiveField.SDRF)
-    private List<JSONObject> sdrf;
-
-
-    /**
-     * PRIDE Project sdrf file checksums
-     **/
-    @Field(value = PrideArchiveField.SDRF_FILES_CHECKSUM)
-    private Map<String, String> sdrfFileCheckSum;
+    private Map<String, List<JSONObject>> sdrf;
 }

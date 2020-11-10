@@ -28,16 +28,13 @@ import java.util.Map;
 public class MongoPrideSdrf {
 
     @Id
-    @Indexed(name = PrideArchiveField.ID)
     private ObjectId id;
 
-
-    @Indexed(unique = true, name = PrideArchiveField.ACCESSION)
     private String projectAccession;
 
-    /**
-     * PRIDE Project sdrfs
-     **/
-    @Field(value = PrideArchiveField.SDRF)
-    private Map<String, List<JSONObject>> sdrf;
+    @Field(value = PrideArchiveField.SAMPLE_FILE_CHECKSUM)
+    private String filechecksum;
+
+    @Field(value = PrideArchiveField.SAMPLE)
+    Map<String,String> sample;
 }

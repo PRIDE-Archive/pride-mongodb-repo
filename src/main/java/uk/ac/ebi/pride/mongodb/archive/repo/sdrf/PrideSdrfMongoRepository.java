@@ -5,9 +5,11 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import uk.ac.ebi.pride.mongodb.archive.model.sdrf.MongoPrideSdrf;
 
+import java.util.List;
+
 @Repository
 public interface PrideSdrfMongoRepository extends MongoRepository<MongoPrideSdrf, ObjectId> {
 
-    MongoPrideSdrf findMongoPrideSdrfByProjectAccession(String accession);
+    List<MongoPrideSdrf> findByProjectAccession(String projectAccession);
 
 }

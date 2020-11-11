@@ -32,8 +32,8 @@ public interface PrideArchiveField {
     /** Project Description **/
     String PROJECT_DESCRIPTION = "description";
 
-    /** SDRF **/
-    String SDRF = "sdrf";
+    String SAMPLE = "sample";
+    String SAMPLE_FILE_CHECKSUM = "filechecksum";
 
     /** Sample Protocol **/
     String PROJECT_SAMPLE_PROTOCOL = "sampleProtocol";
@@ -98,7 +98,6 @@ public interface PrideArchiveField {
     String PRIDE_REANALYSIS_COLLECTION_NAME = "pride_reanalysis_collection";
     String PRIDE_MOLECULES_COLLECTION_NAME = "pride_molecules";
     String PRIDE_SDRF_COLLECTION_NAME = "pride_sdrf";
-
 
     String PUBLIC_PROJECT = "public_project";
 
@@ -225,4 +224,5 @@ public interface PrideArchiveField {
     String USI = "usi";
     String SPECTRA_USI = "spectraUsi";
     String PSM_SUMMARY_FILE = "fileName";
+
 }

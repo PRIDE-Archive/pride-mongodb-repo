@@ -438,6 +438,10 @@ public class PrideMoleculesMongoService {
         }
     }
 
+    public long addSpectraUsi(Map<String, String> usiAndSpectraUsiMap) {
+        return psmMongoRepository.bulkupdatePsms(usiAndSpectraUsiMap);
+    }
+
     public Optional<PrideMongoPsmSummaryEvidence> findPsmSummaryEvidencesSpectraUsi(String spectraUSI) {
         return psmMongoRepository.findPsmSummaryBySpectraUsi(spectraUSI);
     }
@@ -457,7 +461,6 @@ public class PrideMoleculesMongoService {
 
         @Override
         public Object call() throws Exception {
-            psmMongoRepository.bulkupdatePsms(map);
             updatedRecords = psmMongoRepository.bulkupdatePsms(map);
             return this;
         }

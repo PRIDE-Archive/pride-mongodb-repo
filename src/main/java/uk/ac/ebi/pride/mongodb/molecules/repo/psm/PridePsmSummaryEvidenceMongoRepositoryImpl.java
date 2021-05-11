@@ -50,8 +50,7 @@ public class PridePsmSummaryEvidenceMongoRepositoryImpl implements PridePsmSumma
         Query queryMongo = PrideMongoUtils.buildQuery(filters);
         queryMongo.with(page);
         List<PrideMongoPsmSummaryEvidence> files = mongoTemplate.find(queryMongo, PrideMongoPsmSummaryEvidence.class);
-        return PageableExecutionUtils.getPage(files, page, () ->
-                mongoOperations.count(queryMongo, PrideMongoPsmSummaryEvidence.class));
+        return PageableExecutionUtils.getPage(files, page, () -> 100);
     }
 
     @Override

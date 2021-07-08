@@ -125,6 +125,7 @@ public interface PrideArchiveField {
 
     /** PSM Collections **/
     String PRIDE_PEPTIDE_COLLECTION_NAME = "pride_peptide_evidences";
+    String PEPTIDE_SUMMARY_COLLECTION_NAME = "peptide_summary";
     String PRIDE_PSM_COLLECTION_NAME = "pride_psm_evidences";
     String PSM_SPECTRUM_ACCESSIONS = "psmAccessions";
     String PEPTIDE_SEQUENCE = "peptideSequence";
@@ -225,4 +226,8 @@ public interface PrideArchiveField {
     String SPECTRA_USI = "spectraUsi";
     String PSM_SUMMARY_FILE = "fileName";
 
+    String BEST_SEARCH_ENGINE_SCORE = "best_search_engine_score";
+    String PSMS_COUNT = "psms_count";
+    String BEST_USIS = "best_usis";
+    String PTMS_MAP = "ptms_map";
 }

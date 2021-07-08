@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
+import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideSummary;
 import uk.ac.ebi.pride.mongodb.molecules.model.protein.PrideMongoProteinEvidence;
 import uk.ac.ebi.pride.mongodb.molecules.model.psm.PrideMongoPsmSummaryEvidence;
 import uk.ac.ebi.pride.mongodb.molecules.repo.peptide.PridePeptideEvidenceMongoRepository;
+import uk.ac.ebi.pride.mongodb.molecules.repo.peptide.PridePeptideSummaryMongoRepository;
 import uk.ac.ebi.pride.mongodb.molecules.repo.protein.PrideProteinMongoRepository;
 import uk.ac.ebi.pride.mongodb.molecules.repo.psm.PridePsmSummaryEvidenceMongoRepository;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;
@@ -27,16 +29,19 @@ import java.util.concurrent.*;
 public class PrideMoleculesMongoService {
 
     final PrideProteinMongoRepository proteinMongoRepository;
-
     final PridePeptideEvidenceMongoRepository peptideMongoRepository;
-
     final PridePsmSummaryEvidenceMongoRepository psmMongoRepository;
+    final PridePeptideSummaryMongoRepository pridePeptideSummaryMongoRepository;
 
     @Autowired
-    public PrideMoleculesMongoService(PrideProteinMongoRepository proteinRepository, PridePeptideEvidenceMongoRepository peptideMongoRepository, PridePsmSummaryEvidenceMongoRepository psmMongoRepository) {
+    public PrideMoleculesMongoService(PrideProteinMongoRepository proteinRepository,
+                                      PridePeptideEvidenceMongoRepository peptideMongoRepository,
+                                      PridePsmSummaryEvidenceMongoRepository psmMongoRepository,
+                                      PridePeptideSummaryMongoRepository pridePeptideSummaryMongoRepository) {
         this.proteinMongoRepository = proteinRepository;
         this.peptideMongoRepository = peptideMongoRepository;
         this.psmMongoRepository = psmMongoRepository;
+        this.pridePeptideSummaryMongoRepository = pridePeptideSummaryMongoRepository;
     }
 
     /**
@@ -379,6 +384,10 @@ public class PrideMoleculesMongoService {
 
     public Page<PrideMongoPsmSummaryEvidence> listPsmSummaryEvidences(PageRequest pageRequest) {
         return psmMongoRepository.findAll(pageRequest);
+    }
+
+    public Page<PrideMongoPeptideSummary> findPeptideSummaryByPeptideSequence(String peptideSequence, PageRequest pageRequest) {
+        return pridePeptideSummaryMongoRepository.findByPeptideSequence(peptideSequence, pageRequest);
     }
 
     public long getNumberProteinEvidences() {

@@ -387,7 +387,14 @@ public class PrideMoleculesMongoService {
     }
 
     public Page<PrideMongoPeptideSummary> findPeptideSummaryByPeptideSequence(String peptideSequence, PageRequest pageRequest) {
+        if (peptideSequence == null || peptideSequence.trim().isEmpty()) {
+            return pridePeptideSummaryMongoRepository.findAll(pageRequest);
+        }
         return pridePeptideSummaryMongoRepository.findByPeptideSequence(peptideSequence, pageRequest);
+    }
+
+    public Page<PrideMongoPeptideSummary> findAllPeptideSummary(PageRequest pageRequest) {
+        return pridePeptideSummaryMongoRepository.findAll(pageRequest);
     }
 
     public long getNumberProteinEvidences() {

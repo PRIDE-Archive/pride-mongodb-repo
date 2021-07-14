@@ -20,29 +20,29 @@ import java.util.Map;
 public class PrideMongoPeptideSummary implements PrideArchiveField {
 
     @Id
-    @Indexed(name = PrideArchiveField.ID)
+    @Field(PrideArchiveField.ID)
     @JsonIgnore
     private ObjectId id;
 
-    @Indexed(name = PrideArchiveField.PEPTIDE_SEQUENCE)
+    @Field(PrideArchiveField.PEPTIDE_SEQUENCE)
     private String peptideSequence;
 
-    @Indexed(name = PrideArchiveField.PROTEIN_ACCESSION)
+    @Field(PrideArchiveField.PROTEIN_ACCESSION)
     private String proteinAccession;
 
-    @Indexed(name = EXTERNAL_PROJECT_ACCESSIONS)
+    @Field(EXTERNAL_PROJECT_ACCESSIONS)
     private String[] projectAccessions;
 
-    @Indexed(name = PrideArchiveField.BEST_SEARCH_ENGINE_SCORE)
-    private String bestSearchEngineScore;
+    @Field(PrideArchiveField.BEST_SEARCH_ENGINE_SCORE)
+    private Double bestSearchEngineScore;
 
-    @Field(value = PSMS_COUNT)
+    @Field(PSMS_COUNT)
     private Integer psmsCount;
 
-    @Field(value = BEST_USIS)
+    @Field(BEST_USIS)
     private String[] bestUsis;
 
-    @Field(value = PTMS_MAP)
+    @Field(PTMS_MAP)
     Map<String, String[]> ptmsMap;
 
 }

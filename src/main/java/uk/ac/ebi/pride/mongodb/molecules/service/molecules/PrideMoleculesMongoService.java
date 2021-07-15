@@ -386,11 +386,14 @@ public class PrideMoleculesMongoService {
         return psmMongoRepository.findAll(pageRequest);
     }
 
-    public Page<PrideMongoPeptideSummary> findPeptideSummaryByPeptideSequence(String peptideSequence, PageRequest pageRequest) {
+    public Page<PrideMongoPeptideSummary> findPeptideSummaryByPeptideSequence(String peptideSequence, String proteinAccession, PageRequest pageRequest) {
         if (peptideSequence == null || peptideSequence.trim().isEmpty()) {
             return pridePeptideSummaryMongoRepository.findAll(pageRequest);
         }
-        return pridePeptideSummaryMongoRepository.findByPeptideSequence(peptideSequence, pageRequest);
+        if (proteinAccession != null && proteinAccession.trim().length()>0) {
+            return pridePeptideSummaryMongoRepository.findByPeptideSequenceAndProteinAccession(peptideSequence, proteinAccession, pageRequest);
+        }
+            return pridePeptideSummaryMongoRepository.findByPeptideSequence(peptideSequence, pageRequest);
     }
 
     public Page<PrideMongoPeptideSummary> findAllPeptideSummary(PageRequest pageRequest) {

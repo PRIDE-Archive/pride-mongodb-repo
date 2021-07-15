@@ -11,5 +11,5 @@ import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideSummary;
 public interface PridePeptideSummaryMongoRepository extends MongoRepository<PrideMongoPeptideSummary, ObjectId> {
 
     Page<PrideMongoPeptideSummary> findByPeptideSequence(String peptideSequence, Pageable pageable);
-
+    Page<PrideMongoPeptideSummary> findByPeptideSequenceAndProteinAccession(String peptideSequence, String proteinAccession, Pageable pageable);
 }

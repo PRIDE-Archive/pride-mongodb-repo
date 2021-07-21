@@ -386,17 +386,24 @@ public class PrideMoleculesMongoService {
         return psmMongoRepository.findAll(pageRequest);
     }
 
-    public Page<PrideMongoPeptideSummary> findPeptideSummaryByPeptideSequence(String peptideSequence, String proteinAccession, PageRequest pageRequest) {
+    public Page<PrideMongoPeptideSummary> findPeptideSummary(String peptideSequence, String proteinAccession, PageRequest pageRequest) {
+        if (proteinAccession != null && proteinAccession.trim().length() > 0) {
+            if (peptideSequence == null || peptideSequence.trim().isEmpty()) {
+                return pridePeptideSummaryMongoRepository.findByProteinAccession(proteinAccession, pageRequest);
+            }
+            return pridePeptideSummaryMongoRepository.findByPeptideSequenceAndProteinAccession(peptideSequence, proteinAccession, pageRequest);
+        }
         if (peptideSequence == null || peptideSequence.trim().isEmpty()) {
             return pridePeptideSummaryMongoRepository.findAll(pageRequest);
         }
-        if (proteinAccession != null && proteinAccession.trim().length()>0) {
-            return pridePeptideSummaryMongoRepository.findByPeptideSequenceAndProteinAccession(peptideSequence, proteinAccession, pageRequest);
-        }
-            return pridePeptideSummaryMongoRepository.findByPeptideSequence(peptideSequence, pageRequest);
+        return pridePeptideSummaryMongoRepository.findByPeptideSequence(peptideSequence, pageRequest);
     }
 
-    public Page<PrideMongoPeptideSummary> findAllPeptideSummary(PageRequest pageRequest) {
+    public PrideMongoPeptideSummary findPeptideSummary(String peptideSequence, String proteinAccession) {
+        return pridePeptideSummaryMongoRepository.findByPeptideSequenceAndProteinAccession(peptideSequence, proteinAccession);
+    }
+
+        public Page<PrideMongoPeptideSummary> findAllPeptideSummary(PageRequest pageRequest) {
         return pridePeptideSummaryMongoRepository.findAll(pageRequest);
     }
 

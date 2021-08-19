@@ -403,7 +403,11 @@ public class PrideMoleculesMongoService {
         return pridePeptideSummaryMongoRepository.findByPeptideSequenceAndProteinAccession(peptideSequence, proteinAccession);
     }
 
-        public Page<PrideMongoPeptideSummary> findAllPeptideSummary(PageRequest pageRequest) {
+    public Page<PrideMongoPeptideSummary> findPeptideSummaryBypeptideSequenceOrProteinAccession(String peptideSequence, String proteinAccession, PageRequest pageRequest) {
+        return pridePeptideSummaryMongoRepository.findByPeptideSequenceOrProteinAccession(peptideSequence, proteinAccession, pageRequest);
+    }
+
+    public Page<PrideMongoPeptideSummary> findAllPeptideSummary(PageRequest pageRequest) {
         return pridePeptideSummaryMongoRepository.findAll(pageRequest);
     }
 

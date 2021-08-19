@@ -13,5 +13,6 @@ public interface PridePeptideSummaryMongoRepository extends MongoRepository<Prid
     Page<PrideMongoPeptideSummary> findByPeptideSequence(String peptideSequence, Pageable pageable);
     Page<PrideMongoPeptideSummary> findByPeptideSequenceAndProteinAccession(String peptideSequence, String proteinAccession, Pageable pageable);
     PrideMongoPeptideSummary findByPeptideSequenceAndProteinAccession(String peptideSequence, String proteinAccession);
+    Page<PrideMongoPeptideSummary> findByPeptideSequenceOrProteinAccession(String peptideSequence, String proteinAccession, Pageable pageable);
     Page<PrideMongoPeptideSummary> findByProteinAccession(String proteinAccession, Pageable pageable);
 }

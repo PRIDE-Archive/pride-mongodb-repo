@@ -10,19 +10,25 @@ import org.springframework.stereotype.Repository;
 import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideSummary;
 
 @Repository
-public interface PridePeptideSummaryMongoRepository extends MongoRepository<PrideMongoPeptideSummary, ObjectId> {
+public interface PridePeptideSummaryMongoRepository extends
+        MongoRepository<PrideMongoPeptideSummary, ObjectId>,
+        PridePeptideSummaryMongoRepositoryCustom{
 
     Page<PrideMongoPeptideSummary> findByPeptideSequence(String peptideSequence, Pageable pageable);
 
     Page<PrideMongoPeptideSummary> findByPeptideSequenceAndProteinAccession(String peptideSequence,
                                                                             String proteinAccession,
                                                                             Pageable pageable);
+
     PrideMongoPeptideSummary findByPeptideSequenceAndProteinAccession(String peptideSequence,
                                                                       String proteinAccession);
+
     Page<PrideMongoPeptideSummary> findByPeptideSequenceOrProteinAccession(String peptideSequence,
                                                                            String proteinAccession,
                                                                            Pageable pageable);
-    Page<PrideMongoPeptideSummary> findByProteinAccession(String proteinAccession, Pageable pageable);
+
+    Page<PrideMongoPeptideSummary> findByProteinAccession(String proteinAccession,
+                                                          Pageable pageable);
 
 
     @Query("{is_uniprot_accession : true}")

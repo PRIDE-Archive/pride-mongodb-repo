@@ -58,10 +58,10 @@ public class PrideMongoPeptideSummary implements PrideArchiveField {
     String taxId;
 
     @Field(ORGANISM)
-    String Organism;
+    String organism;
 
     @Field(GENE)
-    String Gene;
+    String gene;
 
     @Field(PROTEIN_NAME)
     String proteinName;

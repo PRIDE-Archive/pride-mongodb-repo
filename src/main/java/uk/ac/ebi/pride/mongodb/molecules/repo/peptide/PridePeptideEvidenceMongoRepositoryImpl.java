@@ -26,8 +26,11 @@ import java.util.stream.Collectors;
  */
 public class PridePeptideEvidenceMongoRepositoryImpl implements PridePeptideEvidenceMongoRepositoryCustom {
 
-    private final Criteria additionalAttributesCriteria = Criteria.where(PrideArchiveField.ADDITIONAL_ATTRIBUTES)
-            .elemMatch(Criteria.where(PrideArchiveField.ACCESSION).is("PRIDE:0000511").and(PrideArchiveField.VALUE).is("true"));
+    private final Criteria additionalAttributesCriteria = Criteria
+            .where(PrideArchiveField.ADDITIONAL_ATTRIBUTES)
+            .elemMatch(Criteria.where(PrideArchiveField.ACCESSION)
+                    .is("PRIDE:0000511").and(PrideArchiveField.VALUE).is("true"));
+
     private final Criteria validatedCriteria = Criteria.where(PrideArchiveField.IS_VALIDATED).is(true);
 
     private MongoTemplate mongoTemplate;

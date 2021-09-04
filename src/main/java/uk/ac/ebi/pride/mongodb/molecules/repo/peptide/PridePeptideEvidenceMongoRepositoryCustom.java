@@ -31,8 +31,10 @@ public interface PridePeptideEvidenceMongoRepositoryCustom {
      */
     List<PrideMongoPeptideEvidence> findByIdAccessions(Collection<String> accessions, Sort sort);
 
-    Page<PrideMongoPeptideEvidence> findPeptideEvidenceByProteinEvidence(String projectAccession, String assayAccession,
-                                                                         String reportedProtein, Pageable page);
+    Page<PrideMongoPeptideEvidence> findPeptideEvidenceByProteinEvidence(String projectAccession,
+                                                                         String assayAccession,
+                                                                         String reportedProtein,
+                                                                         Pageable page);
 
     Set<String> findProteinAccessionByProjectAccessions(String projectAccession);
     Set<String> findPeptideSequenceByProjectAccessions(String projectAccession);

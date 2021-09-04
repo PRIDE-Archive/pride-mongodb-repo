@@ -45,4 +45,28 @@ public class PrideMongoPeptideSummary implements PrideArchiveField {
     @Field(PTMS_MAP)
     Map<String, String[]> ptmsMap;
 
+    @Field(IS_UNIPROT)
+    Boolean isUniprot;
+
+    @Field(IS_UNIQUE)
+    Boolean isUnique;
+
+    @Field(IS_MULTI_ORGANISM)
+    Boolean isMultiOrganism;
+
+    @Field(TAX_ID)
+    String taxId;
+
+    @Field(ORGANISM)
+    String Organism;
+
+    @Field(GENE)
+    String Gene;
+
+    @Field(PROTEIN_NAME)
+    String proteinName;
+
+    @Field(EVIDENCE_LEVEL)
+    int evidenceLevel;
+
 }

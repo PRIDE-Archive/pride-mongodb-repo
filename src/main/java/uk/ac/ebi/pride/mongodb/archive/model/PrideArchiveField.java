@@ -230,4 +230,13 @@ public interface PrideArchiveField {
     String PSMS_COUNT = "psms_count";
     String BEST_USIS = "best_usis";
     String PTMS_MAP = "ptms_map";
+    String IS_UNIPROT = "is_uniprot_accession";
+    String IS_UNIQUE  = "is_uniq_peptide_within_organism";
+    String IS_MULTI_ORGANISM = "is_multiorganism_peptides";
+    String TAX_ID = "TaxId";
+    String ORGANISM = "Organism";
+    String GENE = "Gene";
+    String PROTEIN_NAME = "ProteinName";
+    String EVIDENCE_LEVEL = "EvidenceLevel";
+
 }

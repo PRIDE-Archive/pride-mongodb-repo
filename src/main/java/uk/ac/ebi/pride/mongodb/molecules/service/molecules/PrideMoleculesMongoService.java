@@ -400,15 +400,21 @@ public class PrideMoleculesMongoService {
     }
 
     public PrideMongoPeptideSummary findPeptideSummary(String peptideSequence, String proteinAccession) {
-        return pridePeptideSummaryMongoRepository.findByPeptideSequenceAndProteinAccession(peptideSequence, proteinAccession);
+        return pridePeptideSummaryMongoRepository.
+                findByPeptideSequenceAndProteinAccession(peptideSequence, proteinAccession);
     }
 
     public Page<PrideMongoPeptideSummary> findPeptideSummaryBypeptideSequenceOrProteinAccession(String peptideSequence, String proteinAccession, PageRequest pageRequest) {
-        return pridePeptideSummaryMongoRepository.findByPeptideSequenceOrProteinAccession(peptideSequence, proteinAccession, pageRequest);
+        return pridePeptideSummaryMongoRepository.
+                findByPeptideSequenceOrProteinAccession(peptideSequence, proteinAccession, pageRequest);
     }
 
     public Page<PrideMongoPeptideSummary> findAllPeptideSummary(PageRequest pageRequest) {
         return pridePeptideSummaryMongoRepository.findAll(pageRequest);
+    }
+
+    public Page<PrideMongoPeptideSummary> findAllUniprotPeptideSumamry(PageRequest pageRequest){
+        return pridePeptideSummaryMongoRepository.findAllUniprot(pageRequest);
     }
 
     public long getNumberProteinEvidences() {

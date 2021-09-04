@@ -2,8 +2,10 @@ package uk.ac.ebi.pride.mongodb.molecules.repo.peptide;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideSummary;
 
@@ -11,8 +13,18 @@ import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideSummary;
 public interface PridePeptideSummaryMongoRepository extends MongoRepository<PrideMongoPeptideSummary, ObjectId> {
 
     Page<PrideMongoPeptideSummary> findByPeptideSequence(String peptideSequence, Pageable pageable);
-    Page<PrideMongoPeptideSummary> findByPeptideSequenceAndProteinAccession(String peptideSequence, String proteinAccession, Pageable pageable);
-    PrideMongoPeptideSummary findByPeptideSequenceAndProteinAccession(String peptideSequence, String proteinAccession);
-    Page<PrideMongoPeptideSummary> findByPeptideSequenceOrProteinAccession(String peptideSequence, String proteinAccession, Pageable pageable);
+
+    Page<PrideMongoPeptideSummary> findByPeptideSequenceAndProteinAccession(String peptideSequence,
+                                                                            String proteinAccession,
+                                                                            Pageable pageable);
+    PrideMongoPeptideSummary findByPeptideSequenceAndProteinAccession(String peptideSequence,
+                                                                      String proteinAccession);
+    Page<PrideMongoPeptideSummary> findByPeptideSequenceOrProteinAccession(String peptideSequence,
+                                                                           String proteinAccession,
+                                                                           Pageable pageable);
     Page<PrideMongoPeptideSummary> findByProteinAccession(String proteinAccession, Pageable pageable);
+
+
+    @Query("{is_uniprot_accession : true}")
+    Page<PrideMongoPeptideSummary> findAllUniprot(Pageable pageRequest);
 }

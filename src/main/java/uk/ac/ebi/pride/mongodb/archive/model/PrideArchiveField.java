@@ -155,6 +155,7 @@ public interface PrideArchiveField {
 
     /** PRIDE Stats Fields*/
     String PRIDE_STATS_COLLECTION = "pride_stats_collection";
+    String PEPTIDOME_COLLECTION = "peptidome_stats";
     String STATS_SUBMISSION_COUNTS = "pride_submission_counts";
     String STATS_ESTIMATION_DATE = "estimationDate";
     String STATS_COMPLEX_COUNTS = "pride_complex_counts";

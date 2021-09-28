@@ -1,7 +1,9 @@
 package uk.ac.ebi.pride.mongodb.archive.service.assays;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
 import uk.ac.ebi.pride.mongodb.archive.model.assay.MongoPrideAssay;
 import uk.ac.ebi.pride.mongodb.archive.repo.assay.PrideAssayMongoRepository;
@@ -22,6 +24,8 @@ import java.util.List;
  * @author ypriverol on 01/11/2018.
  */
 
+@Service
+@Slf4j
 public class PrideAssayMongoService {
 
     final PrideAssayMongoRepository assayRepository;

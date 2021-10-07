@@ -66,6 +66,6 @@ public class PrideMongoPeptideSummary implements PrideArchiveField {
     String proteinName;
 
     @Field(EVIDENCE_LEVEL)
-    int evidenceLevel;
+    Integer evidenceLevel;
 
 }

@@ -6,9 +6,9 @@ import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideSummary;
 
 public interface PridePeptideSummaryMongoRepositoryCustom {
 
-    Page<PrideMongoPeptideSummary> findUniprotPeptideSummaryByProperties(String peptideSequence,
-                                                                         String proteinAccession,
-                                                                         String proteinName,
-                                                                         String gene,
+    Page<PrideMongoPeptideSummary> findUniprotPeptideSummaryByProperties(String keyword,
+                                                                         Boolean includeUniprotOnly,
+                                                                         Boolean isMultiorganismPeptide,
+                                                                         Boolean isUniqPeptideWithinOrganism,
                                                                          Pageable pageable);
 }

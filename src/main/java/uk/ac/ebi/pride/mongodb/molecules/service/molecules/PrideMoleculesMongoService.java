@@ -417,14 +417,13 @@ public class PrideMoleculesMongoService {
         return pridePeptideSummaryMongoRepository.findAllUniprot(pageRequest);
     }
 
-    public Page<PrideMongoPeptideSummary> findUniprotPeptideSummaryByProperties(String peptideSequence,
-                                                                                String proteinAccession,
-                                                                                String proteinName,
-                                                                                String gene,
+    public Page<PrideMongoPeptideSummary> findUniprotPeptideSummaryByProperties(String keyword,
+                                                                                Boolean includeUniprotOnly,
+                                                                                Boolean isMultiorganismPeptide,
+                                                                                Boolean isUniqPeptideWithinOrganism,
                                                                                 PageRequest pageRequest) {
         return pridePeptideSummaryMongoRepository.
-                findUniprotPeptideSummaryByProperties(peptideSequence, proteinAccession,
-                        proteinName, gene,
+                findUniprotPeptideSummaryByProperties(keyword, includeUniprotOnly, isMultiorganismPeptide, isUniqPeptideWithinOrganism,
                         pageRequest);
     }
 

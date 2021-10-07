@@ -14,7 +14,7 @@ import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideSummary;
 
 import java.util.List;
 
-public class PridePeptideSummaryMongoRepositoryImpl implements PridePeptideSummaryMongoRepositoryCustom{
+public class PridePeptideSummaryMongoRepositoryImpl implements PridePeptideSummaryMongoRepositoryCustom {
 
     private MongoTemplate mongoTemplate;
 
@@ -29,33 +29,37 @@ public class PridePeptideSummaryMongoRepositoryImpl implements PridePeptideSumma
 
     @Autowired
     @Qualifier("moleculesMongoTemplate")
-    public void setMongoOperations(MongoTemplate mongoTemplate){
+    public void setMongoOperations(MongoTemplate mongoTemplate) {
         this.mongoOperations = mongoTemplate;
     }
 
 
     @Override
-    public Page<PrideMongoPeptideSummary> findUniprotPeptideSummaryByProperties(String peptideSequence,
-                                                                                String proteinAccession,
-                                                                                String proteinName,
-                                                                                String gene,
+    public Page<PrideMongoPeptideSummary> findUniprotPeptideSummaryByProperties(String keyword,
+                                                                                Boolean includeUniprotOnly,
+                                                                                Boolean isMultiorganismPeptide,
+                                                                                Boolean isUniqPeptideWithinOrganism,
                                                                                 Pageable page) {
 
-        Criteria criteria = new Criteria().andOperator(
-                        new Criteria().orOperator(
-                                Criteria.where(PrideArchiveField.PEPTIDE_SEQUENCE).is(peptideSequence),
-                                new Criteria().orOperator(
-                                        Criteria.where(PrideArchiveField.PROTEIN_ACCESSION)
-                                                .is(proteinAccession),
-                                        new Criteria().orOperator(Criteria.where(PrideArchiveField.PROTEIN_NAME)
-                                        .is(proteinName)),
-                                        new Criteria().orOperator(Criteria.where(PrideArchiveField.GENE)
-                                                .is(gene)))
-                        ), Criteria.where(PrideArchiveField.IS_UNIPROT).is(true));
-
-        Query query = Query.query(criteria);
-        query.with(page);
-        List<PrideMongoPeptideSummary> files =  mongoTemplate.find(query, PrideMongoPeptideSummary.class);
+        Criteria criteria = new Criteria();
+        if (keyword != null && keyword.trim().length() > 0) {
+            criteria = criteria.orOperator(
+                    Criteria.where(PrideArchiveField.PEPTIDE_SEQUENCE).is(keyword),
+                    Criteria.where(PrideArchiveField.PROTEIN_ACCESSION).is(keyword),
+                    Criteria.where(PrideArchiveField.PROTEIN_NAME).is(keyword),
+                    Criteria.where(PrideArchiveField.GENE).is(keyword));
+        }
+        if (includeUniprotOnly != null && includeUniprotOnly) {
+            criteria = criteria.andOperator(Criteria.where(PrideArchiveField.IS_UNIPROT).is(true));
+        }
+        if (isMultiorganismPeptide != null && isMultiorganismPeptide) {
+            criteria = criteria.andOperator(Criteria.where(PrideArchiveField.IS_MULTI_ORGANISM).is(true));
+        }
+        if (isUniqPeptideWithinOrganism != null && isUniqPeptideWithinOrganism) {
+            criteria = criteria.andOperator(Criteria.where(PrideArchiveField.IS_UNIQUE).is(true));
+        }
+        Query query = Query.query(criteria).with(page);
+        List<PrideMongoPeptideSummary> files = mongoTemplate.find(query, PrideMongoPeptideSummary.class);
         return PageableExecutionUtils.getPage(files, page, () -> mongoOperations.count(query,
                 PrideMongoPeptideSummary.class));
     }

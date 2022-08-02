@@ -1,11 +1,11 @@
 package uk.ac.ebi.pride.mongodb.archive.config;
 
 import com.github.fakemongo.Fongo;
-import com.mongodb.MongoClient;
+import com.mongodb.client.MongoClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
+import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**
@@ -17,18 +17,18 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @ComponentScan(basePackages = "uk.ac.ebi.pride.mongodb.archive.service")
 @EnableMongoRepositories(basePackages = {"uk.ac.ebi.pride.mongodb.archive.repo"})
 @Configuration
-public class PrideProjectFongoTestConfig extends AbstractMongoConfiguration{
+public class PrideProjectFongoTestConfig extends AbstractMongoClientConfiguration {
 
     @Override
     protected String getDatabaseName() {
         return "mongo-unit-test";
     }
 
-    @Bean
-    @Override
-    public MongoClient mongoClient() {
-        return new Fongo("mongo-test").getMongo();
-    }
+//    @Bean
+//    @Override
+//    public MongoClient mongoClient() {
+//        return new Fongo("mongo-test").getMongo();
+//    }
 }
 
 

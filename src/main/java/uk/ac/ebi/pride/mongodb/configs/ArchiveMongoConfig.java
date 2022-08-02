@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -49,7 +50,6 @@ public class ArchiveMongoConfig extends AbstractPrideMongoConfiguration {
   @Value("${mongodb.projects.machine.uri}")
   private String mongoURI;
 
-  @Override
   @Bean(name = "archiveMongoTemplate")
   public MongoTemplate mongoTemplate() {
     return new MongoTemplate(super.mongoDbFactory());

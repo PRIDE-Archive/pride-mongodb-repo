@@ -22,7 +22,6 @@ public class MoleculesMongoConfig extends AbstractPrideMongoConfiguration {
     private String mongoURI;
 
     @Primary
-    @Override
     @Bean(name = "moleculesMongoTemplate")
     public MongoTemplate mongoTemplate() {
         return new MongoTemplate(super.mongoDbFactory());

@@ -15,8 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"uk.ac.ebi.pride.mongodb.archive.service", "uk.ac.ebi.pride.utilities.ols.web.service.cache"})
-@EnableMongoRepositories(basePackages = {"uk.ac.ebi.pride.mongodb.archive.repo"}, mongoTemplateRef="archiveMongoTemplate")
+@EnableMongoRepositories(basePackages = {"uk.ac.ebi.pride.mongodb.archive.repo"})
 public class ArchiveMongoConfig extends AbstractPrideMongoConfiguration {
 
   @Value("${mongodb.project.database}")

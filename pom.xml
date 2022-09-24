@@ -9,9 +9,9 @@
     <name>PRIDE MongoDB repository</name>
 
     <parent>
-        <groupId>org.uk.ac.ebi.pride.architectural</groupId>
-        <artifactId>pride-spring</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.1.RELEASE</version>
     </parent>
 
     <!-- This project requires several maven profiles to build and run correctly.
@@ -98,12 +98,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>uk.ac.ebi.pride.utilities</groupId>
             <artifactId>pride-utilities</artifactId>
             <version>${uk.ac.ebi.pride-utilities.version}</version>
@@ -142,6 +136,17 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
         </dependency>
 
         <!-- jmzTab -->

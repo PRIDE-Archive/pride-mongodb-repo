@@ -31,9 +31,6 @@ public class PrideAssayMongoService {
     final PrideAssayMongoRepository assayRepository;
 
     @Autowired
-    private MongoOperations mongo;
-
-    @Autowired
     public PrideAssayMongoService(PrideAssayMongoRepository assayRepository) {
         this.assayRepository = assayRepository;
     }

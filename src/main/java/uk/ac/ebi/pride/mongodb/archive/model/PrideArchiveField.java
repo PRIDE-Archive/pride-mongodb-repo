@@ -76,6 +76,8 @@ public interface PrideArchiveField {
 
     String SOFTWARES = "softwares";
 
+    String EXPERIMENT_TYPES = "experimentTypes";
+
     String QUANTIFICATION_METHODS = "quantificationMethods";
 
     /** This field store all the countries associated with the experiment **/

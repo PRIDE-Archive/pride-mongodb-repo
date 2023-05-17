@@ -165,6 +165,9 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Indexed(name = SOFTWARES)
     private Collection<CvParam> softwareList;
 
+    @Indexed(name = EXPERIMENT_TYPES)
+    private Collection<CvParam> experimentTypes;
+
     /**
      * References related with the dataset in manuscript and papers
      **/

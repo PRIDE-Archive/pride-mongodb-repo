@@ -249,6 +249,13 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
         return softList;
     }
 
+    public Collection<? extends String> getExperimentTypes() {
+        Collection<String> exList = Collections.EMPTY_LIST;
+        if (this.experimentTypes != null && !this.experimentTypes.isEmpty())
+            exList = this.experimentTypes.stream().map(CvParam::getName).collect(Collectors.toList());
+        return exList;
+    }
+
     @Override
     public Optional<String> getDoi() {
         return Optional.ofNullable(this.doi);

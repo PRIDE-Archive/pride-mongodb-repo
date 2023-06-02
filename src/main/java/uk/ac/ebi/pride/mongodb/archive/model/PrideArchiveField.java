@@ -94,8 +94,10 @@ public interface PrideArchiveField {
 
     /** Collections Name **/
     String PRIDE_PROJECTS_COLLECTION_NAME = "pride_projects";
+    String IMPORTED_PROJECTS_COLLECTION_NAME = "imported_projects";
     String PRIDE_EXPERIMENTAL_DESIGN_COLLECTION_NAME = "pride_experimental_design";
     String PRIDE_FILE_COLLECTION_NAME = "pride_files";
+    String IMPORTED_FILE_COLLECTION_NAME = "imported_files";
     String PRIDE_MSRUN_COLLECTION_NAME = "pride_msruns";
     String PRIDE_REANALYSIS_COLLECTION_NAME = "pride_reanalysis_collection";
     String PRIDE_MOLECULES_COLLECTION_NAME = "pride_molecules";
@@ -181,6 +183,7 @@ public interface PrideArchiveField {
     /** Alias **/
     String MONGO_MSRUN_DOCUMENT_ALIAS = "MongoPrideMSRun";
     String MONGO_FILE_DOCUMENT_ALIAS = "MongoPrideFile";
+    String MONGO_IMPORTED_FILE_DOCUMENT_ALIAS = "MongoImportedFile";
 
     String SAMPLES = "samples";
     String SAMPLES_MSRUN = "samples_msrun";

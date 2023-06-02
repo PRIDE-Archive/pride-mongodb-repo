@@ -479,11 +479,11 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
         return Objects.hash(accession, title, description, submittedFileRelations, sampleProcessing, dataProcessing, submitters, headLab, keywords, projectTags, quantificationMethods, submissionType, publicationDate, submissionDate, updatedDate, ptmList, samplesDescription, experimentalFactors, instruments, softwareList, references, attributes, doi, omicsLinks, countries, publicProject);
     }
 
-    private boolean equalsCollection(Collection a, Collection b) {
+    public boolean equalsCollection(Collection a, Collection b) {
         return (a == b) || (a != null && b!= null && Objects.equals(new HashSet<>(a), new HashSet<>(b)));
     }
 
-    private boolean equalsDate(Date a, Date b) {
+    public boolean equalsDate(Date a, Date b) {
         return  ((a == b) || (a != null && b != null && a.getTime() == b.getTime()));
     }
 }

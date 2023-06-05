@@ -1,9 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.model.projects;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
@@ -33,31 +31,34 @@ import java.util.stream.Collectors;
  */
 @Document(collection = PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME)
 @Data
-@Builder
+@SuperBuilder
 @TypeAlias("MongoPrideProject")
+@AllArgsConstructor
 public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
+    public MongoPrideProject() {
+    }
 
     @Id
     @Indexed(name = PrideArchiveField.ID)
-    ObjectId id;
+    protected ObjectId id;
 
     /**
      * Project Accession in PRIDE
      **/
     @Indexed(unique = true, name = PrideArchiveField.ACCESSION)
-    String accession;
+    protected String accession;
 
     /**
      * Title of the Project
      **/
     @Field(value = PrideArchiveField.PROJECT_TILE)
-    String title;
+    protected String title;
 
     /**
      * PRIDE Project short description
      **/
     @Field(value = PrideArchiveField.PROJECT_DESCRIPTION)
-    private String description;
+    protected String description;
 
     /**
      * This property defines a relation between files in the Project.
@@ -66,144 +67,144 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
      * - The third value of the {@link Triple} is a {@link CvParam} that defines the relation between files
      **/
     @Indexed(name = FILE_RELATIONS_IN_PROJECT)
-    List<Triple<String, String, CvParam>> submittedFileRelations;
+    protected List<Triple<String, String, CvParam>> submittedFileRelations;
 
     /**
      * Sample Processing
      **/
     @Field(value = PrideArchiveField.PROJECT_SAMPLE_PROTOCOL)
-    private String sampleProcessing;
+    protected String sampleProcessing;
 
     /**
      * Data Processing Protocol
      **/
     @Field(value = PrideArchiveField.PROJECT_DATA_PROTOCOL)
-    private String dataProcessing;
+    protected String dataProcessing;
 
     /**
      * This is using an abstraction of the User, in this case MongoDB only will retrieve the information related with the userContact
      **/
     @Indexed(name = PROJECT_SUBMITTER)
-    private Collection<Contact> submitters;
+    protected Collection<Contact> submitters;
 
     /**
      * This returns a list of head of labs PIs ralted with the experiment
      **/
     @Indexed(name = PROJECT_PI_NAMES)
     @Getter(AccessLevel.NONE)
-    private Collection<Contact> headLab;
+    protected Collection<Contact> headLab;
 
     /**
      * List of keywords added by the user
      **/
     @Indexed(name = PROJECT_KEYWORDS)
-    private Collection<String> keywords;
+    protected Collection<String> keywords;
 
     /**
      * This are tags provided by the curator of PRIDE
      **/
     @Indexed(name = PROJECT_TAGS)
-    private Collection<String> projectTags;
+    protected Collection<String> projectTags;
 
     /* This are CVParams to describe the type of the experiment */
     @Indexed(name = QUANTIFICATION_METHODS)
     @Getter(AccessLevel.NONE)
-    private Collection<CvParam> quantificationMethods;
+    protected Collection<CvParam> quantificationMethods;
 
     /**
      * Submission Type for the experiment, defaults value can be read here {@link uk.ac.ebi.pride.archive.dataprovider.utils.SubmissionTypeConstants}
      */
     @Indexed(name = PROJECT_SUBMISSION_TYPE)
-    private String submissionType;
+    protected String submissionType;
 
     /**
      * Publication Date
      **/
     @Indexed(name = PUBLICATION_DATE)
-    private Date publicationDate;
+    protected Date publicationDate;
 
     /**
      * Submission Date
      **/
     @Indexed(name = SUBMISSION_DATE)
-    private Date submissionDate;
+    protected Date submissionDate;
 
     /**
      * Updated date
      **/
     @Indexed(name = UPDATED_DATE)
-    private Date updatedDate;
+    protected Date updatedDate;
 
     /**
      * List of PTMs for the corresponding Project, this PTMs are globally annotated by the user, it does'nt mean that they have been found in proteins of peptides.
      */
     @Indexed(name = PROJECT_IDENTIFIED_PTM)
-    private Collection<CvParam> ptmList;
+    protected Collection<CvParam> ptmList;
 
     /**
      * Samples description is a generic information about all the samples in the experiment.
      */
     @Field(value = SAMPLE_ATTRIBUTES_NAMES)
-    private List<Tuple<CvParam, Set<CvParam>>> samplesDescription;
+    protected List<Tuple<CvParam, Set<CvParam>>> samplesDescription;
 
     /**
      * Experimental Factors
      **/
     @Field(value = EXPERIMENTAL_FACTORS)
-    private List<Tuple<CvParam, Set<CvParam>>> experimentalFactors;
+    protected List<Tuple<CvParam, Set<CvParam>>> experimentalFactors;
 
     /**
      * General description about the instruments used in the experiment.
      */
     @Indexed(name = INSTRUMENTS)
     @Getter(AccessLevel.NONE)
-    private Collection<CvParam> instruments;
+    protected Collection<CvParam> instruments;
 
     /**
      * General software information in CVParams terms
      **/
     @Indexed(name = SOFTWARES)
-    private Collection<CvParam> softwareList;
+    protected Collection<CvParam> softwareList;
 
     @Indexed(name = EXPERIMENT_TYPES)
-    private Collection<CvParam> experimentTypes;
+    protected Collection<CvParam> experimentTypes;
 
     /**
      * References related with the dataset in manuscript and papers
      **/
     @Field(value = PROJECT_REFERENCES)
     @Getter(AccessLevel.NONE)
-    private Collection<Reference> references;
+    protected Collection<Reference> references;
 
     /**
      * Additional Attributes
      **/
     @Indexed(name = ADDITIONAL_ATTRIBUTES)
-    private Collection<CvParam> attributes;
+    protected Collection<CvParam> attributes;
 
     /**
      * Project DOI for complete Submissions
      */
     @Indexed(name = PROJECT_DOI)
-    private String doi;
+    protected String doi;
 
     /**
      * Other Omics Type
      **/
     @Indexed(name = PROJECT_OMICS_LINKS)
-    private List<String> omicsLinks;
+    protected List<String> omicsLinks;
 
     /**
      * Countries involve in the Submission
      **/
     @Indexed(name = COUNTRIES)
-    private List<String> countries;
+    protected List<String> countries;
 
     /**
      * Type of Project: True if is Public, False if is Private
      **/
     @Indexed(name = PUBLIC_PROJECT)
-    private boolean publicProject;
+    protected boolean publicProject;
 
     @Override
     public String getAccession() {
@@ -410,7 +411,11 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
 
     @Override
     public String toString() {
-        return "MongoPrideProject{" +
+        String prefix = "MongoPrideProject{";
+        if (this instanceof MongoImportedProject) {
+            prefix = "MongoImportedProject{";
+        }
+        return prefix +
                 "id=" + id +
                 ", accession='" + accession + '\'' +
                 ", title='" + title + '\'' +
@@ -471,7 +476,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
                 equalsCollection(attributes, that.attributes) &&
                 Objects.equals(doi, that.doi) &&
                 equalsCollection(omicsLinks, that.omicsLinks) &&
-                equalsCollection(getCountries() , that.getCountries());
+                equalsCollection(getCountries(), that.getCountries());
     }
 
     @Override
@@ -480,10 +485,10 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     }
 
     public boolean equalsCollection(Collection a, Collection b) {
-        return (a == b) || (a != null && b!= null && Objects.equals(new HashSet<>(a), new HashSet<>(b)));
+        return (a == b) || (a != null && b != null && Objects.equals(new HashSet<>(a), new HashSet<>(b)));
     }
 
     public boolean equalsDate(Date a, Date b) {
-        return  ((a == b) || (a != null && b != null && a.getTime() == b.getTime()));
+        return ((a == b) || (a != null && b != null && a.getTime() == b.getTime()));
     }
 }

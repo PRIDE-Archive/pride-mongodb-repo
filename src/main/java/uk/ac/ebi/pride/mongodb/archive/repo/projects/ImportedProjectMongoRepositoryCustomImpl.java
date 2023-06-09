@@ -58,7 +58,7 @@ public class ImportedProjectMongoRepositoryCustomImpl implements ImportedProject
     @Override
     public Set<String> getAllProjectAccessions() {
 
-        Set<String> projectAccessions = mongoTemplate.getCollection(PrideArchiveField.PRIDE_PROJECTS_COLLECTION_NAME)
+        Set<String> projectAccessions = mongoTemplate.getCollection(PrideArchiveField.IMPORTED_PROJECTS_COLLECTION_NAME)
                 .distinct(PrideArchiveField.ACCESSION, String.class).into(new HashSet<>());
 
         return projectAccessions;

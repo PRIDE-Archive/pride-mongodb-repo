@@ -1,8 +1,8 @@
 package uk.ac.ebi.pride.mongodb.archive.model.reference;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.ac.ebi.pride.archive.dataprovider.reference.Reference;
 
 /**
@@ -20,7 +20,7 @@ public class MongoReferenceTest {
 
     Reference ref;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         ref = new Reference("Uszkoreit, Julian, et al. \"PIA: An intuitive protein inference engine with a web-based user interface.\" Journal of proteome research 14.7 (2015): 2988-2997.",25938255,"10.1021/acs.jproteome.5b00121");
 
@@ -29,7 +29,7 @@ public class MongoReferenceTest {
     @Test
     public void mongReferenceTest(){
         System.out.println(ref.toString());
-        Assert.assertEquals(25938255, ref.getPubmedId());
+        Assertions.assertEquals(25938255, ref.getPubmedId());
     }
 
     @Test

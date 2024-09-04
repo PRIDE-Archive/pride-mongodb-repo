@@ -1,15 +1,13 @@
 package uk.ac.ebi.pride.mongodb.archive.service.integration.projects;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.utils.MSFileTypeConstants;
 import uk.ac.ebi.pride.archive.repo.repos.file.ProjectFile;
@@ -35,7 +33,6 @@ import java.util.stream.IntStream;
  *
  * @author ypriverol
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = {PrideProjectFongoTestConfig.class,  ArchiveOracleConfig.class})
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class PrideFileMongoServiceTest {
@@ -49,7 +46,7 @@ public class PrideFileMongoServiceTest {
     @Autowired
     ProjectRepository oracleProjectRepository;
 
-    @Ignore
+    @Disabled
     @Test
     public void save() {
         MongoPrideFile file = MongoPrideFile
@@ -59,7 +56,7 @@ public class PrideFileMongoServiceTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void searchFilesTest(){
         insertFilesSave();
         String filterRaw = "fileCategory.value==RESULT";
@@ -128,7 +125,7 @@ public class PrideFileMongoServiceTest {
        }
        );
 
-        Assert.assertEquals(400, prideFileMongoService.count());
+        Assertions.assertEquals(400, prideFileMongoService.count());
 
     }
 
@@ -165,7 +162,7 @@ public class PrideFileMongoServiceTest {
             prideFileMongoService.insertAllFilesAndMsRuns(mongoPrideFiles,null);
         });
 
-        Assert.assertEquals(1200, prideFileMongoService.count());
+        Assertions.assertEquals(1200, prideFileMongoService.count());
 
     }
 }

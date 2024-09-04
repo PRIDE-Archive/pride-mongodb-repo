@@ -1,13 +1,12 @@
 package uk.ac.ebi.pride.mongodb.archive.repo.projects;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.repository.support.PageableExecutionUtils;
+import org.springframework.data.support.PageableExecutionUtils;
 import uk.ac.ebi.pride.mongodb.archive.model.PrideArchiveField;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoImportedProject;
 
@@ -21,7 +20,6 @@ public class ImportedProjectMongoRepositoryCustomImpl implements ImportedProject
 
     private final MongoTemplate mongoTemplate;
 
-    @Autowired
     public ImportedProjectMongoRepositoryCustomImpl(@Qualifier("archiveMongoTemplate") MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }

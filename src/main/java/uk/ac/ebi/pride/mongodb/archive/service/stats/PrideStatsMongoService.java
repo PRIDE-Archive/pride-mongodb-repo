@@ -1,7 +1,6 @@
 package uk.ac.ebi.pride.mongodb.archive.service.stats;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.model.stats.MongoPrideStats;
@@ -29,7 +28,6 @@ public class PrideStatsMongoService {
 
     final PrideStatsMongoRepository repository;
 
-    @Autowired
     public PrideStatsMongoService(PrideStatsMongoRepository repository) {
         this.repository = repository;
     }
@@ -73,7 +71,7 @@ public class PrideStatsMongoService {
         Optional<MongoPrideStats> stats = findStatsBydate(date);
         MongoPrideStats currentStats;
 
-        if(!stats.isPresent()){
+        if(stats.isEmpty()){
             Map<String, List<Tuple<String, Integer>>> submissionCounts = new HashMap<>();
             submissionCounts.put(prideStatsKeysConstants.statsKey, submissionCount);
             MongoPrideStats mongoPrideStats = MongoPrideStats.builder()
@@ -102,7 +100,7 @@ public class PrideStatsMongoService {
         Optional<MongoPrideStats> stats = findStatsBydate(date);
         MongoPrideStats currentStats;
 
-        if(!stats.isPresent()){
+        if(stats.isEmpty()){
             Map<String, Object> submissionCounts = new HashMap<>();
             submissionCounts.put(prideStatsKeysConstants.statsKey, submissionCount);
             MongoPrideStats mongoPrideStats = MongoPrideStats.builder()

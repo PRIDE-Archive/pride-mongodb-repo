@@ -1,8 +1,8 @@
 package uk.ac.ebi.pride.mongodb.archive.service.stats;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 
 /**
@@ -20,7 +20,7 @@ public class CategoryStatsTest {
 
     CategoryStats stats;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         stats = CategoryStats
                 .builder()
@@ -31,7 +31,7 @@ public class CategoryStatsTest {
     @Test
     public void CategoryTest(){
         System.out.println(stats.toString());
-        Assert.assertEquals(new Tuple<>("Number od Submissions", 30000), stats.getCategory());
+        Assertions.assertEquals(new Tuple<>("Number od Submissions", 30000), stats.getCategory());
     }
 
     @Test

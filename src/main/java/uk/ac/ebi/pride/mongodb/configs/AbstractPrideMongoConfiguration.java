@@ -1,37 +1,44 @@
 package uk.ac.ebi.pride.mongodb.configs;
 
 import com.mongodb.*;
-import org.springframework.data.mongodb.MongoDbFactory;
-import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
-import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
+
 
 /**
  * This Abstract class is used to Configure all the connections to Spring.
  * @author ypriverol
  */
-public abstract class   AbstractPrideMongoConfiguration extends AbstractMongoConfiguration {
+public abstract class AbstractPrideMongoConfiguration {
 
-    @Override
+    @Bean
+    public MongoTemplate mongoTemplate() {
+        return new MongoTemplate(mongoDbFactory());
+    }
+
+    @Bean
+    public MongoDatabaseFactory mongoDbFactory(){
+        return new SimpleMongoClientDatabaseFactory(mongoClient(), getDatabaseName());
+    }
+
+    @Bean
     public MongoClient mongoClient() {
-        MongoClient mongoClient = configureMachineFromURI(getMongoURI());
-        return mongoClient;
+        return configureMachineFromURI(getMongoURI());
     }
 
-    @Override
-    public MongoDbFactory mongoDbFactory(){
-        return new SimpleMongoDbFactory(mongoClient(), getDatabaseName());
-    }
-
-
-    /**
-     * This method create a connection from an URI
-     * @param uri URI in String format
-     * @return MongoClient
-     */
-    public MongoClient configureMachineFromURI(String uri){
-        MongoClientURI clientURI = new MongoClientURI(uri);
-        return new MongoClient(clientURI);
+    public MongoClient configureMachineFromURI(String uri) {
+        ConnectionString connectionString = new ConnectionString(uri);
+        MongoClientSettings settings = MongoClientSettings.builder()
+                .applyConnectionString(connectionString)
+                .build();
+        return MongoClients.create(settings);
     }
 
     public abstract String getMongoURI();
+
+    public abstract String getDatabaseName();
 }

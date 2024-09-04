@@ -1,7 +1,6 @@
 package uk.ac.ebi.pride.mongodb.archive.service.projects;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.mongodb.archive.repo.projects.PrideAnalysisMongoRepository;
 
@@ -18,7 +17,6 @@ public class PrideAnalysisMongoService {
 //    @Autowired
 //    private MongoOperations mongo;
 
-    @Autowired
     public PrideAnalysisMongoService(PrideAnalysisMongoRepository repository) {
         this.repository = repository;
     }

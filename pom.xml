@@ -4,14 +4,14 @@
 
     <groupId>uk.ac.ebi.pride.archive</groupId>
     <artifactId>pride-mongodb-repo</artifactId>
-    <version>1.0.9-SNAPSHOT</version>
+    <version>1.0.10-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>PRIDE MongoDB repository</name>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.1.RELEASE</version>
+        <version>3.3.3</version>
     </parent>
 
     <!-- This project requires several maven profiles to build and run correctly.
@@ -24,6 +24,7 @@
 
     <properties>
         <archive.data.provider.api.version>1.0.1-SNAPSHOT</archive.data.provider.api.version>
+        <maven.compiler.release>17</maven.compiler.release>
         <uk.ac.ebi.pride.architectural-pride-tdd.version>1.0.4-SNAPSHOT</uk.ac.ebi.pride.architectural-pride-tdd.version>
         <uk.ac.ebi.pride.architectural-pride-spring.version>1.0.0-SNAPSHOT</uk.ac.ebi.pride.architectural-pride-spring.version>
         <uk.ac.ebi.pride.px-submission-core.version>2.0.18</uk.ac.ebi.pride.px-submission-core.version>
@@ -41,17 +42,14 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
 
 
@@ -76,12 +74,34 @@
             <version>${uk.ac.ebi.pride.architectural-pride-tdd.version}</version>
             <type>pom</type>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <!-- EmbedMongo for in-memory MongoDB instances  as Fongo deprecated-->
+        <dependency>
+            <groupId>de.flapdoodle.embed</groupId>
+            <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <version>3.5.4</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- MongoDB and Lombok -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+
+        <!-- MongoDB Java Driver -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-sync</artifactId>
+            <version>4.9.1</version>
         </dependency>
 
         <dependency>
@@ -122,7 +142,6 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>6.1.5.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -141,7 +160,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
         </dependency>
 
         <dependency>
@@ -237,6 +255,35 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.openrewrite.maven</groupId>
+                <artifactId>rewrite-maven-plugin</artifactId>
+                <version>5.39.0</version>
+                <configuration>
+                    <exportDatatables>true</exportDatatables>
+                    <activeRecipes>
+                        <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3</recipe>
+                    </activeRecipes>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-spring</artifactId>
+                        <version>5.17.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <parameters>true</parameters>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
             </plugin>
         </plugins>
     </build>

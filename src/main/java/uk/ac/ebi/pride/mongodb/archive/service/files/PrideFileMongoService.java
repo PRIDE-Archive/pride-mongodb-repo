@@ -43,7 +43,6 @@ public class PrideFileMongoService {
         this.mongoOperations = mongoTemplate;
     }
 
-    @Autowired
     public PrideFileMongoService(PrideFileMongoRepository fileRepository, PrideMSRunMongoRepository msRunMongoRepository) {
         this.fileRepository = fileRepository;
         this.msRunMongoRepository = msRunMongoRepository;

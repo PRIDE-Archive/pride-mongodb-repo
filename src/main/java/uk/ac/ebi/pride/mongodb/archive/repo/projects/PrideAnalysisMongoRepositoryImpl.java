@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.repository.support.PageableExecutionUtils;
+import org.springframework.data.support.PageableExecutionUtils;
 import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideAnalysis;
 import uk.ac.ebi.pride.mongodb.utils.PrideMongoUtils;

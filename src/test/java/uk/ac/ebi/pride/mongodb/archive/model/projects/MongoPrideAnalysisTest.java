@@ -1,8 +1,8 @@
 package uk.ac.ebi.pride.mongodb.archive.model.projects;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -19,7 +19,7 @@ public class MongoPrideAnalysisTest {
 
     MongoPrideAnalysis project;
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         project = MongoPrideAnalysis.builder().accession("RPX000001").build();
@@ -28,6 +28,6 @@ public class MongoPrideAnalysisTest {
     @Test
     public void mongoAnalysisTest(){
         System.out.println(project.toString());
-        Assert.assertTrue(project.accession.equalsIgnoreCase("RPX000001"));
+        Assertions.assertTrue(project.accession.equalsIgnoreCase("RPX000001"));
     }
 }

@@ -1,7 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.model.files;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.utils.ProjectFileCategoryConstants;
@@ -24,7 +24,7 @@ import java.util.Set;
 public class MongoPrideFileTest {
 
     MongoPrideFile file;
-    @Before
+    @BeforeEach
     public void setUp() {
 
         CvParamProvider cvCategory = ProjectFileCategoryConstants.RAW.getCv();

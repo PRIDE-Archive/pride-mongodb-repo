@@ -2,7 +2,6 @@ package uk.ac.ebi.pride.mongodb.archive.service.projects;
 
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,6 @@ public class ImportedProjectMongoService {
     final ImportedProjectMongoRepository repository;
     final PrideAssayMongoRepository assayMongoRepository;
 
-    @Autowired
     public ImportedProjectMongoService(ImportedProjectMongoRepository repository, PrideAssayMongoRepository assayMongoRepository) {
         this.repository = repository;
         this.assayMongoRepository = assayMongoRepository;
@@ -41,7 +39,7 @@ public class ImportedProjectMongoService {
      * @return MongoImportedProject
      */
     public Optional<MongoImportedProject> insert(MongoImportedProject project) {
-        if (!repository.findByAccession(project.getAccession()).isPresent()) {
+        if (repository.findByAccession(project.getAccession()).isEmpty()) {
             project = repository.save(project);
             log.info("A new project has been saved into MongoDB database with Accession -- " + project.getAccession());
         } else
@@ -196,7 +194,7 @@ public class ImportedProjectMongoService {
     public void saveAssays(List<MongoPrideAssay> mongoAssays) {
         mongoAssays.forEach(x -> {
             Optional<MongoPrideAssay> currentAssay = assayMongoRepository.findPrideAssayByAccession(x.getAccession());
-            if (!currentAssay.isPresent())
+            if (currentAssay.isEmpty())
                 assayMongoRepository.save(x);
             else {
                 updateAssay(currentAssay.get(), x);

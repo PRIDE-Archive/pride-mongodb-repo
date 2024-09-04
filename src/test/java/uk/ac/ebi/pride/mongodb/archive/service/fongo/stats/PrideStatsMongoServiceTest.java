@@ -1,11 +1,9 @@
 package uk.ac.ebi.pride.mongodb.archive.service.fongo.stats;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
 import uk.ac.ebi.pride.mongodb.archive.model.stats.MongoPrideStats;
@@ -27,7 +25,6 @@ import java.util.*;
  */
 
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = {PrideProjectFongoTestConfig.class})
 public class PrideStatsMongoServiceTest {
 
@@ -66,7 +63,7 @@ public class PrideStatsMongoServiceTest {
         insertDataset();
         Optional<MongoPrideStats> findDatasets = service.findStatsBydate(date);
         findDatasets.ifPresent(mongoPrideStats -> System.out.println(mongoPrideStats.getEstimationDate()));
-        Assert.assertTrue(findDatasets.isPresent());
+        Assertions.assertTrue(findDatasets.isPresent());
 
     }
 
@@ -77,7 +74,7 @@ public class PrideStatsMongoServiceTest {
         service.updateSubmissionCountStats(date, PrideStatsKeysConstants.SUBMISSIONS_PER_YEAR, monthlySubmissions);
         Optional<MongoPrideStats> findDatasets = service.findStatsBydate(date);
         findDatasets.ifPresent(mongoPrideStats -> System.out.println(mongoPrideStats.getSubmissionsCount().size()));
-        Assert.assertEquals(5, findDatasets.get().getSubmissionsCount().get(PrideStatsKeysConstants.SUBMISSIONS_PER_YEAR.getStatsKey()).size());
+        Assertions.assertEquals(5, findDatasets.get().getSubmissionsCount().get(PrideStatsKeysConstants.SUBMISSIONS_PER_YEAR.getStatsKey()).size());
     }
 
     @Test
@@ -92,7 +89,7 @@ public class PrideStatsMongoServiceTest {
         if(findDatasets != null)
             System.out.println(findDatasets.getEstimationDate());
         assert findDatasets != null;
-        Assert.assertEquals(4, Objects.requireNonNull(findDatasets).getSubmissionsCount().get(PrideStatsKeysConstants.SUBMISSIONS_PER_YEAR.getStatsKey()).size());
+        Assertions.assertEquals(4, Objects.requireNonNull(findDatasets).getSubmissionsCount().get(PrideStatsKeysConstants.SUBMISSIONS_PER_YEAR.getStatsKey()).size());
     }
 
 }

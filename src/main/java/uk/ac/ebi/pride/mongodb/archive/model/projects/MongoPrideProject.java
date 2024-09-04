@@ -1,6 +1,9 @@
 package uk.ac.ebi.pride.mongodb.archive.model.projects;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -46,6 +49,7 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
      * Project Accession in PRIDE
      **/
     @Indexed(unique = true, name = PrideArchiveField.ACCESSION)
+    @Field(value = PrideArchiveField.ACCESSION)
     protected String accession;
 
     /**

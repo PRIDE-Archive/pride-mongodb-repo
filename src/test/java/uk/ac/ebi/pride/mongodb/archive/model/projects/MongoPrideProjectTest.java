@@ -1,7 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.model.projects;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -21,7 +21,7 @@ public class MongoPrideProjectTest {
 
     MongoPrideProject project;
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         Collection<String> tags = Collections.singleton("Metaproteomics");

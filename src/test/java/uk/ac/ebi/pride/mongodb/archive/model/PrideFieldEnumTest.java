@@ -1,7 +1,7 @@
 package uk.ac.ebi.pride.mongodb.archive.model;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -22,6 +22,6 @@ public class PrideFieldEnumTest {
         for(PrideFieldEnum prideFieldEnum: PrideFieldEnum.values())
             System.out.println(prideFieldEnum.toString());
 
-        Assert.assertTrue(PrideFieldEnum.values().length > 0);
+        Assertions.assertTrue(PrideFieldEnum.values().length > 0);
     }
 }

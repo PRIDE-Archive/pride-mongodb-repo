@@ -1,14 +1,11 @@
 package uk.ac.ebi.pride.mongodb.archive.service.mockito;
 
-import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.pride.mongodb.archive.config.PrideProjectFongoTestConfig;
 
 /**
  * @author ypriverol
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = {PrideProjectFongoTestConfig.class})
 public class PridePeptideEvidenceMongoServiceTest {
 

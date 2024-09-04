@@ -1,7 +1,6 @@
 package uk.ac.ebi.pride.mongodb.archive.service.stats;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.mongodb.archive.model.stats.MongoPeptidomeStats;
 import uk.ac.ebi.pride.mongodb.archive.repo.stats.PeptidomeStatsMongoRepository;
@@ -14,7 +13,6 @@ public class PeptidomeStatsMongoService {
 
     final PeptidomeStatsMongoRepository repository;
 
-    @Autowired
     public PeptidomeStatsMongoService(PeptidomeStatsMongoRepository repository) {
         this.repository = repository;
     }

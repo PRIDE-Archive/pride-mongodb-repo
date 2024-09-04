@@ -41,7 +41,6 @@ public class PrideMsRunMongoService implements IMSRunService {
     OntologyCacheService ontologyCacheService;
 
 
-    @Autowired
     public PrideMsRunMongoService(PrideMSRunMongoRepository msRunRepository) {
         this.msRunRepository = msRunRepository;
         try {

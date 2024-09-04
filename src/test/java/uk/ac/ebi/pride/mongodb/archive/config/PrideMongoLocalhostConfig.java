@@ -1,11 +1,11 @@
 package uk.ac.ebi.pride.mongodb.archive.config;
 
-import com.mongodb.MongoClient;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
-import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import uk.ac.ebi.pride.mongodb.configs.AbstractPrideMongoConfiguration;
 
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
@@ -22,21 +22,22 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @ComponentScan(basePackages = {"uk.ac.ebi.pride.mongodb.archive.service", "uk.ac.ebi.pride.utilities.ols.web.service.cache"})
 @EnableMongoRepositories(basePackages = {"uk.ac.ebi.pride.mongodb.archive.repo"})
 @Configuration
-public class PrideMongoLocalhostConfig extends AbstractMongoConfiguration {
+public class PrideMongoLocalhostConfig extends AbstractPrideMongoConfiguration {
+
 
     @Override
-    public MongoMappingContext mongoMappingContext()
-            throws ClassNotFoundException {
-        return super.mongoMappingContext();
+    @Bean(name = "archiveMongoTestTemplate")
+    public MongoTemplate mongoTemplate() {
+        return super.mongoTemplate();
     }
 
     @Override
-    protected String getDatabaseName() {
+    public String getMongoURI() {
+        return "localhost" + ":" + "27017";
+    }
+
+    @Override
+    public String getDatabaseName() {
         return "prideDB";
-    }
-
-    @Override
-    public MongoClient mongoClient() {
-        return new MongoClient("localhost" + ":" + "27017");
     }
 }

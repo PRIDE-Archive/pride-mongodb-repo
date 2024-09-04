@@ -3,7 +3,6 @@ package uk.ac.ebi.pride.mongodb.archive.service.samples;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.sample.ISampleMSRunRow;
 import uk.ac.ebi.pride.archive.dataprovider.sample.SampleProvider;
@@ -37,7 +36,6 @@ public class PrideSampleMongoService {
     /** Logger use to query and filter the data **/
     private static final Logger LOGGER = LoggerFactory.getLogger(PrideSampleMongoService.class);
 
-    @Autowired
     public PrideSampleMongoService(PrideMongoExperimentalDesign prideMongoExperimentalDesign) {
         this.prideMongoExperimentalDesign = prideMongoExperimentalDesign;
     }

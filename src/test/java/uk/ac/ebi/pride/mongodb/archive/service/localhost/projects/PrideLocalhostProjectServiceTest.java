@@ -1,13 +1,11 @@
 package uk.ac.ebi.pride.mongodb.archive.service.localhost.projects;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.pride.archive.dataprovider.common.Triple;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
@@ -40,7 +38,6 @@ import java.util.stream.Collectors;
  */
 
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = {PrideMongoLocalhostConfig.class, ArchiveOracleConfig.class})
 public class PrideLocalhostProjectServiceTest {
 
@@ -54,7 +51,7 @@ public class PrideLocalhostProjectServiceTest {
     PrideMsRunMongoService prideMsRunMongoService;
 
 
-    @Before
+    @BeforeEach
     public void setup(){
 //        prideProjectService.deleteAll();
 //        prideFileMongoService.deleteAll();
@@ -94,7 +91,7 @@ public class PrideLocalhostProjectServiceTest {
     @Test
     public void importPrideProject() throws SubmissionFileException, URISyntaxException {
         Optional<MongoPrideProject> project = prideProjectService.insert(TestUtils.parseProject(readSubmission()));
-        Assert.assertTrue(project.get()
+        Assertions.assertTrue(project.get()
                 .getAccession().equalsIgnoreCase("PXD000003"));
 
     }
@@ -125,7 +122,7 @@ public class PrideLocalhostProjectServiceTest {
         }).collect(Collectors.toList());
 
         List<Tuple<MongoPrideFile, MongoPrideFile>> filesInserted= prideFileMongoService.insertAllFilesAndMsRuns(mongoFiles,null);
-        Assert.assertEquals(mongoFiles.size(), dataFiles.size());
+        Assertions.assertEquals(mongoFiles.size(), dataFiles.size());
 
         List<Triple<String, String, CvParamProvider>> fileRelations = new ArrayList<>();
         for(DataFile dataFile: dataFiles){
@@ -139,7 +136,7 @@ public class PrideLocalhostProjectServiceTest {
         }
 
         project = prideProjectService.updateFileRelations(project.get().getAccession(),fileRelations);
-        Assert.assertEquals(600, project.get().getSubmittedFileRelations().size());
+        Assertions.assertEquals(600, project.get().getSubmittedFileRelations().size());
 
 
 
@@ -164,7 +161,7 @@ public class PrideLocalhostProjectServiceTest {
         }).collect(Collectors.toList());
 
         List<Tuple<MongoPrideFile, MongoPrideFile>> filesInserted= prideFileMongoService.insertAllFilesAndMsRuns(mongoFiles,null);
-        Assert.assertEquals(mongoFiles.size(), dataFiles.size());
+        Assertions.assertEquals(mongoFiles.size(), dataFiles.size());
 
         MSRunJson msRunJson = readMSrunMetadata();
 
@@ -190,7 +187,7 @@ public class PrideLocalhostProjectServiceTest {
         }
 
         List<MongoPrideMSRun> msRuns = prideMsRunMongoService.getMSRunsByProject(project.get().getAccession());
-        Assert.assertEquals(150, msRuns.size());
+        Assertions.assertEquals(150, msRuns.size());
     }
 
     /**

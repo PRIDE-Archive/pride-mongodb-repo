@@ -206,6 +206,16 @@ public class MongoPrideProject implements ProjectProvider, PrideArchiveField {
     @Indexed(name = PUBLIC_PROJECT)
     protected boolean publicProject;
 
+    protected Boolean isInProteomeCentral;
+
+    public Boolean isInProteomeCentral() {
+        return isInProteomeCentral;
+    }
+
+    public void setInProteomeCentral(boolean inProteomeCentral) {
+        isInProteomeCentral = inProteomeCentral;
+    }
+
     @Override
     public String getAccession() {
         return accession;
